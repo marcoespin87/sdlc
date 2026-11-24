@@ -1,0 +1,169 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Automatizar la conciliación bancaria de transacciones",
+    "description": "Contrato de servicio para el requerimiento [HU-007].",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/contabilidads": {
+      "get": {
+        "summary": "Listar contabilidads",
+        "operationId": "listarContabilidads",
+        "responses": {
+          "200": {
+            "description": "Listado obtenido correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ContabilidadResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear nuevo contabilidad",
+        "operationId": "crearContabilidad",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NuevoContabilidadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContabilidadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ErrorValidacion"
+          },
+          "401": {
+            "$ref": "#/components/responses/ErrorAutenticacion"
+          },
+          "403": {
+            "$ref": "#/components/responses/ErrorPermisos"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NuevoContabilidadRequest": {
+        "type": "object",
+        "required": [
+          "codigo",
+          "nombre"
+        ],
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 150
+          }
+        }
+      },
+      "ContabilidadResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ErrorValidacion": {
+        "description": "Datos de entrada inválidos (RFC 7807)",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          }
+        }
+      },
+      "ErrorAutenticacion": {
+        "description": "Falta token o es inválido",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          }
+        }
+      },
+      "ErrorPermisos": {
+        "description": "El rol no tiene permisos para esta acción",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          }
+        }
+      }
+    }
+  }
+}

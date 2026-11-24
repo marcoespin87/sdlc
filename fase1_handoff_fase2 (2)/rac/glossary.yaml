@@ -1,0 +1,106 @@
+metadata:
+  exported_at_utc: '2026-11-23T21:12:14Z'
+  methodology: DDD Ubiquitous Language
+glossary:
+- id: GLOS-001
+  term: Asiento Contable
+  definition: Registro de una transacción financiera en los libros contables de una
+    empresa.
+  synonyms:
+  - Registro contable
+  domain_context: Tesorería y Contabilidad
+  approved: true
+- id: GLOS-002
+  term: Bóveda de Tokenización
+  definition: Sistema seguro y certificado para almacenar datos sensibles de tarjetas
+    de pago (PAN) y reemplazarlos por tokens no sensibles.
+  synonyms:
+  - Token Vault
+  domain_context: Pagos y Seguridad
+  approved: true
+- id: GLOS-003
+  term: Checkout Multicanal
+  definition: Proceso de pago que permite al cliente final completar una compra utilizando
+    diversas opciones de pago (tarjeta, transferencia, billetera digital) dentro del
+    mismo flujo.
+  synonyms:
+  - Flujo de pago omnicanal
+  domain_context: Pagos y Experiencia de Usuario
+  approved: true
+- id: GLOS-004
+  term: Conciliación Bancaria
+  definition: Proceso de comparar y ajustar los registros contables de una empresa
+    con los extractos bancarios para identificar y resolver diferencias.
+  synonyms:
+  - Cruce bancario
+  domain_context: Tesorería y Contabilidad
+  approved: true
+- id: GLOS-005
+  term: Contracargo
+  definition: Reclamación de un cliente a su banco para revertir un cargo en su tarjeta
+    de crédito o débito, generalmente por un servicio no recibido o fraude.
+  synonyms:
+  - Chargeback
+  domain_context: Pagos y Riesgos
+  approved: true
+- id: GLOS-006
+  term: Factura Electrónica
+  definition: Comprobante fiscal digital emitido y validado por una autoridad fiscal,
+    que certifica una transacción comercial.
+  synonyms:
+  - Comprobante fiscal digital
+  - CFDI
+  - DIAN
+  domain_context: Facturación y Fiscal
+  approved: true
+- id: GLOS-007
+  term: Idempotencia
+  definition: Propiedad de una operación que, al ejecutarse múltiples veces con los
+    mismos parámetros, produce el mismo resultado que si se hubiera ejecutado una
+    sola vez, evitando efectos secundarios duplicados.
+  synonyms: []
+  domain_context: Pagos y Transacciones
+  approved: true
+- id: GLOS-008
+  term: PCI-DSS
+  definition: Estándar de Seguridad de Datos de la Industria de Tarjetas de Pago,
+    un conjunto de requisitos de seguridad para todas las entidades que almacenan,
+    procesan o transmiten datos de titulares de tarjetas.
+  synonyms:
+  - Payment Card Industry Data Security Standard
+  domain_context: Seguridad y Cumplimiento
+  approved: true
+- id: GLOS-009
+  term: Reembolso
+  definition: Devolución total o parcial del dinero pagado por un cliente por un producto
+    o servicio.
+  synonyms:
+  - Devolución de dinero
+  domain_context: Pagos y Soporte
+  approved: true
+- id: GLOS-010
+  term: Tokenización de Tarjetas
+  definition: Proceso de reemplazar los datos sensibles de una tarjeta de pago (PAN)
+    por un identificador único no sensible (token) para proteger la información en
+    transacciones futuras.
+  synonyms: []
+  domain_context: Pagos y Seguridad
+  approved: true
+- id: GLOS-011
+  term: Webhook
+  definition: Mecanismo para que una aplicación envíe notificaciones automáticas a
+    otras aplicaciones cuando ocurre un evento específico, generalmente mediante una
+    solicitud HTTP POST.
+  synonyms:
+  - Callback HTTP
+  domain_context: Integraciones y Notificaciones
+  approved: true
+- id: GLOS-012
+  term: Autenticación Multifactor (MFA)
+  definition: Método de autenticación que requiere que el usuario proporcione dos
+    o más factores de verificación para obtener acceso a un recurso.
+  synonyms:
+  - MFA
+  - Doble Factor de Autenticación
+  domain_context: Seguridad y Control de Acceso
+  approved: true

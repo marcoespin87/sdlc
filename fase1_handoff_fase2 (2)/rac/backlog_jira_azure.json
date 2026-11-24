@@ -1,0 +1,497 @@
+{
+  "schema": "sdlc-phase1-backlog/v1",
+  "exported_at_utc": "2026-11-23T21:13:28Z",
+  "roadmap_summary": "El roadmap inicial se enfoca en establecer una base sólida para el procesamiento de pagos (Sprint 1), seguida por la habilitación de funcionalidades clave como tokenización y cumplimiento fiscal (Sprint 2). Los Sprints 3 y 4 se dedicarán a la gestión avanzada de tesorería, mitigación de riesgos (reembolsos, contracargos), integraciones críticas (SAP) y automatización financiera (conciliación, reportes, multimoneda), priorizando la seguridad, la eficiencia y el cumplimiento normativo en cada etapa.",
+  "epics": [
+    {
+      "external_id": "EPIC-01",
+      "work_item_type": "Epic",
+      "title": "Procesamiento de Pagos y Experiencia del Cliente",
+      "description": "Habilitar un flujo de pago flexible y seguro para el cliente final, soportando múltiples métodos de pago y tokenización para transacciones recurrentes, mejorando la usabilidad y la seguridad.",
+      "business_value": "Aumentar la tasa de conversión, mejorar la satisfacción del cliente y habilitar modelos de negocio de suscripción."
+    },
+    {
+      "external_id": "EPIC-02",
+      "work_item_type": "Epic",
+      "title": "Gestión Financiera y Cumplimiento Fiscal",
+      "description": "Automatizar los procesos contables, de facturación, conciliación y reportes para asegurar la exactitud financiera, el cumplimiento normativo y la integración con sistemas ERP.",
+      "business_value": "Reducir errores manuales, optimizar la eficiencia operativa, garantizar la trazabilidad fiscal y proporcionar visibilidad financiera."
+    },
+    {
+      "external_id": "EPIC-03",
+      "work_item_type": "Epic",
+      "title": "Operaciones de Tesorería y Mitigación de Riesgos",
+      "description": "Implementar funcionalidades para la gestión segura de reembolsos, contracargos y notificaciones en tiempo real, minimizando el fraude y mejorando la respuesta a eventos críticos de tesorería.",
+      "business_value": "Proteger los activos de la empresa, mejorar la eficiencia en la resolución de disputas y mantener informados a los stakeholders sobre eventos críticos."
+    }
+  ],
+  "user_stories": [
+    {
+      "external_id": "HU-001",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-01",
+      "title": "Habilitar Checkout Multicanal para diversos métodos de pago",
+      "story_statement": "Como Cliente final, quiero Realizar pagos a través de un Checkout Multicanal, soportando tarjetas de crédito/débito, transferencias bancarias vía PSE y billeteras digitales, para Pueda completar la compra de forma rápida y sin ser redirigido fuera del flujo de compra.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 7.5,
+      "story_points": 5,
+      "sprint_recommendation": "Sprint 1",
+      "depends_on": [],
+      "dependency_rationale": "Es una funcionalidad fundacional para cualquier proceso de pago.",
+      "traceability": {
+        "rf_ids": [
+          "RF-001"
+        ],
+        "rnf_ids": [
+          "RNF-001",
+          "RNF-004",
+          "RNF-005"
+        ]
+      },
+      "invest_check": {
+        "independent": true,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Pago exitoso con tarjeta de crédito/débito en Checkout Multicanal",
+          "given": "el cliente ha seleccionado una tarjeta de crédito/débito y ha ingresado los datos requeridos en el Checkout Multicanal",
+          "when": "confirma el pago y el sistema procesa la transacción",
+          "then": "el sistema autoriza el pago en < 300ms p95, muestra un mensaje de éxito y redirige al cliente a la página de confirmación de compra."
+        },
+        {
+          "title": "Fallo de pago por datos inválidos o rechazo bancario",
+          "given": "el cliente intenta realizar un pago con datos de tarjeta inválidos o el banco emisor rechaza la transacción",
+          "when": "el sistema intenta procesar el pago",
+          "then": "el sistema muestra un mensaje de error claro, permite al cliente reintentar con otra información y no almacena datos sensibles en texto plano."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-002",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-01",
+      "title": "Implementar Tokenización de Tarjetas para pagos recurrentes",
+      "story_statement": "Como Cliente final, quiero Que mis datos de tarjeta sean tokenizados y almacenados de forma segura, para Se puedan procesar cobros de suscripciones y pagos recurrentes de forma automática y segura, sin reingresar mi información.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 6.0,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 2",
+      "depends_on": [
+        "HU-001"
+      ],
+      "dependency_rationale": "Requiere que el procesamiento de pagos base (HU-001) esté implementado para poder tokenizar una tarjeta.",
+      "traceability": {
+        "rf_ids": [
+          "RF-002"
+        ],
+        "rnf_ids": [
+          "RNF-001",
+          "RNF-004",
+          "RNF-005",
+          "RNF-007"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Tokenización exitosa de tarjeta para uso futuro",
+          "given": "el cliente ha realizado un pago exitoso con tarjeta y ha optado por guardar su método de pago para futuras transacciones",
+          "when": "el sistema procesa la solicitud de tokenización",
+          "then": "el sistema genera un token único, almacena los datos sensibles en la Bóveda de Tokenización (PCI-DSS compliant) y asocia el token al perfil del cliente, sin almacenar el CVV."
+        },
+        {
+          "title": "Rechazo de tokenización por fallo de seguridad o consentimiento",
+          "given": "una petición de tokenización que no cumple con los estándares de seguridad (ej. intento de almacenar PAN en texto plano) o el cliente no ha dado consentimiento explícito",
+          "when": "el sistema evalúa la solicitud de tokenización",
+          "then": "el sistema rechaza la operación, registra el intento en bitácora inmutable y no persiste ningún dato sensible de tarjeta."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-003",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-02",
+      "title": "Generar automáticamente asientos contables y facturas electrónicas post-pago",
+      "story_statement": "Como Sistema de Pagos/Facturación, quiero Generar automáticamente un Asiento Contable y disparar la emisión de una Factura Electrónica (en formato XML y PDF) ante la autoridad fiscal correspondiente (DIAN/CFDI) y enviarla por correo electrónico al comprador, para Se automatice el registro contable y el cumplimiento fiscal post-pago.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 7.0,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 2",
+      "depends_on": [
+        "HU-001"
+      ],
+      "dependency_rationale": "Requiere que exista un pago aprobado (HU-001) para poder generar los documentos contables y fiscales.",
+      "traceability": {
+        "rf_ids": [
+          "RF-003"
+        ],
+        "rnf_ids": [
+          "RNF-001",
+          "RNF-006",
+          "RNF-007"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Generación y envío exitoso de factura electrónica y asiento contable",
+          "given": "un pago ha sido aprobado y confirmado por el sistema",
+          "when": "el sistema dispara la generación del Asiento Contable y la Factura Electrónica",
+          "then": "el sistema genera el Asiento Contable, emite la Factura Electrónica en XML y PDF a la autoridad fiscal, la envía al correo del comprador y registra el evento en bitácora inmutable."
+        },
+        {
+          "title": "Manejo de errores en la emisión de factura electrónica",
+          "given": "un pago ha sido aprobado, pero la integración con la autoridad fiscal falla o devuelve un error al intentar emitir la Factura Electrónica",
+          "when": "el sistema intenta emitir la Factura Electrónica",
+          "then": "el sistema registra el error en un log auditable, notifica al equipo de operaciones para intervención manual y reintenta la emisión según una política de reintentos configurable."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-004",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-03",
+      "title": "Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+      "story_statement": "Como Personal de Soporte, quiero Procesar Reembolsos de pagos a clientes, exigiendo un flujo de doble aprobación con Autenticación Multifactor (MFA) para Reembolsos mayores a $500 USD por parte del Líder de Tesorería, para Se prevengan fraudes internos, se mejore la eficiencia en la atención al cliente y se mantenga trazabilidad fiscal.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 8.0,
+      "story_points": 13,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on": [
+        "HU-001"
+      ],
+      "dependency_rationale": "Requiere que exista un pago previo (HU-001) para poder procesar un reembolso. La complejidad de MFA y doble aprobación lo hace una historia grande.",
+      "traceability": {
+        "rf_ids": [
+          "RF-004"
+        ],
+        "rnf_ids": [
+          "RNF-001",
+          "RNF-002",
+          "RNF-005",
+          "RNF-006"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": false,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Doble aprobación exitosa de reembolso con MFA",
+          "given": "un reembolso de $750 USD ha sido solicitado por Personal de Soporte y está pendiente de aprobación por el Líder de Tesorería",
+          "when": "el Líder de Tesorería verifica su segundo factor MFA y aprueba la solicitud",
+          "then": "el sistema ejecuta el reembolso idempotente, guarda usuario, IP y timestamp UTC en bitácora inmutable y actualiza el estado del reembolso a 'Aprobado'."
+        },
+        {
+          "title": "Rechazo de reembolso por falta de MFA o aprobación",
+          "given": "un reembolso mayor a $500 USD es intentado aprobar sin MFA o por un usuario no autorizado",
+          "when": "el sistema evalúa la solicitud de aprobación",
+          "then": "el sistema rechaza la operación, registra el intento fallido en la bitácora de seguridad y mantiene el reembolso en estado 'Pendiente de Aprobación'."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-005",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-03",
+      "title": "Enviar notificaciones en tiempo real de reembolsos y contracargos vía Webhooks",
+      "story_statement": "Como Sistema de Notificaciones, quiero Enviar alertas y notificaciones en tiempo real sobre el estado de los Reembolsos y Contracargos a través de Webhooks firmados, para Se mantenga informados a los stakeholders sobre eventos críticos de tesorería y riesgo.",
+      "moscow_priority": "Should Have",
+      "wsjf_score": 5.5,
+      "story_points": 5,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on": [
+        "HU-004",
+        "HU-006"
+      ],
+      "dependency_rationale": "Requiere que las funcionalidades de reembolso (HU-004) y contracargo (HU-006) existan para poder generar las notificaciones.",
+      "traceability": {
+        "rf_ids": [
+          "RF-005"
+        ],
+        "rnf_ids": [
+          "RNF-003",
+          "RNF-006"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Envío exitoso de Webhook de reembolso aprobado",
+          "given": "un reembolso ha sido aprobado y procesado exitosamente",
+          "when": "el sistema detecta el cambio de estado del reembolso",
+          "then": "el sistema genera un evento de Webhook, lo firma con HMAC-SHA256, incluye un timestamp anti-replay y lo envía a los endpoints configurados vía TLS 1.3."
+        },
+        {
+          "title": "Manejo de errores en el envío de Webhook",
+          "given": "un evento de contracargo ocurre, pero el endpoint del Webhook configurado no está disponible o devuelve un error HTTP 5xx",
+          "when": "el sistema intenta enviar el Webhook",
+          "then": "el sistema registra el error, implementa una política de reintentos exponencial y notifica al equipo de operaciones sobre el fallo persistente."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-006",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-03",
+      "title": "Habilitar la gestión en tiempo real de Contracargos",
+      "story_statement": "Como Equipo de Riesgos, quiero Gestionar en tiempo real los Contracargos recibidos de los adquirentes, para Se reduzcan pérdidas por fraude y se optimice la resolución de disputas.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 7.2,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on": [
+        "HU-001"
+      ],
+      "dependency_rationale": "Requiere que existan pagos (HU-001) para que puedan generarse contracargos.",
+      "traceability": {
+        "rf_ids": [
+          "RF-006"
+        ],
+        "rnf_ids": [
+          "RNF-001",
+          "RNF-006"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Recepción y registro exitoso de un contracargo",
+          "given": "el sistema recibe una notificación de contracargo de un adquirente de pagos",
+          "when": "el sistema procesa la notificación",
+          "then": "el sistema registra el contracargo en la base de datos, lo asocia a la transacción original, actualiza el estado de la orden y registra el evento en bitácora inmutable."
+        },
+        {
+          "title": "Manejo de contracargos duplicados o inválidos",
+          "given": "el sistema recibe una notificación de contracargo que ya ha sido procesada o que contiene datos inválidos",
+          "when": "el sistema intenta registrar el contracargo",
+          "then": "el sistema detecta la duplicidad o invalidez, rechaza el procesamiento, registra el intento en un log de errores y no altera el estado de la transacción original."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-007",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-02",
+      "title": "Automatizar la conciliación bancaria de transacciones",
+      "story_statement": "Como Sistema de Conciliación, quiero Automatizar la Conciliación Bancaria, cruzando extractos bancarios y reportes de adquirentes con las órdenes pagadas, para Se optimice la gestión financiera y se asegure la exactitud de los registros.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 6.5,
+      "story_points": 13,
+      "sprint_recommendation": "Sprint 4",
+      "depends_on": [
+        "HU-001",
+        "HU-003"
+      ],
+      "dependency_rationale": "Requiere datos de pagos (HU-001) y asientos contables (HU-003) para realizar la conciliación.",
+      "traceability": {
+        "rf_ids": [
+          "RF-007"
+        ],
+        "rnf_ids": [
+          "RNF-006"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": false,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Conciliación exitosa de transacciones",
+          "given": "el sistema ha importado extractos bancarios y reportes de adquirentes, y existen órdenes pagadas en el sistema",
+          "when": "el proceso de conciliación automática se ejecuta",
+          "then": "el sistema identifica y marca como conciliadas las transacciones coincidentes, genera un reporte de diferencias y registra el proceso en bitácora inmutable."
+        },
+        {
+          "title": "Identificación de transacciones no conciliadas",
+          "given": "el proceso de conciliación automática se ha ejecutado",
+          "when": "existen transacciones en los extractos bancarios/reportes de adquirentes que no tienen una contraparte en las órdenes pagadas del sistema",
+          "then": "el sistema lista estas transacciones como 'no conciliadas' en un reporte de excepciones y las marca para revisión manual por el equipo de tesorería."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-008",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-02",
+      "title": "Integrar pólizas consolidadas de transacciones con ERP SAP",
+      "story_statement": "Como Sistema de Integración, quiero Enviar la póliza consolidada de transacciones al sistema ERP SAP, para Se integren los datos financieros con el sistema contable central de la empresa.",
+      "moscow_priority": "Must Have",
+      "wsjf_score": 6.8,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on": [
+        "HU-003"
+      ],
+      "dependency_rationale": "Requiere que los asientos contables (HU-003) estén generados para poder consolidarlos y enviarlos a SAP.",
+      "traceability": {
+        "rf_ids": [
+          "RF-008"
+        ],
+        "rnf_ids": [
+          "RNF-006"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Envío exitoso de póliza consolidada a SAP",
+          "given": "se ha generado una póliza consolidada de transacciones diarias",
+          "when": "el sistema intenta enviar la póliza a SAP",
+          "then": "la póliza es enviada y registrada exitosamente en SAP, y el evento es registrado en la bitácora inmutable con un ID de transacción SAP."
+        },
+        {
+          "title": "Manejo de errores en la integración con SAP",
+          "given": "el sistema intenta enviar una póliza consolidada a SAP, pero la conexión falla o SAP devuelve un error de validación",
+          "when": "el sistema procesa la respuesta de SAP",
+          "then": "el sistema registra el error detalladamente, notifica al equipo de finanzas y permite reintentar el envío de la póliza una vez resuelto el problema."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-009",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-02",
+      "title": "Soportar transacciones multimoneda y cálculo de impuestos internacionales",
+      "story_statement": "Como Sistema de Pagos/Facturación, quiero Soportar transacciones y registros en múltiples monedas, incluyendo el cálculo de impuestos internacionales aplicables, para Se habiliten operaciones en mercados internacionales y se asegure el cumplimiento fiscal en diferentes jurisdicciones.",
+      "moscow_priority": "Should Have",
+      "wsjf_score": 5.8,
+      "story_points": 13,
+      "sprint_recommendation": "Sprint 4",
+      "depends_on": [
+        "HU-001",
+        "HU-003"
+      ],
+      "dependency_rationale": "Requiere que el procesamiento de pagos (HU-001) y la generación de facturas/asientos (HU-003) estén operativos para extender su funcionalidad a múltiples monedas e impuestos.",
+      "traceability": {
+        "rf_ids": [
+          "RF-009"
+        ],
+        "rnf_ids": [
+          "RNF-006",
+          "RNF-007"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": false,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Procesamiento exitoso de pago en moneda extranjera con cálculo de impuestos",
+          "given": "un cliente realiza una compra en una moneda diferente a la base del sistema y se aplican impuestos internacionales",
+          "when": "el sistema procesa el pago y la facturación",
+          "then": "el sistema calcula el tipo de cambio, aplica los impuestos correspondientes, registra la transacción en la moneda original y base, y emite una Factura Electrónica conforme a la normativa local."
+        },
+        {
+          "title": "Validación de configuración de impuestos para nueva jurisdicción",
+          "given": "se intenta configurar una nueva jurisdicción fiscal con reglas de impuestos complejas",
+          "when": "el administrador guarda la configuración de impuestos",
+          "then": "el sistema valida que todas las reglas obligatorias estén definidas y que no haya conflictos, mostrando errores claros si la configuración es incompleta o inconsistente."
+        }
+      ]
+    },
+    {
+      "external_id": "HU-010",
+      "work_item_type": "User Story",
+      "parent_epic_id": "EPIC-02",
+      "title": "Generar reportes ejecutivos de tesorería con flujo de caja y saldos",
+      "story_statement": "Como Sistema de Reportes, quiero Generar Reportes Ejecutivos de Tesorería que incluyan flujo de caja, comisiones de pasarela y saldos por conciliar, para Se proporcione visibilidad financiera para la toma de decisiones estratégicas.",
+      "moscow_priority": "Should Have",
+      "wsjf_score": 5.0,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 4",
+      "depends_on": [
+        "HU-001",
+        "HU-003",
+        "HU-007"
+      ],
+      "dependency_rationale": "Requiere que los datos de pagos (HU-001), asientos contables (HU-003) y conciliación (HU-007) estén disponibles para poder generar reportes significativos.",
+      "traceability": {
+        "rf_ids": [
+          "RF-010"
+        ],
+        "rnf_ids": [
+          "RNF-002",
+          "RNF-007"
+        ]
+      },
+      "invest_check": {
+        "independent": false,
+        "negotiable": true,
+        "valuable": true,
+        "estimable": true,
+        "small": true,
+        "testable": true
+      },
+      "acceptance_criteria_gherkin": [
+        {
+          "title": "Generación exitosa de reporte de flujo de caja",
+          "given": "existen datos de pagos, reembolsos, contracargos y conciliaciones en el sistema",
+          "when": "un usuario autorizado solicita un reporte de flujo de caja para un período específico",
+          "then": "el sistema genera un reporte consolidado que muestra ingresos, egresos y saldos, con datos enmascarados para PII y acceso restringido por RBAC."
+        },
+        {
+          "title": "Acceso denegado a reportes sin autorización o MFA",
+          "given": "un usuario sin los permisos adecuados o sin completar MFA intenta acceder a un reporte ejecutivo de tesorería",
+          "when": "el sistema evalúa la solicitud de acceso",
+          "then": "el sistema deniega el acceso, registra el intento en la bitácora de seguridad y muestra un mensaje de error indicando la falta de permisos o autenticación."
+        }
+      ]
+    }
+  ]
+}

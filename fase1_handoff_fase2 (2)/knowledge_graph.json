@@ -1,0 +1,1650 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "node_type": "Normativa",
+      "label": "NORM-001: Cifrado de Datos en Reposo y en Tránsito",
+      "title": "Cifrado de Datos en Reposo y en Tránsito",
+      "category": "Seguridad / Criptografía",
+      "description": "Toda información financiera, credenciales, tokens y datos sensibles de clientes debe cifrarse tanto en almacenamiento persistente como durante su transmisión entre microservicios y clientes externos.",
+      "mandatory_controls": [
+        "Cifrado simétrico AES-256-GCM obligatorio para bases de datos, backups y almacenamiento de archivos fiscales.",
+        "Protocolo TLS 1.3 obligatorio en todos los endpoints HTTP, APIs internas y pasarelas externas.",
+        "Gestión centralizada de llaves criptográficas mediante KMS/HSM con rotación automática cada 90 días."
+      ],
+      "keywords": [
+        "cifrado",
+        "datos en reposo",
+        "datos en transito",
+        "aes-256-gcm",
+        "tls 1.3",
+        "kms",
+        "hsm",
+        "criptografia",
+        "seguridad"
+      ],
+      "source_section": "NORM-001: Cifrado de Datos en Reposo y en Tránsito",
+      "provenance": "confirmada",
+      "id": "NORM-001"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-002: Cumplimiento PCI-DSS v4.0 y Tokenización de Tarjetas",
+      "title": "Cumplimiento PCI-DSS v4.0 y Tokenización de Tarjetas",
+      "category": "Cumplimiento Regulatorio / PCI-DSS",
+      "description": "El módulo de pagos debe aislar los datos de tarjetas bancarias del entorno operativo mediante bóvedas certificadas, evitando almacenar datos prohibidos tras la autorización.",
+      "mandatory_controls": [
+        "Prohibición absoluta de almacenar el código de seguridad CVV/CVC o datos de banda magnética después de la autorización.",
+        "Prohibición de persistir el PAN (número de tarjeta) en texto plano; uso obligatorio de Tokenización certificada PCI-DSS v4.0 para pagos recurrentes.",
+        "Enmascaramiento de PAN en interfaces y logs mostrando únicamente los últimos 4 dígitos."
+      ],
+      "keywords": [
+        "pci-dss",
+        "tokenizacion",
+        "tarjetas",
+        "cvv",
+        "cvc",
+        "pan",
+        "pagos",
+        "cumplimiento regulatorio",
+        "seguridad"
+      ],
+      "source_section": "NORM-002: Cumplimiento PCI-DSS v4.0 y Tokenización de Tarjetas",
+      "provenance": "confirmada",
+      "id": "NORM-002"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-003: Autenticación Fuerte (MFA) y Control de Acceso Basado en Roles (RBAC)",
+      "title": "Autenticación Fuerte (MFA) y Control de Acceso Basado en Roles (RBAC)",
+      "category": "Seguridad / Control de Acceso",
+      "description": "El acceso a funciones administrativas, operaciones financieras sensibles y reportes ejecutivos debe regirse por el principio de mínimo privilegio y verificación multifactor.",
+      "mandatory_controls": [
+        "Autenticación Multifactor (MFA) obligatoria para administradores, Tesorería y aprobación de reembolsos mayores a $500 USD.",
+        "Flujo de doble aprobación (maker-checker) para reembolsos superiores a $500 USD y cambios de configuración de comisiones o cuentas bancarias.",
+        "Modelo RBAC granular que separe explícitamente roles de Soporte Nivel 1, Tesorería, Riesgos y Auditoría."
+      ],
+      "keywords": [
+        "mfa",
+        "rbac",
+        "autenticacion",
+        "control de acceso",
+        "minimo privilegio",
+        "maker-checker",
+        "seguridad"
+      ],
+      "source_section": "NORM-003: Autenticación Fuerte (MFA) y Control de Acceso Basado en Roles (RBAC)",
+      "provenance": "confirmada",
+      "id": "NORM-003"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-004: Rendimiento y Latencia de API de Pagos",
+      "title": "Rendimiento y Latencia de API de Pagos",
+      "category": "Eficiencia de Desempeño (ISO 25010)",
+      "description": "Los servicios síncronos de autorización de pago y checkout deben responder en tiempos compatibles con la experiencia en tiempo real y absorber picos de demanda estacionales.",
+      "mandatory_controls": [
+        "Latencia p95 menor a 300ms en los endpoints propios de procesamiento de pago y validación de token.",
+        "Capacidad mínima sostenida de 500 transacciones por segundo (TPS) en eventos de alta demanda sin degradación crítica.",
+        "Tiempos de espera (timeouts) configurables y circuit breakers hacia adquirentes externos."
+      ],
+      "keywords": [
+        "rendimiento",
+        "latencia",
+        "api",
+        "pagos",
+        "iso 25010",
+        "tps",
+        "circuit breakers",
+        "eficiencia"
+      ],
+      "source_section": "NORM-004: Rendimiento y Latencia de API de Pagos",
+      "provenance": "confirmada",
+      "id": "NORM-004"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-005: Alta Disponibilidad, Idempotencia y Recuperación ante Desastres (DRP)",
+      "title": "Alta Disponibilidad, Idempotencia y Recuperación ante Desastres (DRP)",
+      "category": "Fiabilidad / Disponibilidad (ISO 25010)",
+      "description": "La plataforma transaccional debe garantizar continuidad operativa y consistencia financiera frente a fallos de red, reintentos o caídas de nodos.",
+      "mandatory_controls": [
+        "Acuerdo de Nivel de Servicio (SLA) de disponibilidad mínima del 99.95% mensual en el servicio de Checkout y Pagos.",
+        "Uso obligatorio de llaves de idempotencia (`Idempotency-Key`) en toda operación de cobro y reembolso para prevenir cargos duplicados.",
+        "Objetivos de recuperación RPO < 5 minutos y RTO < 15 minutos con arquitectura multi-zona."
+      ],
+      "keywords": [
+        "alta disponibilidad",
+        "idempotencia",
+        "drp",
+        "recuperacion ante desastres",
+        "sla",
+        "rpo",
+        "rto",
+        "iso 25010",
+        "fiabilidad"
+      ],
+      "source_section": "NORM-005: Alta Disponibilidad, Idempotencia y Recuperación ante Desastres (DRP)",
+      "provenance": "confirmada",
+      "id": "NORM-005"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-006: Auditoría Inmutable y Retención de Logs Financieros",
+      "title": "Auditoría Inmutable y Retención de Logs Financieros",
+      "category": "Auditoría / Trazabilidad Legal",
+      "description": "Toda operación monetaria, cambio de estado de factura, aprobación de reembolso y evento de contracargo debe dejar evidencia verificable a prueba de alteraciones.",
+      "mandatory_controls": [
+        "Registro inmutable tipo WORM (Write-Once-Read-Many) con usuario, timestamp UTC, dirección IP, monto, moneda y resultado.",
+        "Retención obligatoria mínima de 7 años para trazas de auditoría financiera y comprobantes de facturación electrónica.",
+        "Correlación mediante `trace_id` distribuido entre checkout, facturación y conciliación bancaria."
+      ],
+      "keywords": [
+        "auditoria",
+        "inmutable",
+        "logs financieros",
+        "worm",
+        "retencion de datos",
+        "trace_id",
+        "trazabilidad legal"
+      ],
+      "source_section": "NORM-006: Auditoría Inmutable y Retención de Logs Financieros",
+      "provenance": "confirmada",
+      "id": "NORM-006"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-007: Protección de Datos Personales y Privacidad (PII)",
+      "title": "Protección de Datos Personales y Privacidad (PII)",
+      "category": "Privacidad / Protección de Datos",
+      "description": "El tratamiento de datos personales de compradores y representantes comerciales debe cumplir principios de minimización, consentimiento y confidencialidad.",
+      "mandatory_controls": [
+        "Enmascaramiento automático de PII (documento de identidad, correo, teléfono) en logs técnicos y exportaciones no autorizadas.",
+        "Registro auditable de consentimiento explícito del titular para almacenamiento de métodos de pago tokenizados.",
+        "Procedimientos de anonimización o supresión compatibles con los plazos legales de retención fiscal."
+      ],
+      "keywords": [
+        "proteccion de datos",
+        "privacidad",
+        "pii",
+        "minimización",
+        "consentimiento",
+        "confidencialidad",
+        "enmascaramiento",
+        "anonimizacion"
+      ],
+      "source_section": "NORM-007: Protección de Datos Personales y Privacidad (PII)",
+      "provenance": "confirmada",
+      "id": "NORM-007"
+    },
+    {
+      "node_type": "Normativa",
+      "label": "NORM-008: Seguridad de Integraciones, Webhooks y Prevención de Fraude",
+      "title": "Seguridad de Integraciones, Webhooks y Prevención de Fraude",
+      "category": "Seguridad / Integraciones y Antifraude",
+      "description": "Las comunicaciones con comercios, pasarelas externas y sistemas ERP deben protegerse contra suplantación, abuso de APIs y fraude transaccional.",
+      "mandatory_controls": [
+        "Firma criptográfica HMAC-SHA256 obligatoria con timestamp anti-replay en todos los Webhooks emitidos a comercios.",
+        "Mitigación OWASP API Security Top 10 incluyendo rate limiting estricto por cliente e IP.",
+        "Soporte obligatorio de autenticación 3-D Secure 2.2 y reglas de scoring antifraude para reducir contracargos (chargebacks)."
+      ],
+      "keywords": [
+        "seguridad",
+        "integraciones",
+        "webhooks",
+        "fraude",
+        "hmac-sha256",
+        "owasp api security",
+        "rate limiting",
+        "3-d secure",
+        "antifraude"
+      ],
+      "source_section": "NORM-008: Seguridad de Integraciones, Webhooks y Prevención de Fraude",
+      "provenance": "confirmada",
+      "id": "NORM-008"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Asiento Contable",
+      "term": "Asiento Contable",
+      "definition": "Registro de una transacción financiera en los libros contables de una empresa.",
+      "synonyms": [
+        "Registro contable"
+      ],
+      "domain_context": "Tesorería y Contabilidad",
+      "approved": true,
+      "id": "GLOS-001"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Bóveda de Tokenización",
+      "term": "Bóveda de Tokenización",
+      "definition": "Sistema seguro y certificado para almacenar datos sensibles de tarjetas de pago (PAN) y reemplazarlos por tokens no sensibles.",
+      "synonyms": [
+        "Token Vault"
+      ],
+      "domain_context": "Pagos y Seguridad",
+      "approved": true,
+      "id": "GLOS-002"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Checkout Multicanal",
+      "term": "Checkout Multicanal",
+      "definition": "Proceso de pago que permite al cliente final completar una compra utilizando diversas opciones de pago (tarjeta, transferencia, billetera digital) dentro del mismo flujo.",
+      "synonyms": [
+        "Flujo de pago omnicanal"
+      ],
+      "domain_context": "Pagos y Experiencia de Usuario",
+      "approved": true,
+      "id": "GLOS-003"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Conciliación Bancaria",
+      "term": "Conciliación Bancaria",
+      "definition": "Proceso de comparar y ajustar los registros contables de una empresa con los extractos bancarios para identificar y resolver diferencias.",
+      "synonyms": [
+        "Cruce bancario"
+      ],
+      "domain_context": "Tesorería y Contabilidad",
+      "approved": true,
+      "id": "GLOS-004"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Contracargo",
+      "term": "Contracargo",
+      "definition": "Reclamación de un cliente a su banco para revertir un cargo en su tarjeta de crédito o débito, generalmente por un servicio no recibido o fraude.",
+      "synonyms": [
+        "Chargeback"
+      ],
+      "domain_context": "Pagos y Riesgos",
+      "approved": true,
+      "id": "GLOS-005"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Factura Electrónica",
+      "term": "Factura Electrónica",
+      "definition": "Comprobante fiscal digital emitido y validado por una autoridad fiscal, que certifica una transacción comercial.",
+      "synonyms": [
+        "Comprobante fiscal digital",
+        "CFDI",
+        "DIAN"
+      ],
+      "domain_context": "Facturación y Fiscal",
+      "approved": true,
+      "id": "GLOS-006"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Idempotencia",
+      "term": "Idempotencia",
+      "definition": "Propiedad de una operación que, al ejecutarse múltiples veces con los mismos parámetros, produce el mismo resultado que si se hubiera ejecutado una sola vez, evitando efectos secundarios duplicados.",
+      "synonyms": [],
+      "domain_context": "Pagos y Transacciones",
+      "approved": true,
+      "id": "GLOS-007"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "PCI-DSS",
+      "term": "PCI-DSS",
+      "definition": "Estándar de Seguridad de Datos de la Industria de Tarjetas de Pago, un conjunto de requisitos de seguridad para todas las entidades que almacenan, procesan o transmiten datos de titulares de tarjetas.",
+      "synonyms": [
+        "Payment Card Industry Data Security Standard"
+      ],
+      "domain_context": "Seguridad y Cumplimiento",
+      "approved": true,
+      "id": "GLOS-008"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Reembolso",
+      "term": "Reembolso",
+      "definition": "Devolución total o parcial del dinero pagado por un cliente por un producto o servicio.",
+      "synonyms": [
+        "Devolución de dinero"
+      ],
+      "domain_context": "Pagos y Soporte",
+      "approved": true,
+      "id": "GLOS-009"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Tokenización de Tarjetas",
+      "term": "Tokenización de Tarjetas",
+      "definition": "Proceso de reemplazar los datos sensibles de una tarjeta de pago (PAN) por un identificador único no sensible (token) para proteger la información en transacciones futuras.",
+      "synonyms": [],
+      "domain_context": "Pagos y Seguridad",
+      "approved": true,
+      "id": "GLOS-010"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Webhook",
+      "term": "Webhook",
+      "definition": "Mecanismo para que una aplicación envíe notificaciones automáticas a otras aplicaciones cuando ocurre un evento específico, generalmente mediante una solicitud HTTP POST.",
+      "synonyms": [
+        "Callback HTTP"
+      ],
+      "domain_context": "Integraciones y Notificaciones",
+      "approved": true,
+      "id": "GLOS-011"
+    },
+    {
+      "node_type": "Glosario",
+      "label": "Autenticación Multifactor (MFA)",
+      "term": "Autenticación Multifactor (MFA)",
+      "definition": "Método de autenticación que requiere que el usuario proporcione dos o más factores de verificación para obtener acceso a un recurso.",
+      "synonyms": [
+        "MFA",
+        "Doble Factor de Autenticación"
+      ],
+      "domain_context": "Seguridad y Control de Acceso",
+      "approved": true,
+      "id": "GLOS-012"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-001: Procesamiento de Pagos Multicanal",
+      "title": "Procesamiento de Pagos Multicanal",
+      "description": "El sistema debe permitir al cliente final realizar pagos a través de un Checkout Multicanal, soportando tarjetas de crédito/débito, transferencias bancarias vía PSE y billeteras digitales, sin redirigirlo fuera del flujo de compra.",
+      "actor": "Cliente final",
+      "business_goal": "Facilitar el proceso de pago y mejorar la experiencia del usuario.",
+      "priority": "Alta",
+      "linked_compliance_ids": [],
+      "glossary_terms_used": [
+        "Checkout Multicanal"
+      ],
+      "approved": true,
+      "id": "RF-001"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-002: Soporte para Tokenización de Tarjetas",
+      "title": "Soporte para Tokenización de Tarjetas",
+      "description": "El sistema debe soportar la Tokenización de Tarjetas para procesar cobros de suscripciones y pagos recurrentes de forma automática.",
+      "actor": "Sistema de Pagos",
+      "business_goal": "Habilitar modelos de negocio de suscripción y automatizar cobros recurrentes.",
+      "priority": "Alta",
+      "linked_compliance_ids": [
+        "NORM-002"
+      ],
+      "glossary_terms_used": [
+        "Tokenización de Tarjetas",
+        "Bóveda de Tokenización"
+      ],
+      "approved": true,
+      "id": "RF-002"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-003: Generación Automática de Asientos Contables y Facturación Electrónica",
+      "title": "Generación Automática de Asientos Contables y Facturación Electrónica",
+      "description": "El sistema debe generar automáticamente un Asiento Contable y disparar la emisión de una Factura Electrónica (en formato XML y PDF) ante la autoridad fiscal correspondiente (DIAN/CFDI) para cada pago aprobado, y enviar dicho comprobante por correo electrónico al comprador.",
+      "actor": "Sistema de Pagos/Facturación",
+      "business_goal": "Automatizar el registro contable y el cumplimiento fiscal post-pago.",
+      "priority": "Alta",
+      "linked_compliance_ids": [
+        "NORM-006"
+      ],
+      "glossary_terms_used": [
+        "Asiento Contable",
+        "Factura Electrónica"
+      ],
+      "approved": true,
+      "id": "RF-003"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-004: Gestión de Reembolsos con Doble Aprobación y MFA",
+      "title": "Gestión de Reembolsos con Doble Aprobación y MFA",
+      "description": "El sistema debe permitir al personal de soporte procesar Reembolsos de pagos a clientes, exigiendo un flujo de doble aprobación con Autenticación Multifactor (MFA) para Reembolsos mayores a $500 USD por parte del Líder de Tesorería.",
+      "actor": "Personal de Soporte",
+      "business_goal": "Mejorar la eficiencia en la atención al cliente y la gestión de devoluciones.",
+      "priority": "Alta",
+      "linked_compliance_ids": [
+        "NORM-003",
+        "NORM-006"
+      ],
+      "glossary_terms_used": [
+        "Reembolso",
+        "Autenticación Multifactor (MFA)"
+      ],
+      "approved": true,
+      "id": "RF-004"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-005: Notificaciones en Tiempo Real de Reembolsos y Contracargos",
+      "title": "Notificaciones en Tiempo Real de Reembolsos y Contracargos",
+      "description": "El sistema debe enviar alertas y notificaciones en tiempo real sobre el estado de los Reembolsos y Contracargos a través de Webhooks firmados.",
+      "actor": "Sistema de Notificaciones",
+      "business_goal": "Mantener informados a los stakeholders sobre eventos críticos de tesorería y riesgo.",
+      "priority": "Media",
+      "linked_compliance_ids": [
+        "NORM-008"
+      ],
+      "glossary_terms_used": [
+        "Reembolso",
+        "Contracargo",
+        "Webhook"
+      ],
+      "approved": true,
+      "id": "RF-005"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-006: Gestión de Contracargos",
+      "title": "Gestión de Contracargos",
+      "description": "El sistema debe permitir la gestión en tiempo real de Contracargos.",
+      "actor": "Equipo de Riesgos",
+      "business_goal": "Reducir pérdidas por fraude y optimizar la resolución de disputas.",
+      "priority": "Alta",
+      "linked_compliance_ids": [
+        "NORM-008"
+      ],
+      "glossary_terms_used": [
+        "Contracargo"
+      ],
+      "approved": true,
+      "id": "RF-006"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-007: Automatización de Conciliación Bancaria",
+      "title": "Automatización de Conciliación Bancaria",
+      "description": "El sistema debe automatizar la Conciliación Bancaria, cruzando extractos bancarios y reportes de adquirentes con las órdenes pagadas.",
+      "actor": "Sistema de Conciliación",
+      "business_goal": "Optimizar la gestión financiera y asegurar la exactitud de los registros.",
+      "priority": "Alta",
+      "linked_compliance_ids": [
+        "NORM-006"
+      ],
+      "glossary_terms_used": [
+        "Conciliación Bancaria"
+      ],
+      "approved": true,
+      "id": "RF-007"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-008: Integración con ERP SAP para Pólizas Consolidadas",
+      "title": "Integración con ERP SAP para Pólizas Consolidadas",
+      "description": "El sistema debe enviar la póliza consolidada de transacciones al sistema ERP SAP.",
+      "actor": "Sistema de Integración",
+      "business_goal": "Integrar los datos financieros con el sistema contable central.",
+      "priority": "Alta",
+      "linked_compliance_ids": [],
+      "glossary_terms_used": [
+        "Asiento Contable"
+      ],
+      "approved": true,
+      "id": "RF-008"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-009: Soporte Multimoneda y Cálculo de Impuestos Internacionales",
+      "title": "Soporte Multimoneda y Cálculo de Impuestos Internacionales",
+      "description": "El sistema debe soportar transacciones y registros en múltiples monedas, incluyendo el cálculo de impuestos internacionales aplicables.",
+      "actor": "Sistema de Pagos/Facturación",
+      "business_goal": "Habilitar operaciones en mercados internacionales y asegurar el cumplimiento fiscal.",
+      "priority": "Alta",
+      "linked_compliance_ids": [],
+      "glossary_terms_used": [
+        "Factura Electrónica"
+      ],
+      "approved": true,
+      "id": "RF-009"
+    },
+    {
+      "node_type": "RF",
+      "label": "RF-010: Generación de Reportes Ejecutivos de Tesorería",
+      "title": "Generación de Reportes Ejecutivos de Tesorería",
+      "description": "El sistema debe generar Reportes Ejecutivos de Tesorería que incluyan flujo de caja, comisiones de pasarela y saldos por conciliar.",
+      "actor": "Sistema de Reportes",
+      "business_goal": "Proporcionar visibilidad financiera para la toma de decisiones.",
+      "priority": "Alta",
+      "linked_compliance_ids": [
+        "NORM-003",
+        "NORM-007"
+      ],
+      "glossary_terms_used": [
+        "Conciliación Bancaria",
+        "Asiento Contable"
+      ],
+      "approved": true,
+      "id": "RF-010"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-001: Protección de Datos Sensibles y Cumplimiento PCI-DSS",
+      "title": "Protección de Datos Sensibles y Cumplimiento PCI-DSS",
+      "iso_25010_category": "Seguridad",
+      "description": "El sistema debe proteger los datos sensibles de tarjetas de pago y otros datos sensibles de acuerdo con los estándares de seguridad de la industria y normativas de cifrado.",
+      "metric_target": "Certificación PCI-DSS v4.0; Prohibido almacenar CVV/CVC; PAN tokenizado; Cifrado AES-256-GCM en reposo para datos sensibles; TLS 1.3 obligatorio en tránsito.",
+      "linked_compliance_ids": [
+        "NORM-002",
+        "NORM-001"
+      ],
+      "linked_rf_ids": [
+        "RF-001",
+        "RF-002",
+        "RF-003",
+        "RF-004",
+        "RF-006"
+      ],
+      "approved": true,
+      "id": "RNF-001"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-002: Autenticación Fuerte y Control de Acceso",
+      "title": "Autenticación Fuerte y Control de Acceso",
+      "iso_25010_category": "Seguridad",
+      "description": "El sistema debe implementar autenticación multifactor (MFA) y control de acceso basado en roles (RBAC) para operaciones sensibles y acceso a información financiera.",
+      "metric_target": "MFA obligatorio para reembolsos > $500 USD y acceso a reportes/bitácoras; Flujo de doble aprobación para reembolsos > $500 USD; Modelo RBAC granular.",
+      "linked_compliance_ids": [
+        "NORM-003"
+      ],
+      "linked_rf_ids": [
+        "RF-004",
+        "RF-010"
+      ],
+      "approved": true,
+      "id": "RNF-002"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-003: Seguridad de Integraciones y Webhooks",
+      "title": "Seguridad de Integraciones y Webhooks",
+      "iso_25010_category": "Seguridad",
+      "description": "El sistema debe asegurar la integridad y autenticidad de las comunicaciones salientes mediante firma criptográfica y protocolos seguros.",
+      "metric_target": "Webhooks salientes firmados con HMAC-SHA256 con timestamp anti-replay; Mitigación OWASP API Security Top 10; TLS 1.3 para todas las comunicaciones HTTP.",
+      "linked_compliance_ids": [
+        "NORM-008",
+        "NORM-001"
+      ],
+      "linked_rf_ids": [
+        "RF-005"
+      ],
+      "approved": true,
+      "id": "RNF-003"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-004: Eficiencia de Desempeño del API de Pagos",
+      "title": "Eficiencia de Desempeño del API de Pagos",
+      "iso_25010_category": "Eficiencia de Desempeño",
+      "description": "El sistema debe garantizar una alta eficiencia de desempeño para el procesamiento de pagos síncronos.",
+      "metric_target": "Latencia p95 < 300ms para API de pagos; Capacidad de 500 TPS sostenidas en picos de demanda.",
+      "linked_compliance_ids": [
+        "NORM-004"
+      ],
+      "linked_rf_ids": [
+        "RF-001",
+        "RF-002"
+      ],
+      "approved": true,
+      "id": "RNF-004"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-005: Fiabilidad y Consistencia Transaccional",
+      "title": "Fiabilidad y Consistencia Transaccional",
+      "iso_25010_category": "Fiabilidad",
+      "description": "El sistema debe asegurar la consistencia transaccional y la alta disponibilidad frente a fallos.",
+      "metric_target": "Uso obligatorio de llaves de Idempotencia en cobros/reembolsos; SLA de disponibilidad 99.95% mensual para Checkout y Pagos; RPO < 5 min, RTO < 15 min.",
+      "linked_compliance_ids": [
+        "NORM-005"
+      ],
+      "linked_rf_ids": [
+        "RF-001",
+        "RF-002",
+        "RF-004"
+      ],
+      "approved": true,
+      "id": "RNF-005"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-006: Auditoría Inmutable y Retención de Registros",
+      "title": "Auditoría Inmutable y Retención de Registros",
+      "iso_25010_category": "Seguridad",
+      "description": "El sistema debe mantener un registro inmutable y auditable de todas las operaciones financieras y eventos críticos para garantizar la trazabilidad legal.",
+      "metric_target": "Registro inmutable (WORM) de operaciones financieras; Retención mínima de 7 años para logs financieros y facturas; Correlación mediante `trace_id` distribuido.",
+      "linked_compliance_ids": [
+        "NORM-006"
+      ],
+      "linked_rf_ids": [
+        "RF-003",
+        "RF-004",
+        "RF-005",
+        "RF-006",
+        "RF-007"
+      ],
+      "approved": true,
+      "id": "RNF-006"
+    },
+    {
+      "node_type": "RNF",
+      "label": "RNF-007: Protección de Datos Personales (PII)",
+      "title": "Protección de Datos Personales (PII)",
+      "iso_25010_category": "Seguridad",
+      "description": "El sistema debe proteger la privacidad de los Datos Personales Identificables (PII) de acuerdo con las normativas de protección de datos.",
+      "metric_target": "Enmascaramiento automático de PII en logs técnicos y reportes no autorizados; Registro auditable de consentimiento para almacenamiento de métodos de pago tokenizados.",
+      "linked_compliance_ids": [
+        "NORM-007"
+      ],
+      "linked_rf_ids": [
+        "RF-002",
+        "RF-003",
+        "RF-010"
+      ],
+      "approved": true,
+      "id": "RNF-007"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-001: Habilitar Checkout Multicanal para diversos métodos de pago",
+      "title": "Habilitar Checkout Multicanal para diversos métodos de pago",
+      "epic_id": "EPIC-01",
+      "as_a": "Cliente final",
+      "i_want": "Realizar pagos a través de un Checkout Multicanal, soportando tarjetas de crédito/débito, transferencias bancarias vía PSE y billeteras digitales",
+      "so_that": "Pueda completar la compra de forma rápida y sin ser redirigido fuera del flujo de compra.",
+      "moscow": "Must Have",
+      "story_points": 5,
+      "wsjf_score": 7.5,
+      "sprint": "Sprint 1",
+      "id": "HU-001"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-002: Implementar Tokenización de Tarjetas para pagos recurrentes",
+      "title": "Implementar Tokenización de Tarjetas para pagos recurrentes",
+      "epic_id": "EPIC-01",
+      "as_a": "Cliente final",
+      "i_want": "Que mis datos de tarjeta sean tokenizados y almacenados de forma segura",
+      "so_that": "Se puedan procesar cobros de suscripciones y pagos recurrentes de forma automática y segura, sin reingresar mi información.",
+      "moscow": "Must Have",
+      "story_points": 8,
+      "wsjf_score": 6.0,
+      "sprint": "Sprint 2",
+      "id": "HU-002"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-003: Generar automáticamente asientos contables y facturas electrónicas post-pago",
+      "title": "Generar automáticamente asientos contables y facturas electrónicas post-pago",
+      "epic_id": "EPIC-02",
+      "as_a": "Sistema de Pagos/Facturación",
+      "i_want": "Generar automáticamente un Asiento Contable y disparar la emisión de una Factura Electrónica (en formato XML y PDF) ante la autoridad fiscal correspondiente (DIAN/CFDI) y enviarla por correo electrónico al comprador",
+      "so_that": "Se automatice el registro contable y el cumplimiento fiscal post-pago.",
+      "moscow": "Must Have",
+      "story_points": 8,
+      "wsjf_score": 7.0,
+      "sprint": "Sprint 2",
+      "id": "HU-003"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-004: Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+      "title": "Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+      "epic_id": "EPIC-03",
+      "as_a": "Personal de Soporte",
+      "i_want": "Procesar Reembolsos de pagos a clientes, exigiendo un flujo de doble aprobación con Autenticación Multifactor (MFA) para Reembolsos mayores a $500 USD por parte del Líder de Tesorería",
+      "so_that": "Se prevengan fraudes internos, se mejore la eficiencia en la atención al cliente y se mantenga trazabilidad fiscal.",
+      "moscow": "Must Have",
+      "story_points": 13,
+      "wsjf_score": 8.0,
+      "sprint": "Sprint 3",
+      "id": "HU-004"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-005: Enviar notificaciones en tiempo real de reembolsos y contracargos vía Webhooks",
+      "title": "Enviar notificaciones en tiempo real de reembolsos y contracargos vía Webhooks",
+      "epic_id": "EPIC-03",
+      "as_a": "Sistema de Notificaciones",
+      "i_want": "Enviar alertas y notificaciones en tiempo real sobre el estado de los Reembolsos y Contracargos a través de Webhooks firmados",
+      "so_that": "Se mantenga informados a los stakeholders sobre eventos críticos de tesorería y riesgo.",
+      "moscow": "Should Have",
+      "story_points": 5,
+      "wsjf_score": 5.5,
+      "sprint": "Sprint 3",
+      "id": "HU-005"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-006: Habilitar la gestión en tiempo real de Contracargos",
+      "title": "Habilitar la gestión en tiempo real de Contracargos",
+      "epic_id": "EPIC-03",
+      "as_a": "Equipo de Riesgos",
+      "i_want": "Gestionar en tiempo real los Contracargos recibidos de los adquirentes",
+      "so_that": "Se reduzcan pérdidas por fraude y se optimice la resolución de disputas.",
+      "moscow": "Must Have",
+      "story_points": 8,
+      "wsjf_score": 7.2,
+      "sprint": "Sprint 3",
+      "id": "HU-006"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-007: Automatizar la conciliación bancaria de transacciones",
+      "title": "Automatizar la conciliación bancaria de transacciones",
+      "epic_id": "EPIC-02",
+      "as_a": "Sistema de Conciliación",
+      "i_want": "Automatizar la Conciliación Bancaria, cruzando extractos bancarios y reportes de adquirentes con las órdenes pagadas",
+      "so_that": "Se optimice la gestión financiera y se asegure la exactitud de los registros.",
+      "moscow": "Must Have",
+      "story_points": 13,
+      "wsjf_score": 6.5,
+      "sprint": "Sprint 4",
+      "id": "HU-007"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-008: Integrar pólizas consolidadas de transacciones con ERP SAP",
+      "title": "Integrar pólizas consolidadas de transacciones con ERP SAP",
+      "epic_id": "EPIC-02",
+      "as_a": "Sistema de Integración",
+      "i_want": "Enviar la póliza consolidada de transacciones al sistema ERP SAP",
+      "so_that": "Se integren los datos financieros con el sistema contable central de la empresa.",
+      "moscow": "Must Have",
+      "story_points": 8,
+      "wsjf_score": 6.8,
+      "sprint": "Sprint 3",
+      "id": "HU-008"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-009: Soportar transacciones multimoneda y cálculo de impuestos internacionales",
+      "title": "Soportar transacciones multimoneda y cálculo de impuestos internacionales",
+      "epic_id": "EPIC-02",
+      "as_a": "Sistema de Pagos/Facturación",
+      "i_want": "Soportar transacciones y registros en múltiples monedas, incluyendo el cálculo de impuestos internacionales aplicables",
+      "so_that": "Se habiliten operaciones en mercados internacionales y se asegure el cumplimiento fiscal en diferentes jurisdicciones.",
+      "moscow": "Should Have",
+      "story_points": 13,
+      "wsjf_score": 5.8,
+      "sprint": "Sprint 4",
+      "id": "HU-009"
+    },
+    {
+      "node_type": "Historia",
+      "label": "HU-010: Generar reportes ejecutivos de tesorería con flujo de caja y saldos",
+      "title": "Generar reportes ejecutivos de tesorería con flujo de caja y saldos",
+      "epic_id": "EPIC-02",
+      "as_a": "Sistema de Reportes",
+      "i_want": "Generar Reportes Ejecutivos de Tesorería que incluyan flujo de caja, comisiones de pasarela y saldos por conciliar",
+      "so_that": "Se proporcione visibilidad financiera para la toma de decisiones estratégicas.",
+      "moscow": "Should Have",
+      "story_points": 8,
+      "wsjf_score": 5.0,
+      "sprint": "Sprint 4",
+      "id": "HU-010"
+    }
+  ],
+  "edges": [
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-001 origina RNF-001",
+      "source": "NORM-001",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-001 origina RNF-003",
+      "source": "NORM-001",
+      "target": "RNF-003"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-002 restringe RF-002",
+      "source": "NORM-002",
+      "target": "RF-002"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-002 origina RNF-001",
+      "source": "NORM-002",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-003 restringe RF-004",
+      "source": "NORM-003",
+      "target": "RF-004"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-003 restringe RF-010",
+      "source": "NORM-003",
+      "target": "RF-010"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-003 origina RNF-002",
+      "source": "NORM-003",
+      "target": "RNF-002"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-004 origina RNF-004",
+      "source": "NORM-004",
+      "target": "RNF-004"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-005 origina RNF-005",
+      "source": "NORM-005",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-006 restringe RF-003",
+      "source": "NORM-006",
+      "target": "RF-003"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-006 restringe RF-004",
+      "source": "NORM-006",
+      "target": "RF-004"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-006 restringe RF-007",
+      "source": "NORM-006",
+      "target": "RF-007"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-006 origina RNF-006",
+      "source": "NORM-006",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-007 restringe RF-010",
+      "source": "NORM-007",
+      "target": "RF-010"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-007 origina RNF-007",
+      "source": "NORM-007",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-008 restringe RF-005",
+      "source": "NORM-008",
+      "target": "RF-005"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-008 restringe RF-006",
+      "source": "NORM-008",
+      "target": "RF-006"
+    },
+    {
+      "relation": "RESTRINGE",
+      "provenance": "confirmada",
+      "weight": 1.0,
+      "rationale": "Normativa NORM-008 origina RNF-003",
+      "source": "NORM-008",
+      "target": "RNF-003"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-001 referencia término de dominio GLOS-003",
+      "source": "RF-001",
+      "target": "GLOS-003"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-001 sujeto a requisito de calidad RNF-001",
+      "source": "RF-001",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-001 sujeto a requisito de calidad RNF-004",
+      "source": "RF-001",
+      "target": "RNF-004"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-001 sujeto a requisito de calidad RNF-005",
+      "source": "RF-001",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-002 referencia término de dominio GLOS-002",
+      "source": "RF-002",
+      "target": "GLOS-002"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-002 referencia término de dominio GLOS-010",
+      "source": "RF-002",
+      "target": "GLOS-010"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-002 sujeto a requisito de calidad RNF-001",
+      "source": "RF-002",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-002 sujeto a requisito de calidad RNF-004",
+      "source": "RF-002",
+      "target": "RNF-004"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-002 sujeto a requisito de calidad RNF-005",
+      "source": "RF-002",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-002 sujeto a requisito de calidad RNF-007",
+      "source": "RF-002",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-003 referencia término de dominio GLOS-001",
+      "source": "RF-003",
+      "target": "GLOS-001"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-003 referencia término de dominio GLOS-006",
+      "source": "RF-003",
+      "target": "GLOS-006"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-003 sujeto a requisito de calidad RNF-001",
+      "source": "RF-003",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-003 sujeto a requisito de calidad RNF-006",
+      "source": "RF-003",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-003 sujeto a requisito de calidad RNF-007",
+      "source": "RF-003",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-004 referencia término de dominio GLOS-009",
+      "source": "RF-004",
+      "target": "GLOS-009"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-004 referencia término de dominio GLOS-012",
+      "source": "RF-004",
+      "target": "GLOS-012"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-004 sujeto a requisito de calidad RNF-001",
+      "source": "RF-004",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-004 sujeto a requisito de calidad RNF-002",
+      "source": "RF-004",
+      "target": "RNF-002"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-004 sujeto a requisito de calidad RNF-005",
+      "source": "RF-004",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-004 sujeto a requisito de calidad RNF-006",
+      "source": "RF-004",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-005 referencia término de dominio GLOS-005",
+      "source": "RF-005",
+      "target": "GLOS-005"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-005 referencia término de dominio GLOS-011",
+      "source": "RF-005",
+      "target": "GLOS-011"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-005 referencia término de dominio GLOS-009",
+      "source": "RF-005",
+      "target": "GLOS-009"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-005 sujeto a requisito de calidad RNF-003",
+      "source": "RF-005",
+      "target": "RNF-003"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-005 sujeto a requisito de calidad RNF-006",
+      "source": "RF-005",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-006 referencia término de dominio GLOS-005",
+      "source": "RF-006",
+      "target": "GLOS-005"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-006 sujeto a requisito de calidad RNF-001",
+      "source": "RF-006",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-006 sujeto a requisito de calidad RNF-006",
+      "source": "RF-006",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-007 referencia término de dominio GLOS-004",
+      "source": "RF-007",
+      "target": "GLOS-004"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-007 sujeto a requisito de calidad RNF-006",
+      "source": "RF-007",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-008 referencia término de dominio GLOS-001",
+      "source": "RF-008",
+      "target": "GLOS-001"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-009 referencia término de dominio GLOS-006",
+      "source": "RF-009",
+      "target": "GLOS-006"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-010 referencia término de dominio GLOS-001",
+      "source": "RF-010",
+      "target": "GLOS-001"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.8,
+      "rationale": "RF-010 referencia término de dominio GLOS-004",
+      "source": "RF-010",
+      "target": "GLOS-004"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-010 sujeto a requisito de calidad RNF-002",
+      "source": "RF-010",
+      "target": "RNF-002"
+    },
+    {
+      "relation": "DERIVA_EN",
+      "provenance": "confirmada",
+      "weight": 0.9,
+      "rationale": "RF-010 sujeto a requisito de calidad RNF-007",
+      "source": "RF-010",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.7,
+      "rationale": "RNF-001 referencia GLOS-008",
+      "source": "RNF-001",
+      "target": "GLOS-008"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.7,
+      "rationale": "RNF-002 referencia GLOS-012",
+      "source": "RNF-002",
+      "target": "GLOS-012"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.7,
+      "rationale": "RNF-003 referencia GLOS-006",
+      "source": "RNF-003",
+      "target": "GLOS-006"
+    },
+    {
+      "relation": "USA_TERMINO",
+      "provenance": "confirmada",
+      "weight": 0.7,
+      "rationale": "RNF-003 referencia GLOS-011",
+      "source": "RNF-003",
+      "target": "GLOS-011"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-001 implementa RF-001",
+      "source": "HU-001",
+      "target": "RF-001"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-001 valida RNF-001",
+      "source": "HU-001",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-001 valida RNF-004",
+      "source": "HU-001",
+      "target": "RNF-004"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-001 valida RNF-005",
+      "source": "HU-001",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-002 implementa RF-002",
+      "source": "HU-002",
+      "target": "RF-002"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-002 valida RNF-001",
+      "source": "HU-002",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-002 valida RNF-004",
+      "source": "HU-002",
+      "target": "RNF-004"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-002 valida RNF-005",
+      "source": "HU-002",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-002 valida RNF-007",
+      "source": "HU-002",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que el procesamiento de pagos base (HU-001) esté implementado para poder tokenizar una tarjeta.",
+      "source": "HU-002",
+      "target": "HU-001"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-003 implementa RF-003",
+      "source": "HU-003",
+      "target": "RF-003"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-003 valida RNF-001",
+      "source": "HU-003",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-003 valida RNF-006",
+      "source": "HU-003",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-003 valida RNF-007",
+      "source": "HU-003",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que exista un pago aprobado (HU-001) para poder generar los documentos contables y fiscales.",
+      "source": "HU-003",
+      "target": "HU-001"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-004 implementa RF-004",
+      "source": "HU-004",
+      "target": "RF-004"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-004 valida RNF-001",
+      "source": "HU-004",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-004 valida RNF-002",
+      "source": "HU-004",
+      "target": "RNF-002"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-004 valida RNF-005",
+      "source": "HU-004",
+      "target": "RNF-005"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-004 valida RNF-006",
+      "source": "HU-004",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que exista un pago previo (HU-001) para poder procesar un reembolso. La complejidad de MFA y doble aprobación lo hace una historia grande.",
+      "source": "HU-004",
+      "target": "HU-001"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-005 implementa RF-005",
+      "source": "HU-005",
+      "target": "RF-005"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-005 valida RNF-003",
+      "source": "HU-005",
+      "target": "RNF-003"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-005 valida RNF-006",
+      "source": "HU-005",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que las funcionalidades de reembolso (HU-004) y contracargo (HU-006) existan para poder generar las notificaciones.",
+      "source": "HU-005",
+      "target": "HU-004"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que las funcionalidades de reembolso (HU-004) y contracargo (HU-006) existan para poder generar las notificaciones.",
+      "source": "HU-005",
+      "target": "HU-006"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-006 implementa RF-006",
+      "source": "HU-006",
+      "target": "RF-006"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-006 valida RNF-001",
+      "source": "HU-006",
+      "target": "RNF-001"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-006 valida RNF-006",
+      "source": "HU-006",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que existan pagos (HU-001) para que puedan generarse contracargos.",
+      "source": "HU-006",
+      "target": "HU-001"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-007 implementa RF-007",
+      "source": "HU-007",
+      "target": "RF-007"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-007 valida RNF-006",
+      "source": "HU-007",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere datos de pagos (HU-001) y asientos contables (HU-003) para realizar la conciliación.",
+      "source": "HU-007",
+      "target": "HU-001"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere datos de pagos (HU-001) y asientos contables (HU-003) para realizar la conciliación.",
+      "source": "HU-007",
+      "target": "HU-003"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-008 implementa RF-008",
+      "source": "HU-008",
+      "target": "RF-008"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-008 valida RNF-006",
+      "source": "HU-008",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que los asientos contables (HU-003) estén generados para poder consolidarlos y enviarlos a SAP.",
+      "source": "HU-008",
+      "target": "HU-003"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-009 implementa RF-009",
+      "source": "HU-009",
+      "target": "RF-009"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-009 valida RNF-006",
+      "source": "HU-009",
+      "target": "RNF-006"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-009 valida RNF-007",
+      "source": "HU-009",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que el procesamiento de pagos (HU-001) y la generación de facturas/asientos (HU-003) estén operativos para extender su funcionalidad a múltiples monedas e impuestos.",
+      "source": "HU-009",
+      "target": "HU-001"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que el procesamiento de pagos (HU-001) y la generación de facturas/asientos (HU-003) estén operativos para extender su funcionalidad a múltiples monedas e impuestos.",
+      "source": "HU-009",
+      "target": "HU-003"
+    },
+    {
+      "relation": "IMPLEMENTA",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "HU-010 implementa RF-010",
+      "source": "HU-010",
+      "target": "RF-010"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-010 valida RNF-002",
+      "source": "HU-010",
+      "target": "RNF-002"
+    },
+    {
+      "relation": "VALIDA_RNF",
+      "provenance": "sugerida",
+      "weight": 0.8,
+      "rationale": "HU-010 valida RNF-007",
+      "source": "HU-010",
+      "target": "RNF-007"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que los datos de pagos (HU-001), asientos contables (HU-003) y conciliación (HU-007) estén disponibles para poder generar reportes significativos.",
+      "source": "HU-010",
+      "target": "HU-001"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que los datos de pagos (HU-001), asientos contables (HU-003) y conciliación (HU-007) estén disponibles para poder generar reportes significativos.",
+      "source": "HU-010",
+      "target": "HU-003"
+    },
+    {
+      "relation": "DEPENDE_DE",
+      "provenance": "sugerida",
+      "weight": 1.0,
+      "rationale": "Requiere que los datos de pagos (HU-001), asientos contables (HU-003) y conciliación (HU-007) estén disponibles para poder generar reportes significativos.",
+      "source": "HU-010",
+      "target": "HU-007"
+    }
+  ]
+}

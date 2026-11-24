@@ -1,0 +1,546 @@
+{
+  "schema": "sdlc-phase2-handoff/v1",
+  "exported_at_utc": "2026-11-23T21:13:28Z",
+  "phase_source": "Fase 1 - Planificación y Requerimientos",
+  "phase_target": "Fase 2 - Diseño y Arquitectura",
+  "readiness_gate": {
+    "rac_approved": true,
+    "audit_score": 75.4,
+    "compliance_coverage_pct": 100.0,
+    "backlog_ready": true,
+    "graph_confirmed_edges": 59,
+    "open_gaps_count": 7,
+    "ready_for_phase2": true
+  },
+  "summary_counts": {
+    "functional_requirements": 10,
+    "non_functional_requirements": 7,
+    "glossary_terms": 12,
+    "compliance_rules": 8,
+    "epics": 3,
+    "user_stories": 10
+  },
+  "bounded_contexts_ddd": {
+    "Tesorería y Contabilidad": [
+      {
+        "id": "GLOS-001",
+        "term": "Asiento Contable",
+        "definition": "Registro de una transacción financiera en los libros contables de una empresa.",
+        "synonyms": [
+          "Registro contable"
+        ]
+      },
+      {
+        "id": "GLOS-004",
+        "term": "Conciliación Bancaria",
+        "definition": "Proceso de comparar y ajustar los registros contables de una empresa con los extractos bancarios para identificar y resolver diferencias.",
+        "synonyms": [
+          "Cruce bancario"
+        ]
+      }
+    ],
+    "Pagos y Seguridad": [
+      {
+        "id": "GLOS-002",
+        "term": "Bóveda de Tokenización",
+        "definition": "Sistema seguro y certificado para almacenar datos sensibles de tarjetas de pago (PAN) y reemplazarlos por tokens no sensibles.",
+        "synonyms": [
+          "Token Vault"
+        ]
+      },
+      {
+        "id": "GLOS-010",
+        "term": "Tokenización de Tarjetas",
+        "definition": "Proceso de reemplazar los datos sensibles de una tarjeta de pago (PAN) por un identificador único no sensible (token) para proteger la información en transacciones futuras.",
+        "synonyms": []
+      }
+    ],
+    "Pagos y Experiencia de Usuario": [
+      {
+        "id": "GLOS-003",
+        "term": "Checkout Multicanal",
+        "definition": "Proceso de pago que permite al cliente final completar una compra utilizando diversas opciones de pago (tarjeta, transferencia, billetera digital) dentro del mismo flujo.",
+        "synonyms": [
+          "Flujo de pago omnicanal"
+        ]
+      }
+    ],
+    "Pagos y Riesgos": [
+      {
+        "id": "GLOS-005",
+        "term": "Contracargo",
+        "definition": "Reclamación de un cliente a su banco para revertir un cargo en su tarjeta de crédito o débito, generalmente por un servicio no recibido o fraude.",
+        "synonyms": [
+          "Chargeback"
+        ]
+      }
+    ],
+    "Facturación y Fiscal": [
+      {
+        "id": "GLOS-006",
+        "term": "Factura Electrónica",
+        "definition": "Comprobante fiscal digital emitido y validado por una autoridad fiscal, que certifica una transacción comercial.",
+        "synonyms": [
+          "Comprobante fiscal digital",
+          "CFDI",
+          "DIAN"
+        ]
+      }
+    ],
+    "Pagos y Transacciones": [
+      {
+        "id": "GLOS-007",
+        "term": "Idempotencia",
+        "definition": "Propiedad de una operación que, al ejecutarse múltiples veces con los mismos parámetros, produce el mismo resultado que si se hubiera ejecutado una sola vez, evitando efectos secundarios duplicados.",
+        "synonyms": []
+      }
+    ],
+    "Seguridad y Cumplimiento": [
+      {
+        "id": "GLOS-008",
+        "term": "PCI-DSS",
+        "definition": "Estándar de Seguridad de Datos de la Industria de Tarjetas de Pago, un conjunto de requisitos de seguridad para todas las entidades que almacenan, procesan o transmiten datos de titulares de tarjetas.",
+        "synonyms": [
+          "Payment Card Industry Data Security Standard"
+        ]
+      }
+    ],
+    "Pagos y Soporte": [
+      {
+        "id": "GLOS-009",
+        "term": "Reembolso",
+        "definition": "Devolución total o parcial del dinero pagado por un cliente por un producto o servicio.",
+        "synonyms": [
+          "Devolución de dinero"
+        ]
+      }
+    ],
+    "Integraciones y Notificaciones": [
+      {
+        "id": "GLOS-011",
+        "term": "Webhook",
+        "definition": "Mecanismo para que una aplicación envíe notificaciones automáticas a otras aplicaciones cuando ocurre un evento específico, generalmente mediante una solicitud HTTP POST.",
+        "synonyms": [
+          "Callback HTTP"
+        ]
+      }
+    ],
+    "Seguridad y Control de Acceso": [
+      {
+        "id": "GLOS-012",
+        "term": "Autenticación Multifactor (MFA)",
+        "definition": "Método de autenticación que requiere que el usuario proporcione dos o más factores de verificación para obtener acceso a un recurso.",
+        "synonyms": [
+          "MFA",
+          "Doble Factor de Autenticación"
+        ]
+      }
+    ]
+  },
+  "architectural_drivers_nfr": [
+    {
+      "id": "RNF-001",
+      "title": "Protección de Datos Sensibles y Cumplimiento PCI-DSS",
+      "iso_25010_category": "Seguridad",
+      "metric_target": "Certificación PCI-DSS v4.0; Prohibido almacenar CVV/CVC; PAN tokenizado; Cifrado AES-256-GCM en reposo para datos sensibles; TLS 1.3 obligatorio en tránsito.",
+      "linked_compliance_ids": [
+        "NORM-002",
+        "NORM-001"
+      ],
+      "linked_rf_ids": [
+        "RF-001",
+        "RF-002",
+        "RF-003",
+        "RF-004",
+        "RF-006"
+      ]
+    },
+    {
+      "id": "RNF-002",
+      "title": "Autenticación Fuerte y Control de Acceso",
+      "iso_25010_category": "Seguridad",
+      "metric_target": "MFA obligatorio para reembolsos > $500 USD y acceso a reportes/bitácoras; Flujo de doble aprobación para reembolsos > $500 USD; Modelo RBAC granular.",
+      "linked_compliance_ids": [
+        "NORM-003"
+      ],
+      "linked_rf_ids": [
+        "RF-004",
+        "RF-010"
+      ]
+    },
+    {
+      "id": "RNF-003",
+      "title": "Seguridad de Integraciones y Webhooks",
+      "iso_25010_category": "Seguridad",
+      "metric_target": "Webhooks salientes firmados con HMAC-SHA256 con timestamp anti-replay; Mitigación OWASP API Security Top 10; TLS 1.3 para todas las comunicaciones HTTP.",
+      "linked_compliance_ids": [
+        "NORM-008",
+        "NORM-001"
+      ],
+      "linked_rf_ids": [
+        "RF-005"
+      ]
+    },
+    {
+      "id": "RNF-004",
+      "title": "Eficiencia de Desempeño del API de Pagos",
+      "iso_25010_category": "Eficiencia de Desempeño",
+      "metric_target": "Latencia p95 < 300ms para API de pagos; Capacidad de 500 TPS sostenidas en picos de demanda.",
+      "linked_compliance_ids": [
+        "NORM-004"
+      ],
+      "linked_rf_ids": [
+        "RF-001",
+        "RF-002"
+      ]
+    },
+    {
+      "id": "RNF-005",
+      "title": "Fiabilidad y Consistencia Transaccional",
+      "iso_25010_category": "Fiabilidad",
+      "metric_target": "Uso obligatorio de llaves de Idempotencia en cobros/reembolsos; SLA de disponibilidad 99.95% mensual para Checkout y Pagos; RPO < 5 min, RTO < 15 min.",
+      "linked_compliance_ids": [
+        "NORM-005"
+      ],
+      "linked_rf_ids": [
+        "RF-001",
+        "RF-002",
+        "RF-004"
+      ]
+    },
+    {
+      "id": "RNF-006",
+      "title": "Auditoría Inmutable y Retención de Registros",
+      "iso_25010_category": "Seguridad",
+      "metric_target": "Registro inmutable (WORM) de operaciones financieras; Retención mínima de 7 años para logs financieros y facturas; Correlación mediante `trace_id` distribuido.",
+      "linked_compliance_ids": [
+        "NORM-006"
+      ],
+      "linked_rf_ids": [
+        "RF-003",
+        "RF-004",
+        "RF-005",
+        "RF-006",
+        "RF-007"
+      ]
+    },
+    {
+      "id": "RNF-007",
+      "title": "Protección de Datos Personales (PII)",
+      "iso_25010_category": "Seguridad",
+      "metric_target": "Enmascaramiento automático de PII en logs técnicos y reportes no autorizados; Registro auditable de consentimiento para almacenamiento de métodos de pago tokenizados.",
+      "linked_compliance_ids": [
+        "NORM-007"
+      ],
+      "linked_rf_ids": [
+        "RF-002",
+        "RF-003",
+        "RF-010"
+      ]
+    }
+  ],
+  "compliance_controls": [
+    {
+      "id": "NORM-001",
+      "title": "Cifrado de Datos en Reposo y en Tránsito",
+      "category": "Seguridad / Criptografía",
+      "description": "Toda información financiera, credenciales, tokens y datos sensibles de clientes debe cifrarse tanto en almacenamiento persistente como durante su transmisión entre microservicios y clientes externos.",
+      "mandatory_controls": [
+        "Cifrado simétrico AES-256-GCM obligatorio para bases de datos, backups y almacenamiento de archivos fiscales.",
+        "Protocolo TLS 1.3 obligatorio en todos los endpoints HTTP, APIs internas y pasarelas externas.",
+        "Gestión centralizada de llaves criptográficas mediante KMS/HSM con rotación automática cada 90 días."
+      ],
+      "keywords": [
+        "cifrado",
+        "datos en reposo",
+        "datos en transito",
+        "aes-256-gcm",
+        "tls 1.3",
+        "kms",
+        "hsm",
+        "criptografia",
+        "seguridad"
+      ],
+      "source_section": "NORM-001: Cifrado de Datos en Reposo y en Tránsito"
+    },
+    {
+      "id": "NORM-002",
+      "title": "Cumplimiento PCI-DSS v4.0 y Tokenización de Tarjetas",
+      "category": "Cumplimiento Regulatorio / PCI-DSS",
+      "description": "El módulo de pagos debe aislar los datos de tarjetas bancarias del entorno operativo mediante bóvedas certificadas, evitando almacenar datos prohibidos tras la autorización.",
+      "mandatory_controls": [
+        "Prohibición absoluta de almacenar el código de seguridad CVV/CVC o datos de banda magnética después de la autorización.",
+        "Prohibición de persistir el PAN (número de tarjeta) en texto plano; uso obligatorio de Tokenización certificada PCI-DSS v4.0 para pagos recurrentes.",
+        "Enmascaramiento de PAN en interfaces y logs mostrando únicamente los últimos 4 dígitos."
+      ],
+      "keywords": [
+        "pci-dss",
+        "tokenizacion",
+        "tarjetas",
+        "cvv",
+        "cvc",
+        "pan",
+        "pagos",
+        "cumplimiento regulatorio",
+        "seguridad"
+      ],
+      "source_section": "NORM-002: Cumplimiento PCI-DSS v4.0 y Tokenización de Tarjetas"
+    },
+    {
+      "id": "NORM-003",
+      "title": "Autenticación Fuerte (MFA) y Control de Acceso Basado en Roles (RBAC)",
+      "category": "Seguridad / Control de Acceso",
+      "description": "El acceso a funciones administrativas, operaciones financieras sensibles y reportes ejecutivos debe regirse por el principio de mínimo privilegio y verificación multifactor.",
+      "mandatory_controls": [
+        "Autenticación Multifactor (MFA) obligatoria para administradores, Tesorería y aprobación de reembolsos mayores a $500 USD.",
+        "Flujo de doble aprobación (maker-checker) para reembolsos superiores a $500 USD y cambios de configuración de comisiones o cuentas bancarias.",
+        "Modelo RBAC granular que separe explícitamente roles de Soporte Nivel 1, Tesorería, Riesgos y Auditoría."
+      ],
+      "keywords": [
+        "mfa",
+        "rbac",
+        "autenticacion",
+        "control de acceso",
+        "minimo privilegio",
+        "maker-checker",
+        "seguridad"
+      ],
+      "source_section": "NORM-003: Autenticación Fuerte (MFA) y Control de Acceso Basado en Roles (RBAC)"
+    },
+    {
+      "id": "NORM-004",
+      "title": "Rendimiento y Latencia de API de Pagos",
+      "category": "Eficiencia de Desempeño (ISO 25010)",
+      "description": "Los servicios síncronos de autorización de pago y checkout deben responder en tiempos compatibles con la experiencia en tiempo real y absorber picos de demanda estacionales.",
+      "mandatory_controls": [
+        "Latencia p95 menor a 300ms en los endpoints propios de procesamiento de pago y validación de token.",
+        "Capacidad mínima sostenida de 500 transacciones por segundo (TPS) en eventos de alta demanda sin degradación crítica.",
+        "Tiempos de espera (timeouts) configurables y circuit breakers hacia adquirentes externos."
+      ],
+      "keywords": [
+        "rendimiento",
+        "latencia",
+        "api",
+        "pagos",
+        "iso 25010",
+        "tps",
+        "circuit breakers",
+        "eficiencia"
+      ],
+      "source_section": "NORM-004: Rendimiento y Latencia de API de Pagos"
+    },
+    {
+      "id": "NORM-005",
+      "title": "Alta Disponibilidad, Idempotencia y Recuperación ante Desastres (DRP)",
+      "category": "Fiabilidad / Disponibilidad (ISO 25010)",
+      "description": "La plataforma transaccional debe garantizar continuidad operativa y consistencia financiera frente a fallos de red, reintentos o caídas de nodos.",
+      "mandatory_controls": [
+        "Acuerdo de Nivel de Servicio (SLA) de disponibilidad mínima del 99.95% mensual en el servicio de Checkout y Pagos.",
+        "Uso obligatorio de llaves de idempotencia (`Idempotency-Key`) en toda operación de cobro y reembolso para prevenir cargos duplicados.",
+        "Objetivos de recuperación RPO < 5 minutos y RTO < 15 minutos con arquitectura multi-zona."
+      ],
+      "keywords": [
+        "alta disponibilidad",
+        "idempotencia",
+        "drp",
+        "recuperacion ante desastres",
+        "sla",
+        "rpo",
+        "rto",
+        "iso 25010",
+        "fiabilidad"
+      ],
+      "source_section": "NORM-005: Alta Disponibilidad, Idempotencia y Recuperación ante Desastres (DRP)"
+    },
+    {
+      "id": "NORM-006",
+      "title": "Auditoría Inmutable y Retención de Logs Financieros",
+      "category": "Auditoría / Trazabilidad Legal",
+      "description": "Toda operación monetaria, cambio de estado de factura, aprobación de reembolso y evento de contracargo debe dejar evidencia verificable a prueba de alteraciones.",
+      "mandatory_controls": [
+        "Registro inmutable tipo WORM (Write-Once-Read-Many) con usuario, timestamp UTC, dirección IP, monto, moneda y resultado.",
+        "Retención obligatoria mínima de 7 años para trazas de auditoría financiera y comprobantes de facturación electrónica.",
+        "Correlación mediante `trace_id` distribuido entre checkout, facturación y conciliación bancaria."
+      ],
+      "keywords": [
+        "auditoria",
+        "inmutable",
+        "logs financieros",
+        "worm",
+        "retencion de datos",
+        "trace_id",
+        "trazabilidad legal"
+      ],
+      "source_section": "NORM-006: Auditoría Inmutable y Retención de Logs Financieros"
+    },
+    {
+      "id": "NORM-007",
+      "title": "Protección de Datos Personales y Privacidad (PII)",
+      "category": "Privacidad / Protección de Datos",
+      "description": "El tratamiento de datos personales de compradores y representantes comerciales debe cumplir principios de minimización, consentimiento y confidencialidad.",
+      "mandatory_controls": [
+        "Enmascaramiento automático de PII (documento de identidad, correo, teléfono) en logs técnicos y exportaciones no autorizadas.",
+        "Registro auditable de consentimiento explícito del titular para almacenamiento de métodos de pago tokenizados.",
+        "Procedimientos de anonimización o supresión compatibles con los plazos legales de retención fiscal."
+      ],
+      "keywords": [
+        "proteccion de datos",
+        "privacidad",
+        "pii",
+        "minimización",
+        "consentimiento",
+        "confidencialidad",
+        "enmascaramiento",
+        "anonimizacion"
+      ],
+      "source_section": "NORM-007: Protección de Datos Personales y Privacidad (PII)"
+    },
+    {
+      "id": "NORM-008",
+      "title": "Seguridad de Integraciones, Webhooks y Prevención de Fraude",
+      "category": "Seguridad / Integraciones y Antifraude",
+      "description": "Las comunicaciones con comercios, pasarelas externas y sistemas ERP deben protegerse contra suplantación, abuso de APIs y fraude transaccional.",
+      "mandatory_controls": [
+        "Firma criptográfica HMAC-SHA256 obligatoria con timestamp anti-replay en todos los Webhooks emitidos a comercios.",
+        "Mitigación OWASP API Security Top 10 incluyendo rate limiting estricto por cliente e IP.",
+        "Soporte obligatorio de autenticación 3-D Secure 2.2 y reglas de scoring antifraude para reducir contracargos (chargebacks)."
+      ],
+      "keywords": [
+        "seguridad",
+        "integraciones",
+        "webhooks",
+        "fraude",
+        "hmac-sha256",
+        "owasp api security",
+        "rate limiting",
+        "3-d secure",
+        "antifraude"
+      ],
+      "source_section": "NORM-008: Seguridad de Integraciones, Webhooks y Prevención de Fraude"
+    }
+  ],
+  "mvp_sprint1_stories": [
+    {
+      "id": "HU-001",
+      "epic_id": "EPIC-01",
+      "title": "Habilitar Checkout Multicanal para diversos métodos de pago",
+      "moscow": "Must Have",
+      "wsjf_score": 7.5,
+      "story_points": 5,
+      "sprint_recommendation": "Sprint 1",
+      "depends_on_story_ids": [],
+      "linked_rf_ids": [
+        "RF-001"
+      ]
+    },
+    {
+      "id": "HU-002",
+      "epic_id": "EPIC-01",
+      "title": "Implementar Tokenización de Tarjetas para pagos recurrentes",
+      "moscow": "Must Have",
+      "wsjf_score": 6.0,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 2",
+      "depends_on_story_ids": [
+        "HU-001"
+      ],
+      "linked_rf_ids": [
+        "RF-002"
+      ]
+    },
+    {
+      "id": "HU-003",
+      "epic_id": "EPIC-02",
+      "title": "Generar automáticamente asientos contables y facturas electrónicas post-pago",
+      "moscow": "Must Have",
+      "wsjf_score": 7.0,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 2",
+      "depends_on_story_ids": [
+        "HU-001"
+      ],
+      "linked_rf_ids": [
+        "RF-003"
+      ]
+    },
+    {
+      "id": "HU-004",
+      "epic_id": "EPIC-03",
+      "title": "Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+      "moscow": "Must Have",
+      "wsjf_score": 8.0,
+      "story_points": 13,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on_story_ids": [
+        "HU-001"
+      ],
+      "linked_rf_ids": [
+        "RF-004"
+      ]
+    },
+    {
+      "id": "HU-006",
+      "epic_id": "EPIC-03",
+      "title": "Habilitar la gestión en tiempo real de Contracargos",
+      "moscow": "Must Have",
+      "wsjf_score": 7.2,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on_story_ids": [
+        "HU-001"
+      ],
+      "linked_rf_ids": [
+        "RF-006"
+      ]
+    },
+    {
+      "id": "HU-007",
+      "epic_id": "EPIC-02",
+      "title": "Automatizar la conciliación bancaria de transacciones",
+      "moscow": "Must Have",
+      "wsjf_score": 6.5,
+      "story_points": 13,
+      "sprint_recommendation": "Sprint 4",
+      "depends_on_story_ids": [
+        "HU-001",
+        "HU-003"
+      ],
+      "linked_rf_ids": [
+        "RF-007"
+      ]
+    },
+    {
+      "id": "HU-008",
+      "epic_id": "EPIC-02",
+      "title": "Integrar pólizas consolidadas de transacciones con ERP SAP",
+      "moscow": "Must Have",
+      "wsjf_score": 6.8,
+      "story_points": 8,
+      "sprint_recommendation": "Sprint 3",
+      "depends_on_story_ids": [
+        "HU-003"
+      ],
+      "linked_rf_ids": [
+        "RF-008"
+      ]
+    }
+  ],
+  "open_questions_for_design": [
+    "Protocolo de integración con ERP SAP (API REST, SOAP, SFTP) no definido.",
+    "Frecuencia de sincronización con ERP SAP no definida.",
+    "Mecanismo de manejo de reintentos si SAP está en mantenimiento no definido.",
+    "Monedas específicas, tasas de cambio y reglas tributarias internacionales no definidas.",
+    "Roles con acceso a reportes ejecutivos no definidos.",
+    "Formato de reportes ejecutivos (CSV, Excel, PDF) no definido.",
+    "Frecuencia o corte horario de generación de reportes ejecutivos no definidos."
+  ],
+  "artifacts": {
+    "requirements_yaml": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\rac\\requirements.yaml",
+    "requirements_md": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\rac\\requirements.md",
+    "glossary_yaml": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\rac\\glossary.yaml",
+    "epics_stories_yaml": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\rac\\epics_user_stories.yaml",
+    "backlog_json": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\rac\\backlog_jira_azure.json",
+    "roadmap_md": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\rac\\roadmap_backlog.md",
+    "knowledge_graph": "C:\\Users\\3212043\\Documents\\Agentic Software Factory\\Planificacion\\output\\knowledge_graph.json"
+  }
+}

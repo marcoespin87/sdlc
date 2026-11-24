@@ -1,0 +1,433 @@
+{
+  "story_id": "HU-004",
+  "title": "Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+  "architecture": {
+    "req_id": "HU-004",
+    "c4_context": "```mermaid\ngraph TD\n    User[\"Usuario / Operador\\n[Persona]\\nCliente final\"]\n    System[\"Módulo: Permitir gestión de reembolsos con doble aprobación y MFA para montos altos\\n[Software System]\\nSatisface: [HU-004]\"]\n    AuthService[\"Servicio Corporativo de Autenticación\\n[OAuth2 / OIDC]\"]\n\n    User -->|Opera interfaz con HTTPS| System\n    System -->|Valida tokens y permisos| AuthService\n```",
+    "c4_containers": "```mermaid\ngraph TD\n    User[\"Navegador / Cliente\"]\n    subgraph Boundary[\"Límite del Sistema - Permitir gestión de reembolsos con doble aprobación y MFA para montos altos\"]\n        SPA[\"Frontend Web UI\\n[TypeScript / React]\\nComponentes accesibles\"]\n        API[\"Backend Service API\\n[FastAPI / Node.js]\\nControladores y Lógica de Negocio\"]\n        DB[(\"Base de Datos Relacional\\n[PostgreSQL]\\nPersistencia de datos\")]\n    end\n\n    User -->|HTTPS| SPA\n    SPA -->|JSON / REST| API\n    API -->|SQL Transaccional| DB\n```",
+    "sequence_diagram": "```mermaid\nsequenceDiagram\n    autonumber\n    actor U as Usuario (Cliente final)\n    participant FE as Frontend UI\n    participant BE as Backend API (HU-004)\n    participant DB as Base de Datos\n\n    U->>FE: Inicia acción correspondiente a Permitir gestión de reembolsos con doble aprobación y MFA para montos altos\n    FE->>BE: POST /api/v1/reembolsos (Payload)\n    BE->>BE: Validar token y matriz de roles\n    alt Autorización Denegada\n        BE-->>FE: 403 Forbidden (RFC 7807)\n        FE-->>U: Muestra Estado de Error\n    else Validación Exitosa\n        BE->>DB: Ejecuta inserción / actualización transaccional\n        DB-->>BE: Confirmación de persistencia\n        BE-->>FE: 201 Created (Detalles del recurso)\n        FE-->>U: Muestra Estado de Éxito\n    end\n```",
+    "adrs": [
+      {
+        "adr_id": "ADR-HU-004-01",
+        "title": "Arquitectura Modular para Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+        "status": "ACEPTADO",
+        "context": "Se requiere implementar Permitir gestión de reembolsos con doble aprobación y MFA para montos altos satisfaciendo [HU-004]. Se evalúa la arquitectura con base en volumen estimado.",
+        "decision": "Implementar como servicio modular monolítico con persistencia relacional.",
+        "justification": "Evita sobreingeniería y complejidad operacional innecesaria ya que el tráfico no amerita microservicios distribuidos.",
+        "alternatives_rejected": [
+          {
+            "name": "Microservicios con Event Sourcing y Kafka",
+            "reason": "Sobrecostos de infraestructura y complejidad innecesaria para los requisitos actuales."
+          }
+        ],
+        "consequences": {
+          "positive": "Desarrollo rápido, despliegue simple y alta cohesión.",
+          "trade_offs": "Monitoreo unificado requerido."
+        }
+      }
+    ]
+  },
+  "data": {
+    "req_id": "HU-004",
+    "er_diagram": "```mermaid\nerDiagram\n    direction LR\n    USUARIOS ||--o{ REEMBOLSOS : gestiona\n\n    USUARIOS {\n        bigint id PK\n        varchar email\n    }\n\n    REEMBOLSOS {\n        bigserial id PK\n        bigint usuario_id FK\n        varchar codigo UK\n        varchar nombre\n        varchar estado\n        timestamp created_at\n        timestamp updated_at\n    }\n```",
+    "data_dictionary": [
+      {
+        "columna": "id",
+        "tipo": "BIGSERIAL",
+        "nulable": false,
+        "clave": "PK",
+        "descripcion": "Identificador único"
+      },
+      {
+        "columna": "usuario_id",
+        "tipo": "BIGINT",
+        "nulable": false,
+        "clave": "FK",
+        "descripcion": "Usuario que creó el registro (trazabilidad brownfield a tabla usuarios)"
+      },
+      {
+        "columna": "codigo",
+        "tipo": "VARCHAR(50)",
+        "nulable": false,
+        "clave": "UK",
+        "descripcion": "Código único de negocio"
+      },
+      {
+        "columna": "nombre",
+        "tipo": "VARCHAR(150)",
+        "nulable": false,
+        "clave": "N/A",
+        "descripcion": "Nombre o descripción del registro"
+      },
+      {
+        "columna": "estado",
+        "tipo": "VARCHAR(20)",
+        "nulable": false,
+        "clave": "CHECK",
+        "descripcion": "Estado: PENDIENTE, ACTIVO, INACTIVO"
+      },
+      {
+        "columna": "created_at",
+        "tipo": "TIMESTAMP WITH TIME ZONE",
+        "nulable": false,
+        "clave": "N/A",
+        "descripcion": "Fecha de registro"
+      },
+      {
+        "columna": "updated_at",
+        "tipo": "TIMESTAMP WITH TIME ZONE",
+        "nulable": false,
+        "clave": "N/A",
+        "descripcion": "Fecha de última modificación"
+      }
+    ],
+    "ddl_sql": "-- DDL Estructural para [HU-004] - Permitir gestión de reembolsos con doble aprobación y MFA para montos altos\nCREATE TABLE IF NOT EXISTS reembolsos (\n    id BIGSERIAL PRIMARY KEY,\n    usuario_id BIGINT NOT NULL,\n    codigo VARCHAR(50) NOT NULL UNIQUE,\n    nombre VARCHAR(150) NOT NULL,\n    estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVO',\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,\n    CONSTRAINT fk_reembolsos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE RESTRICT,\n    CONSTRAINT chk_reembolsos_estado CHECK (estado IN ('PENDIENTE', 'ACTIVO', 'INACTIVO'))\n);\n\n-- Índices de Rendimiento\nCREATE INDEX IF NOT EXISTS idx_reembolsos_usuario_id ON reembolsos(usuario_id);\nCREATE INDEX IF NOT EXISTS idx_reembolsos_estado ON reembolsos(estado);\nCREATE INDEX IF NOT EXISTS idx_reembolsos_codigo ON reembolsos(codigo);\n",
+    "reused_tables": [
+      "Tabla Aprobación de Solicitudes de Crédito"
+    ]
+  },
+  "api": {
+    "req_id": "HU-004",
+    "openapi_spec": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "API Permitir gestión de reembolsos con doble aprobación y MFA para montos altos",
+        "description": "Contrato de servicio para el requerimiento [HU-004].",
+        "version": "1.0.0"
+      },
+      "paths": {
+        "/reembolsoss": {
+          "get": {
+            "summary": "Listar reembolsoss",
+            "operationId": "listarReembolsoss",
+            "responses": {
+              "200": {
+                "description": "Listado obtenido correctamente",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ReembolsosResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "post": {
+            "summary": "Crear nuevo reembolsos",
+            "operationId": "crearReembolsos",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/NuevoReembolsosRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Creado exitosamente",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ReembolsosResponse"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "$ref": "#/components/responses/ErrorValidacion"
+              },
+              "401": {
+                "$ref": "#/components/responses/ErrorAutenticacion"
+              },
+              "403": {
+                "$ref": "#/components/responses/ErrorPermisos"
+              }
+            }
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "NuevoReembolsosRequest": {
+            "type": "object",
+            "required": [
+              "codigo",
+              "nombre"
+            ],
+            "properties": {
+              "codigo": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 50
+              },
+              "nombre": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 150
+              }
+            }
+          },
+          "ReembolsosResponse": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "codigo": {
+                "type": "string"
+              },
+              "nombre": {
+                "type": "string"
+              },
+              "estado": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "ProblemDetails": {
+            "type": "object",
+            "required": [
+              "type",
+              "title",
+              "status",
+              "detail"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "format": "uri"
+              },
+              "title": {
+                "type": "string"
+              },
+              "status": {
+                "type": "integer"
+              },
+              "detail": {
+                "type": "string"
+              },
+              "instance": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "ErrorValidacion": {
+            "description": "Datos de entrada inválidos (RFC 7807)",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "ErrorAutenticacion": {
+            "description": "Falta token o es inválido",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "ErrorPermisos": {
+            "description": "El rol no tiene permisos para esta acción",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mock_payloads": {
+      "POST /reembolsoss (Request)": {
+        "codigo": "REEMBOLSOS-001",
+        "nombre": "Ejemplo de Reembolsos de prueba"
+      },
+      "POST /reembolsoss (201 Response)": {
+        "id": 1,
+        "codigo": "REEMBOLSOS-001",
+        "nombre": "Ejemplo de Reembolsos de prueba",
+        "estado": "ACTIVO",
+        "created_at": "2026-11-23T15:00:00Z"
+      },
+      "POST /reembolsoss (400 Error Response)": {
+        "type": "https://api.empresa.com/errors/invalid-parameters",
+        "title": "Parámetros inválidos",
+        "status": 400,
+        "detail": "El campo 'codigo' es obligatorio y debe tener al menos 3 caracteres.",
+        "instance": "/reembolsoss"
+      }
+    },
+    "reused_apis": [
+      "API Aprobación de Solicitudes de Crédito",
+      "API de Validación de Tokens y Permisos"
+    ]
+  },
+  "ui_ux": {
+    "req_id": "HU-004",
+    "screen_name": "Gestión de reembolsos con doble aprobación y MFA para montos altos",
+    "wireframe_markup": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Prototipo Interactivo: Gestión de reembolsos con doble aprobación y MFA para montos altos [HU-004]</title>\n  <script src=\"https://cdn.tailwindcss.com\"></script>\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap\" rel=\"stylesheet\">\n  <style>\n    body { font-family: 'Inter', sans-serif; }\n    .state-btn.active {\n      background-color: #0052CC;\n      color: white;\n      box-shadow: 0 2px 4px rgba(0, 82, 204, 0.25);\n    }\n  </style>\n</head>\n<body class=\"bg-gray-100 text-gray-900 min-h-screen\">\n  <!-- Barra de Control del Prototipo (Compuerta DoR - 4 Estados) -->\n  <header class=\"bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 px-6 py-3 shadow-md\">\n    <div class=\"max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4\">\n      <div class=\"flex items-center gap-3\">\n        <span class=\"px-2.5 py-1 text-xs font-bold bg-blue-600 text-white rounded-md tracking-wider\">[HU-004]</span>\n        <div>\n          <h1 class=\"text-base font-semibold leading-tight\">Gestión de reembolsos con doble aprobación y MFA para montos altos</h1>\n          <p class=\"text-xs text-slate-400\">Prototipo Interactivo con Cobertura de 4 Estados de UI</p>\n        </div>\n      </div>\n\n      <!-- Conmutador Interactivo de Estados -->\n      <div class=\"flex items-center bg-slate-800 p-1 rounded-lg border border-slate-700 text-xs font-medium\">\n        <button onclick=\"setState('empty')\" id=\"btn-empty\" class=\"state-btn px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white\">\n          ⚪ Vacío\n        </button>\n        <button onclick=\"setState('loading')\" id=\"btn-loading\" class=\"state-btn px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white\">\n          ⏳ Cargando\n        </button>\n        <button onclick=\"setState('success')\" id=\"btn-success\" class=\"state-btn active px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white\">\n          🟢 Éxito (Normal)\n        </button>\n        <button onclick=\"setState('error')\" id=\"btn-error\" class=\"state-btn px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white\">\n          🔴 Error\n        </button>\n      </div>\n    </div>\n  </header>\n\n  <!-- Contenedor Principal del Prototipo -->\n  <main class=\"max-w-6xl mx-auto p-6\">\n\n    <!-- 1. ESTADO ÉXITO / NORMAL (Por Defecto) -->\n    <div id=\"state-success\" class=\"state-panel space-y-6\">\n      <!-- Notificación Toast -->\n      <div class=\"bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-lg flex items-center justify-between text-sm shadow-sm\">\n        <div class=\"flex items-center gap-2\">\n          <svg class=\"w-5 h-5 text-emerald-600\" fill=\"currentColor\" viewBox=\"0 0 20 20\">\n            <path fill-rule=\"evenodd\" d=\"M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z\" clip-rule=\"evenodd\"/>\n          </svg>\n          <span class=\"font-medium\">Operación procesada exitosamente. Registro sincronizado con tokens de seguridad.</span>\n        </div>\n        <span class=\"text-xs text-emerald-600\">Hace 2 segundos</span>\n      </div>\n\n      <!-- Barra de Acción y Filtros -->\n      <div class=\"bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4\">\n        <div class=\"relative w-full md:w-80\">\n          <input type=\"text\" placeholder=\"Buscar por código o cliente...\" class=\"w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none\">\n          <svg class=\"w-4 h-4 text-gray-400 absolute left-3 top-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"/>\n          </svg>\n        </div>\n        <div class=\"flex items-center gap-3 w-full md:w-auto justify-end\">\n          <button class=\"px-3 py-2 text-xs font-semibold text-gray-700 bg-gray-50 border border-gray-300 rounded-lg hover:bg-gray-100\">\n            Exportar CSV\n          </button>\n          <button class=\"px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm\">\n            + Nuevo Registro\n          </button>\n        </div>\n      </div>\n\n      <!-- Tabla de Datos Operativos -->\n      <div class=\"bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden\">\n        <table class=\"w-full text-left border-collapse text-sm\">\n          <thead>\n            <tr class=\"bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-600 uppercase tracking-wider\">\n              <th class=\"py-3 px-4\">Identificador</th>\n              <th class=\"py-3 px-4\">Detalle / Referencia</th>\n              <th class=\"py-3 px-4\">Fecha</th>\n              <th class=\"py-3 px-4\">Estado</th>\n              <th class=\"py-3 px-4 text-right\">Acciones</th>\n            </tr>\n          </thead>\n          <tbody class=\"divide-y divide-gray-100 text-gray-700\">\n            <tr class=\"hover:bg-gray-50 transition-colors\">\n              <td class=\"py-3.5 px-4 font-mono font-medium text-blue-600\">TRX-948201</td>\n              <td class=\"py-3.5 px-4 font-medium text-gray-900\">•••• •••• •••• 4242 (Visa)</td>\n              <td class=\"py-3.5 px-4 text-gray-500 text-xs\">2026-11-23 15:42</td>\n              <td class=\"py-3.5 px-4\">\n                <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800\">\n                  ACTIVO\n                </span>\n              </td>\n              <td class=\"py-3.5 px-4 text-right\">\n                <button class=\"text-blue-600 hover:text-blue-800 text-xs font-semibold\">Ver detalle</button>\n              </td>\n            </tr>\n            <tr class=\"hover:bg-gray-50 transition-colors\">\n              <td class=\"py-3.5 px-4 font-mono font-medium text-blue-600\">TRX-948202</td>\n              <td class=\"py-3.5 px-4 font-medium text-gray-900\">•••• •••• •••• 5555 (Mastercard)</td>\n              <td class=\"py-3.5 px-4 text-gray-500 text-xs\">2026-11-23 16:10</td>\n              <td class=\"py-3.5 px-4\">\n                <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-800\">\n                  ACTIVO\n                </span>\n              </td>\n              <td class=\"py-3.5 px-4 text-right\">\n                <button class=\"text-blue-600 hover:text-blue-800 text-xs font-semibold\">Ver detalle</button>\n              </td>\n            </tr>\n            <tr class=\"hover:bg-gray-50 transition-colors\">\n              <td class=\"py-3.5 px-4 font-mono font-medium text-blue-600\">TRX-948203</td>\n              <td class=\"py-3.5 px-4 font-medium text-gray-900\">PSE Banco de Bogotá ($150.00 USD)</td>\n              <td class=\"py-3.5 px-4 text-gray-500 text-xs\">2026-11-23 16:55</td>\n              <td class=\"py-3.5 px-4\">\n                <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800\">\n                  CONCILIADO\n                </span>\n              </td>\n              <td class=\"py-3.5 px-4 text-right\">\n                <button class=\"text-blue-600 hover:text-blue-800 text-xs font-semibold\">Ver detalle</button>\n              </td>\n            </tr>\n          </tbody>\n        </table>\n        <div class=\"px-4 py-3 bg-gray-50 border-t border-gray-200 text-xs text-gray-500 flex justify-between items-center\">\n          <span>Mostrando 3 de 3 registros</span>\n          <div class=\"flex gap-1\">\n            <button class=\"px-2 py-1 border rounded bg-white text-gray-400 cursor-not-allowed\">Anterior</button>\n            <button class=\"px-2 py-1 border rounded bg-white text-gray-400 cursor-not-allowed\">Siguiente</button>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <!-- 2. ESTADO VACÍO (EMPTY STATE) -->\n    <div id=\"state-empty\" class=\"state-panel hidden\">\n      <div class=\"bg-white rounded-xl border border-gray-200 shadow-sm p-12 text-center max-w-xl mx-auto my-8\">\n        <div class=\"w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4\">\n          <svg class=\"w-8 h-8\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10\"/>\n          </svg>\n        </div>\n        <h3 class=\"text-lg font-bold text-gray-900 mb-2\">No hay reembolsoss registrados aún</h3>\n        <p class=\"text-sm text-gray-500 mb-6\">\n          Comienza creando el primer registro para habilitar el flujo transaccional seguro y compatible con PCI-DSS.\n        </p>\n        <button class=\"px-5 py-2.5 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm inline-flex items-center gap-2\">\n          <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"/>\n          </svg>\n          Registrar Primer Reembolsos\n        </button>\n      </div>\n    </div>\n\n    <!-- 3. ESTADO CARGANDO (SKELETON / LOADING) -->\n    <div id=\"state-loading\" class=\"state-panel hidden space-y-6\">\n      <div class=\"bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center animate-pulse\">\n        <div class=\"h-9 w-64 bg-gray-200 rounded-lg\"></div>\n        <div class=\"h-9 w-32 bg-gray-200 rounded-lg\"></div>\n      </div>\n      <div class=\"bg-white rounded-xl border border-gray-200 shadow-sm p-6 animate-pulse space-y-4\">\n        <div class=\"h-4 bg-gray-200 rounded w-1/4 mb-4\"></div>\n        <div class=\"h-10 bg-gray-100 rounded\"></div>\n        <div class=\"h-10 bg-gray-100 rounded\"></div>\n        <div class=\"h-10 bg-gray-100 rounded\"></div>\n        <div class=\"h-10 bg-gray-100 rounded\"></div>\n        <div class=\"pt-4 flex justify-between items-center text-xs text-gray-400\">\n          <span>Cargando datos seguros...</span>\n          <div class=\"h-6 w-24 bg-gray-200 rounded\"></div>\n        </div>\n      </div>\n    </div>\n\n    <!-- 4. ESTADO ERROR (PROBLEM DETAILS / RECUPERACIÓN) -->\n    <div id=\"state-error\" class=\"state-panel hidden\">\n      <div class=\"bg-white rounded-xl border border-red-200 shadow-sm p-8 max-w-xl mx-auto my-8\">\n        <div class=\"flex items-start gap-4\">\n          <div class=\"w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center flex-shrink-0\">\n            <svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\">\n              <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z\"/>\n            </svg>\n          </div>\n          <div class=\"flex-1\">\n            <h3 class=\"text-base font-bold text-gray-900 mb-1\">Error al procesar la solicitud (504 Gateway Timeout)</h3>\n            <p class=\"text-sm text-gray-600 mb-4\">\n              No fue posible conectar con el servicio de persistencia bancaria dentro del tiempo límite. No se realizaron cargos en la cuenta.\n            </p>\n            <div class=\"p-3 bg-red-50 border border-red-100 rounded-lg text-xs font-mono text-red-800 mb-5\">\n              <span>type: \"urn:problem-type:gateway-timeout\"</span><br>\n              <span>trace_id: \"trace-9182-4fbc-9182a0\"</span>\n            </div>\n            <div class=\"flex items-center gap-3\">\n              <button onclick=\"setState('loading')\" class=\"px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 shadow-sm\">\n                ↻ Reintentar Operación\n              </button>\n              <button onclick=\"setState('success')\" class=\"px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200\">\n                Volver a la vista previa\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n  </main>\n\n  <script>\n    function setState(state) {\n      document.querySelectorAll('.state-panel').forEach(function(el) { el.classList.add('hidden'); });\n      document.querySelectorAll('.state-btn').forEach(function(btn) { btn.classList.remove('active'); });\n\n      var targetPanel = document.getElementById('state-' + state);\n      var targetBtn = document.getElementById('btn-' + state);\n\n      if (targetPanel) targetPanel.classList.remove('hidden');\n      if (targetBtn) targetBtn.classList.add('active');\n    }\n  </script>\n</body>\n</html>\n",
+    "states": {
+      "empty": "Vista de inicio sin registros. Mensaje de bienvenida: 'Aún no hay reembolsoss asociados a este entorno.' Botón de acción principal: [+ Registrar Reembolsos].",
+      "loading": "Skeleton screen animado con shimmer de 3 filas. Botones de envío deshabilitados (disabled) para garantizar idempotencia y evitar duplicidad de solicitudes.",
+      "success": "Vista operativa con tabla/tarjetas interactivas de reembolsoss, datos enmascarados, badges de estado verde 'ACTIVO' y toast de confirmación.",
+      "error": "Banner de error RFC 7807 (Problem Details) con mensaje claro y comprensible para el usuario, código de seguimiento correlacionado y botón [↻ Reintentar Operación]."
+    },
+    "design_tokens": {
+      "color_primary": "#0052CC",
+      "color_background": "#F4F5F7",
+      "color_success": "#36B37E",
+      "color_error": "#DE350B",
+      "font_family": "Inter, system-ui, -apple-system, sans-serif",
+      "base_grid": "8px"
+    }
+  },
+  "security": {
+    "req_id": "HU-004",
+    "roles_matrix": [
+      {
+        "recurso": "/reembolsoss",
+        "accion": "Listar / Consultar (GET)",
+        "rol": "Administrador de Sistema",
+        "permitido": true,
+        "condicion": "Acceso total sin restricciones."
+      },
+      {
+        "recurso": "/reembolsoss",
+        "accion": "Listar / Consultar (GET)",
+        "rol": "Operador de Sucursal",
+        "permitido": true,
+        "condicion": "Filtrado automático estricto por sucursal_id del token."
+      },
+      {
+        "recurso": "/reembolsoss",
+        "accion": "Crear Registro (POST)",
+        "rol": "Operador de Sucursal",
+        "permitido": true,
+        "condicion": "Permitido. Se valida límite operativo de creación diaria."
+      },
+      {
+        "recurso": "/reembolsoss",
+        "accion": "Eliminar Registro (DELETE)",
+        "rol": "Cualquier Rol",
+        "permitido": false,
+        "condicion": "Borrado físico prohibido. Solo se admite baja lógica (estado='INACTIVO')."
+      }
+    ],
+    "data_classification": [
+      {
+        "campo": "usuario_id",
+        "clasificacion": "Dato Interno",
+        "cifrado_reposo": "AES-256",
+        "cifrado_transito": "TLS 1.3",
+        "mascaramiento": "No requiere"
+      },
+      {
+        "campo": "codigo",
+        "clasificacion": "Identificador de Negocio",
+        "cifrado_reposo": "AES-256",
+        "cifrado_transito": "TLS 1.3",
+        "mascaramiento": "No requiere"
+      }
+    ],
+    "owasp_mitigations": [
+      {
+        "vulnerabilidad": "Control de Acceso Roto (BOLA / IDOR)",
+        "mitigacion": "Validación en capa de servicio verificando que el usuario pertenezca a la sucursal del registro."
+      },
+      {
+        "vulnerabilidad": "Inyección SQL / NoSQL",
+        "mitigacion": "Uso estricto de consultas parametrizadas y mapeo con ORM tipado."
+      },
+      {
+        "vulnerabilidad": "Exposición de Datos Sensibles",
+        "mitigacion": "Uso de DTOs específicos de salida evitando exponer campos no autorizados de la base de datos."
+      }
+    ]
+  },
+  "plan": {
+    "req_id": "HU-004",
+    "tasks_wbs": [
+      {
+        "id": "TASK-BD-01",
+        "capa": "Base de Datos",
+        "titulo": "Crear migraciones DDL para tabla reembolsoss e índices",
+        "criterio_salida": "Tablas creadas en base de datos local con claves e índices verificados."
+      },
+      {
+        "id": "TASK-BE-01",
+        "capa": "Backend API",
+        "titulo": "Configurar Mock Server para OpenAPI de reembolsoss",
+        "criterio_salida": "Mock server respondiendo ejemplos 200, 201 y 400 para permitir trabajo en paralelo de Frontend."
+      },
+      {
+        "id": "TASK-BE-02",
+        "capa": "Backend API",
+        "titulo": "Implementar endpoints reales de reembolsoss y validaciones",
+        "criterio_salida": "Lógica de negocio implementada, respuestas RFC 7807 y matriz de roles verificada."
+      },
+      {
+        "id": "TASK-FE-01",
+        "capa": "Frontend UI",
+        "titulo": "Construir pantalla de Permitir gestión de reembolsos con doble aprobación y MFA para montos altos con los 4 estados",
+        "criterio_salida": "Componentes visuales implementando Empty, Loading, Success y Error contra el mock server."
+      },
+      {
+        "id": "TASK-QA-01",
+        "capa": "Pruebas",
+        "titulo": "Automatización de pruebas unitarias y de integración para reembolsoss",
+        "criterio_salida": "Cobertura >= 80% y validación de contrato OpenAPI superada."
+      }
+    ],
+    "dependencies": [
+      {
+        "tarea": "TASK-BE-01",
+        "bloqueada_por": "TASK-BD-01"
+      },
+      {
+        "tarea": "TASK-FE-01",
+        "bloqueada_por": "TASK-BE-01"
+      },
+      {
+        "tarea": "TASK-BE-02",
+        "bloqueada_por": "TASK-BD-01"
+      },
+      {
+        "tarea": "TASK-QA-01",
+        "bloqueada_por": "TASK-BE-02"
+      }
+    ],
+    "recommended_repo_structure": "src/\n├── domain/\n│   └── reembolsos/\n│       ├── models.py\n│       └── service.py\n├── infrastructure/\n│   ├── database/\n│   │   └── migrations/\n│   └── repositories/\n├── api/\n│   ├── routes/\n│   │   └── reembolsos_routes.py\n│   └── middlewares/\n└── ui/\n    └── components/\n        └── reembolsos/\n            ├── ReembolsosView.tsx\n            └── states/\n"
+  },
+  "human_gate": {
+    "req_id": "HU-004",
+    "is_approved": false,
+    "architect_sign": null,
+    "tech_lead_sign": null,
+    "ui_lead_sign": null,
+    "security_sign": null,
+    "comments": [
+      "Pendiente de firmas formales de Arquitectura, Líder Técnico, UI/UX y Seguridad."
+    ]
+  },
+  "provenance": "AI_SUGGESTED"
+}
