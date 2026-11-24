@@ -73,7 +73,7 @@ sdd-git.sh — escritura en git para las skills SDD (solo local; simula salvo --
   crear-rama <tipo> <capacidad> <slug> [--base R] [--worktree DIR] [--ejecutar]
   cambiar <rama> [--ejecutar]                   git switch con árbol limpio
   commit --tipo T --capacidad C --asunto "..." --fase F --caso N --archivos a b c
-         [--cuerpo-archivo F] [--spec S] [--plan P] [--ca "CA-01,CA-02"]
+         [--cuerpo-archivo F] [--spec S] [--plan P] [--ca "CA-01,CA-02"] [--hu "HU-001,HU-002"]
          [--ajuste --aprobado "..."] [--atribucion "Co-Authored-By: ..."] [--ejecutar]
   actualizar-rama [--ejecutar]                  Mergea el tronco en la rama actual (sin rebase)
   merge <rama> [--destino R] --capacidad C --caso N --asunto "..." --cuerpo-archivo F --aprobado "..." [--ejecutar]
@@ -202,6 +202,19 @@ commit)
     salida=$(bash "$SDD_DIR/sdd-lint.sh" "$RAIZ") || { echo "$salida" | grep '^ERROR' >&2; die "sdd-lint.sh reporta errores: corregirlos antes de commitear specs o planes"; }
   fi
 
+  # Historias de usuario (paquete de diseño): formato y acta DoR firmada antes del commit de propuesta
+  if [ -n "${A[hu]:-}" ]; then
+    echo "${A[hu]}" | grep -Eq '^HU-[0-9A-Za-z-]+( *, *HU-[0-9A-Za-z-]+)*$' || die "--hu debe ser una o varias historias: \"HU-001\" o \"HU-001,HU-002\" (recibido: ${A[hu]})"
+    if [ "$fase" = "propuesta" ]; then
+      for hu in $(echo "${A[hu]}" | tr ',' ' '); do
+        acta="docs/design/$hu/00_ACTA_APROBACION_DOR.md"
+        if [ -f "$acta" ] && grep -q '\[ \] Aprobado' "$acta"; then
+          die "el acta DoR de $hu ($acta) tiene firmas sin aprobar ([ ] Aprobado): el Gate 1 exige todos los roles antes del commit de propuesta"
+        fi
+      done
+    fi
+  fi
+
   # Mensaje
   msg="$(mktemp)"; trap 'rm -f "$msg"' EXIT
   { echo "$cabecera"; echo
@@ -209,6 +222,7 @@ commit)
     echo "SDD-Caso: $caso"; echo "SDD-Fase: $fase"
     [ -n "${A[spec]:-}" ] && echo "SDD-Spec: ${A[spec]}"
     [ -n "${A[plan]:-}" ] && echo "SDD-Plan: ${A[plan]}"
+    [ -n "${A[hu]:-}" ]   && echo "SDD-HU: ${A[hu]}"
     [ -n "${A[ca]:-}" ]   && echo "SDD-CA: ${A[ca]}"
     [ "$AJUSTE" -eq 1 ]   && echo "SDD-Ajuste: aprobado"
     [ -n "${A[atribucion]:-}" ] && echo "${A[atribucion]}"

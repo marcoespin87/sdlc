@@ -21,6 +21,7 @@ Leer `../_shared/convenciones.md` (sección "Documento de arquitectura") y `../_
 - Definir o cambiar el **despliegue**, la reversión, los entornos.
 - Definir o cambiar el **flujo de trabajo**: tronco, ramas, estrategia de merge, protecciones.
 - Registrar una decisión que ya se tomó y no quedó escrita (ADR retroactivo).
+- **Consolidar lo que traen los paquetes de diseño** de varias HU (C4, ADR, tokens de UI, clasificación de datos, estructura de repo, umbral de cobertura, aprobadores del Gate 1) en `docs/arquitectura.md` y `docs/adr/`, una sola vez por proyecto (`../_shared/diseno-a-spec.md` §3).
 
 No usarla para un cambio de comportamiento funcional (eso son los Casos 1 a 4) ni para un bug (`/sdd-hotfix`). Si un cambio funcional **necesita** una decisión de arquitectura, se hace **primero** esta, en su propia rama, y el cambio funcional después.
 
@@ -87,6 +88,14 @@ Plantilla del ADR:
 ## Specs afectados
 <Lista de `spec-*.md` tocados y qué cambió en cada uno.>
 ```
+
+## Consolidar lo que traen los paquetes de diseño
+
+Si el insumo son paquetes `docs/design/HU-0NN/`, no se copia un ADR ni un C4 por HU:
+
+- **ADR iguales en varias HU** (p. ej. «monolito modular») se consolidan en **un** ADR numerado en `docs/adr/`; los paquetes lo citan, no lo repiten. Una decisión propia de una sola capacidad no es de esta skill: va en *Decisiones* del spec, con fecha.
+- **C4 de contexto y contenedores:** se unifican en `docs/arquitectura.md`. Si dos HU dibujan contenedores distintos para el mismo sistema, es una contradicción: se resuelve aquí, con el usuario, antes de seguir.
+- **Tokens de UI, clasificación de datos, estructura de repo, umbral de cobertura y aprobadores del Gate 1** pasan a `docs/arquitectura.md` como convenciones del proyecto.
 
 ## Paso 5 — Lint y gate humano
 

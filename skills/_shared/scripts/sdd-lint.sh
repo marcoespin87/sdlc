@@ -28,6 +28,15 @@ chequear() {
     for ref in $(grep -o 'spec-[A-Za-z0-9_-]*\.md' "$indice" | sort -u); do
       [ -f "$SPECS/$ref" ] || echo "ERROR  docs/specs/README.md  el índice nombra $ref pero el archivo no existe"
     done
+    # Paquetes de diseño por historia: cada HU con paquete debe figurar en el índice (columna Historias)
+    if [ -d "$ROOT/docs/design" ]; then
+      local d hu
+      for d in "$ROOT"/docs/design/HU-*/; do
+        [ -d "$d" ] || continue
+        hu=$(basename "$d")
+        grep -q "$hu" "$indice" || echo "AVISO  docs/specs/README.md  la $hu tiene paquete de diseño pero no figura en la columna Historias del índice"
+      done
+    fi
   fi
 
   # ---------- Cada spec ----------
@@ -71,6 +80,11 @@ chequear() {
     # Estados transitorios (no van en un spec)
     grep -n -i -E 'pendiente de deploy|a medias|todav(i|í)a (sin|no)|hoy el c(o|ó)digo no|arreglo pendiente' "$f" | while IFS= read -r t; do
       echo "AVISO  $rel:${t%%:*}  posible estado transitorio (va en el plan o en el mensaje del commit): $(echo "${t#*:}" | cut -c1-90)"
+    done
+
+    # Referencias al paquete de diseño: las rutas docs/design/... citadas deben existir
+    grep -oE 'docs/design/[A-Za-z0-9_./-]+' "$f" | sed 's/[.,;]*$//' | sort -u | while IFS= read -r d; do
+      [ -e "$ROOT/$d" ] || echo "ERROR  $rel  referencia $d pero la ruta no existe"
     done
 
     # Disparadores de división (verificacion-division.md)

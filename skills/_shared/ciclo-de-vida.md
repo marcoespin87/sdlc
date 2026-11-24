@@ -45,6 +45,18 @@ La v1 cubre cuatro fases (explorar → proponer → aplicar → verificar). La v
 
 Una aprobación **no se extiende** a la acción siguiente: aprobar el spec no autoriza el merge; aprobar el merge no autoriza el release.
 
+## Fase de Diseño con paquete de diseño por historia
+
+Cuando Diseño entrega un paquete por HU (`docs/design/HU-0NN/`), el recorrido dentro de la fase es:
+
+1. El **paquete** (arquitectura, modelo de datos, contrato, UI, seguridad, plan técnico) es el **insumo**.
+2. `/sdd-exploracion` lo lee, clasifica el Caso, ubica la HU en su capacidad y verifica la **cobertura** del paquete.
+3. `/sdd-propuesta` lo convierte en **spec** (+ índice con *Historias*), **`CA-NN`** derivados y **plan** (las tareas del WBS con sus criterios).
+4. **Gate 1**, con tantos aprobadores como roles declare `docs/arquitectura.md` (acta DoR).
+5. Lo que pasa a Desarrollo es el spec aprobado, los criterios y el plan; el paquete queda referenciado como forma exacta.
+
+Detalle: `diseno-a-spec.md`.
+
 ## Dónde vive el estado del ciclo
 
 - **Git** es el registro: nombre de rama, trailers `SDD-*` de los commits, tags. `/sdd-estado` lo lee con `sdd-estado.sh`.

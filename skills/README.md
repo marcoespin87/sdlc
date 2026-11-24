@@ -50,7 +50,8 @@ skills-v2/
     ├── entrega.md              DoD, seguridad, versión, changelog, reversión
     ├── plantilla-reporte.md    reporte de verificación = cuerpo del commit de merge
     ├── claude-md-plantilla.md  CLAUDE.md sugerido para reforzar la invocación automática
-    ├── hooks-ejemplo.md        guardarraíles (sugeridos, no instalados)
+    ├── hooks-ejemplo.md        guardarraíles (sugeridos, no instalados)
+    ├── diseno-a-spec.md        paquete de diseño por HU → spec, CA-NN y plan; Gate 1 con varios roles
     └── scripts/
         ├── sdd-git.sh          ÚNICA puerta de escritura en git (solo local)
         ├── sdd-estado.sh       estado del ciclo leído de git
@@ -63,6 +64,15 @@ skills-v2/
 Subcomandos: `tronco`, `crear-rama`, `cambiar`, `commit`, `actualizar-rama`, `merge`, `borrar-rama`, `tag`, `worktree`, `ayuda`. **No existen** subcomandos de remoto (`push`, `pull`, `fetch`, `remote`, `gh` devuelven RECHAZADO).
 
 Rechaza, con el motivo (exit 2): nombre o tipo de rama inválido · árbol sucio al crear o cambiar de rama · commit en el tronco (única excepción: `chore` de entrega) · commit de propuesta que toque algo fuera de `docs/` · commit de aplicación sin commit de propuesta previo · `spec` en aplicación sin `--ajuste` y `--aprobado` · specs o planes con `sdd-lint.sh` en rojo · merge sin commit de verificación o con la rama atrasada · borrar una rama no mergeada, el tronco o la rama activa · tag fuera de SemVer, repetido o fuera del tronco. Un conflicto de merge se aborta solo (exit 3). Las aprobaciones humanas que cita el agente quedan en `.git/sdd-aprobaciones.log`.
+
+## Extensión: paquete de diseño por historia de usuario
+
+Cuando la fase de Diseño entrega un paquete por HU (`docs/design/HU-0NN/`: arquitectura C4 + ADR, modelo de datos, OpenAPI, UI de 4 estados, matriz de seguridad, plan WBS, acta DoR), ese paquete es **insumo** de la Propuesta, que lo convierte en spec, criterios `CA-NN` y plan. Qué cambió:
+
+- `_shared/diseno-a-spec.md` (nuevo): tabla de mapeo paquete → spec/arquitectura/plan, derivación de `CA-NN`, cobertura del paquete y Gate 1 con varios aprobadores.
+- Una capacidad puede tener una o varias HU; cada HU es un cambio con su rama. Índice con columna *Historias* y trailer `SDD-HU`.
+- `sdd-git.sh commit --hu` registra el trailer y **rechaza** el commit de propuesta si el acta DoR tiene firmas sin aprobar; `sdd-estado.sh` muestra el `SDD-HU`; `sdd-lint.sh` comprueba que las rutas de `docs/design/` citadas en los specs existan y que cada HU con paquete figure en el índice.
+- `sdd-exploracion` lee el paquete y verifica su cobertura; `sdd-propuesta` aplica el mapeo y deriva los criterios; `sdd-arquitectura` consolida C4/ADR/tokens una sola vez; `sdd-aplicacion` y `sdd-verificacion` tratan el contrato y el DDL referenciados como forma exacta; `sdd-ramas` usa el WBS y una rama por HU.
 
 ## Qué se verificó y qué no
 

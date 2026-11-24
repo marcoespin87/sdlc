@@ -28,6 +28,7 @@ Un criterio sin método se considera mal escrito: devolver a `/sdd-propuesta`. F
 - **Invariantes**: por cada invariante nuevo, un criterio que intenta violarlo.
 - **Paridad** (Caso 3 sin cambio de comportamiento, Caso 4): mismas entradas, mismas salidas.
 - **Reproducibilidad** (si el sistema es determinista, como este): misma entrada y semilla, mismos bytes, con 1 y con N procesos.
+- **Derivados de un paquete de diseño** (`diseno-a-spec.md` §4): uno por operación del contrato y cada error documentado, uno por fila de la matriz de roles (permitida y denegada), uno por estado de pantalla, uno por mitigación de seguridad y uno por regla del DDL que sea invariante. Cada criterio anota de qué archivo del paquete salió.
 
 ## 2. Pruebas primero (rojo → verde)
 
@@ -65,4 +66,4 @@ Si el proyecto no tiene alguno de estos comandos todavía, **decirlo explícitam
 
 ## 5. Cobertura útil, no cobertura numérica
 
-No se fija un porcentaje global. Lo que se exige es la cobertura de criterios (§3) y que los caminos de falla del spec estén probados. Si el proyecto ya mide cobertura, se vigila que **no baje** respecto al tronco en el código tocado.
+Las skills no fijan un porcentaje global. Si `docs/arquitectura.md` declara un umbral de cobertura **del proyecto** (por ejemplo 80 %), es un gate de `/sdd-verificacion` y su informe (`.xml` o `.html`) se adjunta como evidencia en la matriz. Lo que se exige es la cobertura de criterios (§3) y que los caminos de falla del spec estén probados. Si el proyecto ya mide cobertura, se vigila que **no baje** respecto al tronco en el código tocado.

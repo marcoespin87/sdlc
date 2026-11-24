@@ -55,6 +55,8 @@ documento de arquitectura.>
 - Dependencias:
   - Depende de: `spec-<X>.md` (§Contrato) — <qué consume>
   - Usada por: `spec-<Y>.md` — <quién la consume>
+- Historias: `HU-0NN` — <qué parte del comportamiento aporta cada una> *(si la capacidad nace de historias de usuario)*
+- Diseño: `docs/design/HU-0NN/03_OPENAPI_CONTRATO.json`, `.../02_SCHEMA_DDL.sql`, `.../04_UI_ESPECIFICACION_4_ESTADOS.md` *(forma exacta; el spec no la copia)*
 - Código: `<ruta al archivo o módulo principal>`
 - Tests: `<ruta a los tests que cubren esta capacidad, si existen>`
 - <Otras referencias en forma EXACTA: tipos, migraciones, endpoints, docs>
@@ -109,6 +111,7 @@ Regla corta: **spec = lo que corre y es observable de UNA capacidad; arquitectur
 | Tareas, estimaciones | — | **Sí** | — |
 | Criterios de aceptación | — (se destilan a Comportamiento) | **Sí** (si no hay plan: cuerpo del commit de propuesta; el reporte de verificación va en el commit de merge) | — |
 | Estado transitorio ("pendiente de deploy", "implementación a medias") | — | Sí (o en el mensaje del commit) | — |
+| Forma exacta del contrato, del modelo de datos o de la UI (paquete de diseño) | Referencias (ruta en `docs/design/`) | Propuesta de contrato | — |
 | Dependencia con otra capacidad (confirmada) | Referencias ("Depende de / Usada por") + efecto en Modos de falla o Límites | — | — |
 | Dependencia o riesgo por evaluar | — | Pendientes de decisión, o en el chat si no hay plan (bloquea el gate) | — |
 

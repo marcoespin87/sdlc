@@ -56,6 +56,8 @@ if [ -n "$tronco" ] && [ "$actual" != "$tronco" ] && [ "$actual" != "HEAD" ] && 
   echo "  trailers SDD-Fase presentes: ${fases:-(ninguno)}"
   casos=$(git log "$tronco..HEAD" --format='%(trailers:key=SDD-Caso,valueonly)' | grep . | sort -u | tr '\n' ' ')
   echo "  SDD-Caso: ${casos:-(sin dato)}"
+  hus=$(git log "$tronco..HEAD" --format='%(trailers:key=SDD-HU,valueonly)' | grep . | sort -u | tr '\n' ' ')
+  [ -n "$hus" ] && echo "  SDD-HU: $hus"
   echo "  commits de la rama:"
   git log "$tronco..HEAD" --format='    %h %s' | head -15
   case " $fases " in

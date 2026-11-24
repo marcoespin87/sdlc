@@ -22,6 +22,7 @@ Leer `../_shared/convenciones.md`, `../_shared/plantilla-spec.md`, `../_shared/r
 4. **Los criterios `CA-NN`**: en el plan si lo hay; si no, en el cuerpo del commit de propuesta o en la conversación. En una sesión nueva sin plan, pedírselos al usuario — no construir contra criterios inventados.
 5. Confirmar que el **árbol de trabajo está limpio** (o que lo sucio es de este mismo cambio). Si hay cambios ajenos, detenerse.
 6. Confirmar que existe la **autorización de commits locales** (Paso 0 de `/sdd-propuesta`); si la sesión es nueva, volver a pedirla una vez.
+7. **Formas exactas referenciadas:** si el spec cita archivos de `docs/design/` en `Diseño:` (OpenAPI, DDL, mocks, especificación de UI), leerlos ahora. Son de **solo lectura** en esta fase y son la referencia con la que se construye (`../_shared/diseno-a-spec.md` §7).
 
 ## Paso 2 — Cargar la rama del Caso
 
@@ -46,7 +47,7 @@ Después, **por cada tarea del plan** (o por unidad coherente de trabajo, sin pl
 Commits pequeños, que compilen y pasen lo que antes pasaba. Mientras se construye:
 
 - Reusar código y patrones existentes del proyecto en vez de reinventar — mirar cómo están hechas capacidades vecinas antes de escribir algo nuevo.
-- El contrato, los topes y las respuestas de error tienen que coincidir **exactamente** con lo que dice el spec: mismos códigos, mismos límites, mismo comportamiento ante fallas. El spec es la referencia, no una sugerencia.
+- El contrato, los topes y las respuestas de error tienen que coincidir **exactamente** con lo que dice el spec: mismos códigos, mismos límites, mismo comportamiento ante fallas. El spec es la referencia, no una sugerencia. Si el spec referencia un OpenAPI o un DDL, **la implementación debe cumplirlos**; si no puede, es un hallazgo (Paso 4), no un ajuste silencioso.
 - No construir nada que el spec no describa. Si parece útil agregar algo, es un cambio aparte (otra rama).
 - No tocar archivos fuera del alcance del cambio. Un archivo ajeno que "hay que arreglar de paso" es otro cambio.
 - Excepciones a "pruebas primero": configuración, plantillas, documentación y spikes descartables. Decirlo en el commit.

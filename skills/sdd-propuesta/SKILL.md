@@ -49,6 +49,16 @@ Si en esta misma conversación ya corrió `/sdd-exploracion`, usar el Caso, delt
 
 Ir a `references/caso1.md`, `caso2.md`, `caso3.md` o `caso4.md` según el Caso confirmado en el Paso 1. (El Caso 5, una vez que su Fase 0 terminó, entra acá como Caso 2 o Caso 3 — no existe `references/caso5.md`.) Cada archivo dice qué delta del spec escribir, qué criterios corresponden (y qué contiene el plan, si lo hay) para ese Caso, y qué preguntas abiertas son típicas de él.
 
+## Paso 3b — Si hay paquete de diseño de la HU
+
+Si `docs/design/HU-0NN/` existe, es el **insumo** de este paso: seguir `../_shared/diseno-a-spec.md`.
+
+1. **Una rama por HU** (`<tipo>/<capacidad>-<slug>`); varias HU de una misma capacidad son cambios sucesivos sobre el mismo spec, cada uno con su Gate 1.
+2. **Aplicar la tabla de mapeo** (§3): la forma observable del contrato, los modos de falla, los invariantes (reglas del DDL, matriz de roles, mitigaciones) y el flujo van al spec; la forma exacta (OpenAPI, DDL, UI, prototipo) se **referencia** en *Referencias* (`Diseño:`), no se copia.
+3. **Escribir la HU en el spec:** línea `Historias:` en *Referencias* y columna *Historias* del índice.
+4. **Arquitectura transversal** (C4, tokens de UI, clasificación de datos, estructura de repo, umbral de cobertura, aprobadores del Gate 1): en un Caso 1 se escribe en `docs/arquitectura.md` en esta propuesta; después, solo por `/sdd-arquitectura`. Un ADR transversal repetido en varias HU se consolida en uno solo.
+5. **Resultado de la cobertura del paquete** (la dejó `/sdd-exploracion`): si quedó algo sin resolver, es una decisión abierta y **bloquea el gate**.
+
 ## Paso 4 — Resolver decisiones abiertas con el usuario
 
 Antes de escribir nada definitivo, preguntar explícitamente cualquier decisión que le corresponda a un humano: stack (si no está fijado), nombres, alcance, prioridades entre alternativas, **qué pasa en los casos borde** (qué se hace cuando algo choca, falla o excede un tope).
@@ -76,6 +86,8 @@ Escribir el delta directamente en `docs/specs/spec-<capacidad>.md`, siguiendo `p
 
 **Criterios de aceptación, siempre:** con identificador `CA-NN`, condición observable y **método de verificación** (automática con la ruta prevista de la prueba, medición con umbral, o manual con pasos) — formato y tipos que casi siempre faltan en `../_shared/criterios-y-pruebas.md` §1. Nunca "funciona bien". Son los que `/sdd-verificacion` va a usar después; si quedan vagos acá, la verificación no tiene con qué trabajar.
 
+**Si hay paquete de diseño**, derivar los `CA-NN` según `../_shared/diseno-a-spec.md` §4 (operaciones y errores del contrato, filas de la matriz de roles permitidas y denegadas, estados de pantalla, mitigaciones de seguridad, reglas del DDL, criterios Gherkin de la HU) y anotar de qué archivo del paquete sale cada uno.
+
 **Cobertura del spec:** comprobar que **cada ítem nuevo de *Contrato*, *Límites y defaults* y *Modos de falla*** tiene al menos un criterio, y cada invariante nuevo, uno que intenta violarlo. Un ítem sin criterio es un hueco: agregarlo ahora.
 
 Van **en el plan si hay plan; si no, en el cuerpo del commit de propuesta** (`plantilla-reporte.md`).
@@ -87,7 +99,7 @@ Si hay plan, seguir `plantilla-plan.md` al pie de la letra. El plan incluye:
 - **Caso** y **Delta** explícitos (AGREGADO / MODIFICADO / ELIMINADO / NULO / 100%).
 - **Delta del spec escrito:** qué spec y qué secciones se escribieron en el Paso 5, **referenciado, no copiado**.
 - **Mapa de ramas** (una rama por fase; ver `/sdd-ramas`).
-- **Tareas de código**, cada una con los `CA-NN` que cubre. Escribir el spec no es una tarea: ya está hecho.
+- **Tareas de código**, cada una con los `CA-NN` que cubre. Escribir el spec no es una tarea: ya está hecho. **Con paquete de diseño**, las tareas del WBS (`TASK-BD/BE/FE/QA-NN`) son la base: se adoptan agregándoles los `CA-NN` que cubren, y sus dependencias (`bloqueada_por`) alimentan el *Mapa de ramas*.
 - **Criterios de aceptación** `CA-NN` y la tabla de **Trazabilidad** (la completa `/sdd-verificacion`).
 - **Pendientes de decisión**: vacío para poder aprobar.
 - Si el cambio es grande, fases dentro del mismo plan (regla 3.3) — cada fase sigue siendo un cambio acotado, con su rama, que se aplica y verifica por separado.
@@ -118,6 +130,8 @@ Este es el **gate humano principal del ciclo**. Mostrar:
 3. El resultado del Paso 7 y del Paso 8.
 4. La rama propuesta o creada, y el plan de reversión si aplica.
 
+**Con paquete de diseño, el gate es de varios roles.** Los roles que deben aprobar los declara `docs/arquitectura.md` (*Aprobadores del Gate 1*); se pide el OK a **cada uno** y se completa el acta `00_ACTA_APROBACION_DOR.md`. **El agente no firma por nadie:** la marca `[x] Aprobado` la pone la persona. Sin aprobadores declarados, el gate es de una sola persona.
+
 Pedir **aprobación explícita**, con esta consigna para quien revisa: *"mira el diff del spec y dime si describe lo que queremos construir"*. No avanzar a `/sdd-aplicacion` sin ese OK — no asumirlo por silencio ni por un cambio de tema. Mientras haya decisiones abiertas (en el plan o en el chat), no se puede aprobar.
 
 **Si el revisor pide cambios**, se corrigen en el spec (y en el plan, si existe), se vuelve a correr el lint y se vuelve a mostrar el diff. Es el momento más barato para corregir: todavía no hay código escrito.
@@ -127,7 +141,7 @@ Pedir **aprobación explícita**, con esta consigna para quien revisa: *"mira el
 Con el OK del Paso 9 y la autorización de commits locales del Paso 0:
 
 1. Verificar con `git status` que solo están los archivos de la propuesta: specs, índice, plan, arquitectura si nacieron. **Ningún código** (el script lo rechaza: un commit de propuesta solo admite rutas bajo `docs/`).
-2. Commit `spec(<capacidad>): <delta en imperativo>` con los trailers `SDD-Caso`, `SDD-Fase: propuesta`, `SDD-Spec`, `SDD-Plan` (si hay) y `SDD-CA` (la lista de criterios), más las líneas de atribución que indique el entorno. Formato en `../_shared/ramas-y-commits.md` §3.
+2. Commit `spec(<capacidad>): <delta en imperativo>` con los trailers `SDD-Caso`, `SDD-Fase: propuesta`, `SDD-Spec`, `SDD-Plan` (si hay), `SDD-CA` (la lista de criterios) y `SDD-HU` (si hay paquete), más las líneas de atribución que indique el entorno. Con paquete: `--hu HU-0NN` y `--aprobado` con la cita de **cada rol**; `sdd-git.sh` rechaza el commit si el acta aún tiene `[ ] Aprobado`. Formato en `../_shared/ramas-y-commits.md` §3.
 3. Ese commit es el **punto fijo** del spec aprobado. Todo ajuste posterior del spec es un commit distinto, con OK explícito (`/sdd-aplicacion` Paso 4).
 4. **Nada de push ni de PR**: el repo es solo local. El registro del cambio es el historial: el commit de propuesta lleva los criterios `CA-NN` en su cuerpo y el reporte de verificación irá en el commit de merge.
 
@@ -144,6 +158,7 @@ Confirmar que el delta quedó commiteado en la rama, el hash del commit de propu
 - `../_shared/criterios-y-pruebas.md` — criterios `CA-NN`, tipos que faltan, cobertura.
 - `../_shared/plantilla-reporte.md` — cuerpo del commit de propuesta.
 - `../_shared/verificacion-division.md` — extensión de las skills (Paso 7).
+- `../_shared/diseno-a-spec.md` — paquete de diseño por HU: mapeo al spec, derivación de `CA-NN`, Gate 1 con varios roles.
 - `../_shared/scripts/sdd-lint.sh`, `../_shared/scripts/sdd-estado.sh`.
 - `references/caso1.md` — desde cero
 - `references/caso2.md` — funcionalidad nueva

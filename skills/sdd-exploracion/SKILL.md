@@ -23,6 +23,7 @@ Buscar, en la raíz del proyecto donde se invocó el skill (no en la carpeta de 
 3. Un documento de arquitectura: `AGENTS.md`, `CLAUDE.md`, `.cursorrules`, o `docs/arquitectura.md` — en la raíz **y en subcarpetas** de subproyectos. Distinguir un documento con contenido de arquitectura de un archivo que generó una herramienta sin ese contenido (ver `convenciones.md`).
 4. Código fuente relevante a lo que el usuario está pidiendo (aunque no tenga spec).
 5. **El estado de git** (v2): correr `bash ../_shared/scripts/sdd-estado.sh` (o seguir `/sdd-estado`). Dice el tronco, la rama actual, las ramas de cambio abiertas y la fase de cada una. Si ya hay una rama abierta sobre la **misma capacidad**, decirlo antes de seguir: puede ser el mismo cambio retomado o un conflicto con trabajo en curso. Si el árbol de trabajo tiene cambios sin commitear que no son de esta tarea, avisarlo.
+6. **El paquete de diseño de la HU** (si existe): `docs/design/HU-0NN/` y su `design_package_HU-0NN.json`. Es **insumo**, no spec (ver `../_shared/diseno-a-spec.md`). Leerlo completo para esta HU; no abrir los de otras HU salvo que el índice las relacione.
 
 **Qué specs abrir cuando hay relaciones padre-hijo** (extensión de las skills): si el cambio es sobre un spec hijo, leerlo completo y abrir el padre **solo si** el cambio toca lo que el hijo declara en `Referencias` que usa de él. Si el cambio es sobre el padre, abrir solo los hijos cuya relación toca el cambio. No cargar la familia entera "por las dudas".
 
@@ -30,7 +31,7 @@ Si `$ARGUMENTS` no deja claro qué se quiere cambiar, preguntar antes de seguir 
 
 ## Paso 2 — Identificar la capacidad afectada y sus specs relacionadas
 
-Una capacidad es la porción del sistema que el spec describiría (ver el criterio de tamaño en `convenciones.md`). A partir del pedido del usuario, nombrar la capacidad en kebab-case (ej. `carrito-compras`, `autenticacion`). Si no es obvio a cuál capacidad existente pertenece, o si es nueva, decirlo explícitamente.
+Una capacidad es la porción del sistema que el spec describiría (ver el criterio de tamaño en `convenciones.md`). A partir del pedido del usuario, nombrar la capacidad en kebab-case (ej. `carrito-compras`, `autenticacion`). Si no es obvio a cuál capacidad existente pertenece, o si es nueva, decirlo explícitamente. **Si el pedido viene de una historia de usuario (HU-0NN)**, decir a qué capacidad pertenece (una capacidad puede reunir varias HU como subcapacidades) o si abarca dos y debe partirse en dos cambios (`diseno-a-spec.md` §2).
 
 **Listar las specs relacionadas**, a partir del índice y de las *Referencias* ("Depende de / Usada por") de la spec afectada. Una línea por cada una:
 
@@ -79,6 +80,7 @@ Cada `references/casoN-*.md` dice exactamente qué leer, qué preguntar y qué r
 - **Qué secciones del spec se van a escribir en `/sdd-propuesta`**, a grandes rasgos (ej. "sección nueva en Comportamiento con Contrato, Límites y Modos de falla" o "solo Decisiones + Referencias").
 - Los **invariantes existentes** que restringen el cambio (citados del spec leído, con su "porqué").
 - Las **specs relacionadas** (Paso 2) y las **dependencias o riesgos por evaluar**.
+- **Si hay paquete de diseño:** la **tabla de cobertura** *requisito de la HU → dónde aparece en el paquete* (`diseno-a-spec.md` §5), con las señales de paquete genérico o incompleto. Un paquete que no la pasa se devuelve al generador del diseño; **no se completa inventando** y bloquea el gate de `/sdd-propuesta`.
 
 Este resumen es el input que `/sdd-propuesta` va a necesitar a continuación — dejarlo explícito en la respuesta, no implícito.
 
@@ -111,6 +113,7 @@ Si `/sdd-propuesta`, `/sdd-aplicacion` o `/sdd-verificacion` se invocan sin que 
 - `../_shared/plantilla-spec.md` — formato fijo del spec (necesario para leer specs existentes con criterio, y obligatorio en la rama Caso 5).
 - `../_shared/verificacion-division.md` — extensión de las skills (Paso 5).
 - `../_shared/ciclo-de-vida.md` — mapa completo de skills (v2); `../_shared/ramas-y-commits.md` — rama propuesta y estado en git.
+- `../_shared/diseno-a-spec.md` — paquete de diseño por HU, HU ↔ capacidad, cobertura del paquete.
 - `../_shared/scripts/sdd-estado.sh` — estado del ciclo leído de git.
 - `references/caso1-desde-cero.md`
 - `references/caso2-funcionalidad-nueva.md`

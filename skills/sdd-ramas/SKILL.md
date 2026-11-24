@@ -20,6 +20,7 @@ Leer `../_shared/ramas-y-commits.md` (nombres, apiladas, worktrees) y `../_share
 2. `docs/specs/README.md` y las **Referencias** de cada spec ("Depende de / Usada por") para construir el grafo de dependencias.
 3. Los planes `docs/plan-*.md` con `Estado: en desarrollo`: su *Mapa de ramas* si ya lo trae, y sus fases pendientes.
 4. Si `$ARGUMENTS` acota (un plan o una capacidad), limitarse a eso.
+5. **Si hay paquetes de diseño:** las HU de la columna *Historias* del índice y las dependencias del WBS de cada `docs/design/HU-0NN/06_PLAN_CONSTRUCCION_WBS.md` (`bloqueada_por`) o del plan que las adoptó.
 
 Sin specs ni planes: no hay de dónde derivar. Decirlo y sugerir `/sdd-exploracion`.
 
@@ -42,6 +43,7 @@ Reglas de ordenamiento:
 - **Apilar solo cuando sea imprescindible**: cada apilada obliga a rebasar al mergear la anterior. Si dos fases no comparten código, son paralelas.
 - Conflictos previsibles (el índice `README.md`, las *Referencias* cruzadas): marcarlos y proponer que las ramas que añaden filas al índice se mergeen una por una.
 - Una rama por propósito: si una fase mezcla dos capacidades, proponer partirla (decisión del usuario).
+- **Una rama por HU:** varias HU de una misma capacidad son ramas sucesivas sobre el mismo spec (secuenciales, o apiladas solo si una necesita el código de otra); una HU que abarca dos capacidades se parte en dos.
 - Ciclos de dependencia: **detenerse y reportarlos**; es un problema de diseño de los specs, no del mapa.
 
 ## Paso 3 — Presentar el mapa

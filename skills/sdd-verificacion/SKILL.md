@@ -38,6 +38,7 @@ Completar la **matriz de trazabilidad** (`criterios-y-pruebas.md` §3): una fila
 - **Cobertura del spec:** cada ítem de *Contrato*, *Límites y defaults* y *Modos de falla* del delta tiene al menos un criterio con resultado. Un ítem sin criterio es un hueco de la Propuesta: reportarlo.
 - Contrastar el código contra las secciones que acotan al agente: el *Contrato*, los topes de *Límites y defaults*, lo que dice *Modos de falla* y lo que excluye *Fuera de alcance*.
 - **No-regresión:** confirmar que lo que el spec ya describía antes de este cambio se sigue comportando igual (en Caso 2 y 3, probar puntualmente las capacidades relacionadas).
+- **Paquete de diseño referenciado** (`../_shared/diseno-a-spec.md` §7): comprobar, con los `CA-NN` derivados, que el contrato implementado cumple el OpenAPI, que el esquema migrado coincide con el DDL, que se cubren los estados de pantalla y que cada fila de la matriz de roles (permitida y denegada) se comporta como dice.
 
 ## Paso 4 — Dirección 2: el spec describe exactamente lo construido
 
@@ -51,7 +52,7 @@ Recorrer el delta del spec (la sección nueva o la porción reemplazada) y pregu
 
 Recorrer el checklist de `../_shared/entrega.md` §1 (DoD) y los chequeos de seguridad y dependencias de §3, con evidencia:
 
-- Correr formato/lint, tipos y **todas** las pruebas del proyecto; `bash ../_shared/scripts/sdd-lint.sh` sin errores.
+- Correr formato/lint, tipos y **todas** las pruebas del proyecto; `bash ../_shared/scripts/sdd-lint.sh` sin errores. Si `docs/arquitectura.md` declara un **umbral de cobertura**, medirlo y adjuntar el informe (`.xml` o `.html`) como evidencia en la matriz.
 - Secretos en el diff, dependencias nuevas (versión, licencia, auditoría), entradas externas validadas, datos hacia el LLM o terceros, licencias de activos. Ofrecer correr la skill `security-review` sobre la rama.
 - **Pruebas locales**: la corrida completa de los comandos del proyecto (no se depende de un CI remoto). Si el proyecto no define alguno, decirlo y proponer crearlo.
 - **Reversión** (`entrega.md` §5): confirmar que el reporte de merge responde si se puede revertir (`git revert -m 1 <merge>`), qué datos persistentes toca, si hay interruptor y a qué versión se vuelve.

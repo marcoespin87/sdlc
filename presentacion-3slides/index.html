@@ -57,7 +57,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .cover-logos img{position:absolute;top:30px}
 .cover-logos .l{left:56px;height:68px}.cover-logos .r{right:56px;height:72px}
 .waves{position:absolute;left:0;bottom:0;width:1920px;height:auto;display:block}
-.c-title{position:absolute;left:56px;top:150px;width:1500px}
+.c-title{position:absolute;left:56px;top:150px;width:1780px}
 .c-title h1{font-family:var(--light);font-weight:300;font-size:84px;line-height:1.05}
 .c-title p{font-family:var(--light);font-weight:300;font-size:36px;margin-top:26px;color:#e6e6e6;line-height:1.3;max-width:1350px}
 .c-title p b{font-family:var(--font);font-weight:700;color:var(--yellow)}
@@ -69,15 +69,18 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .pillc span{font-size:25px;line-height:1.25;color:#ddd;font-weight:400;display:block}
 
 /* ================= SLIDE 2 ================= */
-#flowwrap{position:absolute;left:112px;top:170px;width:1696px}
+#phases{position:absolute;left:112px;top:108px;width:1696px;height:52px}
+#phases div{position:absolute;top:0;height:52px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:22px;line-height:1.05;background:var(--g2);color:var(--g4);padding:0 8px;transition:background .35s,color .35s}
+#phases div.on{background:#000;color:#fff}
+#flowwrap{position:absolute;left:112px;top:176px;width:1696px}
 #flow{width:1696px;height:490px;display:block;overflow:visible}
-#flowcap{position:absolute;left:112px;top:690px;width:1696px;display:flex;gap:28px;align-items:center;padding:20px 34px;border-radius:999px;border:4px solid var(--blue);min-height:112px;background:#fff}
+#flowcap{position:absolute;left:112px;top:680px;width:1696px;display:flex;gap:28px;align-items:center;padding:16px 34px;border-radius:999px;border:4px solid var(--blue);min-height:108px;background:#fff}
 #flowcap.h{border-color:var(--yellow);background:var(--yellow-l)}
 #flowcap .tg{flex:none;padding:8px 24px;border-radius:999px;background:var(--blue);color:#fff;font-weight:700;font-size:24px;min-width:150px;text-align:center}
 #flowcap.h .tg{background:var(--yellow);color:#000}
 #flowcap b{display:block;font-size:30px}
 #flowcap span{font-size:24px;color:var(--g4);line-height:1.25}
-.aside{position:absolute;left:112px;top:822px;width:1696px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.aside{position:absolute;left:112px;top:810px;width:1696px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .as{display:flex;gap:14px;align-items:flex-start;padding:12px 18px;border-radius:20px;background:var(--g1);font-size:21px;line-height:1.2;color:var(--g4)}
 .as b{display:block;color:#000;font-size:23px}
 .as em{display:block;font-style:normal;font-weight:700;color:var(--blue-d);font-size:20px;line-height:1.2;margin-top:6px}
@@ -85,32 +88,57 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 .as.h .ic{color:#000}
 .as.h{background:var(--yellow-l)}
 
-/* ================= SLIDE 3 ================= */
-.chain{position:absolute;left:56px;right:56px;top:200px;display:grid;grid-template-columns:repeat(4,1fr);gap:46px}
-.cl{position:relative;display:flex;flex-direction:column;gap:18px}
-.cl .arr{position:absolute;right:-44px;top:36px;width:42px;height:20px}
+/* ================= SLIDE 3: del paquete al spec ================= */
+.mp{position:absolute;left:112px;right:112px;top:112px}
+.mh,.mr{display:grid;grid-template-columns:700px 80px 1fr;align-items:center}
+.mh{font-size:24px;font-weight:700;color:var(--g4);margin-bottom:10px;height:34px}
+.mr{margin-bottom:9px;min-height:68px}
+.mr .src{border:3px solid var(--g2);background:var(--g1);border-radius:999px;padding:8px 26px;font-size:24px;font-weight:700;line-height:1.1;display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:64px}
+.ex{font-weight:700;color:var(--blue-d);font-size:21px}
+.mr .ar{width:80px;height:20px;justify-self:center}
+.mr .ar line{stroke:var(--blue);stroke-width:4;stroke-dasharray:8 8;animation:dash 1s linear infinite}
+.mr .ar path{stroke:var(--blue);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mr .dst{border:4px solid var(--blue);border-radius:999px;padding:7px 28px;background:#fff;min-height:64px;display:flex;flex-direction:column;justify-content:center}
+.mr .dst b{font-size:25px;line-height:1.1}
+.mr .dst .tt{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.mr .dst small{font-size:19px;color:var(--g4);line-height:1.15;margin-top:2px}
+.mr .dst.arq{border-color:#000}
+.mr .dst.gate{border-color:var(--yellow);background:var(--yellow-l)}
+.mr .dst.ref{border-color:var(--g3);border-style:dashed}
+.mban{position:absolute;left:112px;right:112px;top:852px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.mban div{border-radius:26px;padding:14px 26px;font-size:23px;line-height:1.2;background:var(--g1)}
+.mban div.y{background:var(--yellow-l)}
+.mban b{display:block;font-size:25px;margin-bottom:2px}
+
+/* ================= SLIDE 4: insumos y entregables por fase ================= */
+.chain{position:absolute;left:56px;right:56px;top:164px;display:grid;grid-template-columns:repeat(5,1fr);gap:30px}
+.cl{position:relative;display:flex;flex-direction:column;gap:12px}
+.cl .arr{position:absolute;right:-29px;top:36px;width:26px;height:20px}
 .cl .arr line{stroke:var(--blue);stroke-width:4;stroke-dasharray:8 8;animation:dash 1s linear infinite}
 .cl .arr path{stroke:var(--blue);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.hd{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:999px;border:4px solid var(--blue);background:#fff;transition:all .35s;height:80px}
-.hd .ic{width:46px;height:46px;color:#000}
-.hd b{font-size:26px;line-height:1}
-.hd small{display:block;font-size:18px;color:var(--g3);font-weight:400;margin-top:3px}
-.box{border-radius:22px;padding:18px 22px;min-height:200px;transition:all .35s}
-.box h4{font-size:21px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;color:var(--g4)}
+.hd{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;border:4px solid var(--blue);background:#fff;transition:all .35s;height:92px}
+.hd .ic{width:40px;height:40px;color:#000}
+.hd b{font-size:24px;line-height:1}
+.hd small{display:block;font-size:16px;color:var(--g3);font-weight:400;margin-top:3px;line-height:1.1}
+.box{border-radius:22px;padding:12px 16px;transition:all .35s}
+.box.in{height:208px}.box.out{height:300px}
+.box h4{font-size:20px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--g4)}
 .box h4 i{display:inline-block;width:12px;height:12px;border-radius:50%}
-.box ul{list-style:none;display:grid;gap:8px}
-.box li{font-size:25px;line-height:1.15;padding-left:18px;position:relative}
-.box li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:#000}
+.box ul{list-style:none;display:grid;gap:6px}
+.box li{font-size:22px;line-height:1.15;padding-left:16px;position:relative}
+.box li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:#000}
+.box li .ex{font-size:18px;margin-left:4px}
+.nw{display:inline-block;border:2px solid #7030A0;color:#7030A0;border-radius:99px;padding:0 8px;font-size:14px;font-weight:700;margin-left:6px;vertical-align:1px}
 .in{background:var(--g1)}.in h4 i{background:var(--g3)}
 .out{background:var(--blue-l)}.out h4 i{background:var(--blue)}
-.who{border-radius:18px;padding:12px 16px;font-size:21px;line-height:1.2;background:#fff;border:3px dashed var(--g2);color:var(--g4);min-height:92px;font-size:23px;display:flex;align-items:center;gap:10px}
+.who{border-radius:18px;padding:8px 12px;line-height:1.15;background:#fff;border:3px dashed var(--g2);color:var(--g4);height:74px;font-size:19px;display:flex;align-items:center;gap:8px}
 .who.g{background:var(--yellow-l);border:3px solid var(--yellow);color:#000;font-weight:700}
-.who .ic{width:30px;height:30px;color:#000}
+.who .ic{width:26px;height:26px;color:#000}
 .cl.on .hd{background:var(--blue);border-color:var(--blue);color:#fff;transform:translateY(-4px)}
 .cl.on .hd .ic{color:#fff}.cl.on .hd small{color:#e3ecf8}
 .cl.on .out{box-shadow:0 0 0 4px var(--blue)}
-.rules{position:absolute;left:56px;right:56px;top:880px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.rl{display:flex;align-items:center;gap:16px;padding:14px 22px;border-radius:999px;border:3px solid #000;font-size:23px;line-height:1.15}
+.rules{position:absolute;left:56px;right:56px;top:896px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rl{display:flex;align-items:center;gap:16px;padding:10px 22px;border-radius:999px;border:3px solid #000;font-size:22px;line-height:1.15}
 .rl .ic{width:40px;height:40px;color:var(--blue)}
 .rl b{font-size:24px}
 
@@ -125,8 +153,8 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
     <img class="waves" src="assets/ondas.png" alt="">
     <div class="cover-logos"><img class="l" src="assets/tcs-blanco.png" alt="TCS Tata Consultancy Services"><img class="r" src="assets/tata-blanco.png" alt="Tata"></div>
     <div class="c-title">
-      <h1 class="rv" data-step="0">Skills SDD: un equipo de especialistas de IA que construye solo lo que el desarrollador aprueba</h1>
-      <p class="rv" data-step="1"><b>SDD</b> (desarrollo guiado por especificación): primero se escribe y se aprueba qué se va a construir. Después se construye.</p>
+      <h1 class="rv" data-step="0">Skills SDD: especialistas de IA que construyen solo lo que el desarrollador aprueba</h1>
+      <p class="rv" data-step="1"><b>SDD</b> (desarrollo guiado por especificación): el paquete de diseño de cada historia de usuario es el insumo; Diseño entrega el spec aprobado, y solo entonces se construye.</p>
     </div>
     <div class="pills">
       <div class="pillc rv" data-step="2"><span class="ic"><i data-ic="person"></i></span><div><b>Una skill, un especialista</b><span>Hace una sola tarea, siempre igual, y sabe qué recibe y qué entrega.</span></div></div>
@@ -137,26 +165,37 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 
   <!-- ===== 2 · EL FLUJO ===== -->
   <section class="slide" data-title="El flujo">
-    <h2 class="ttl">Del pedido al cambio integrado: la IA trabaja, las personas deciden</h2>
-    <div id="flowwrap"><svg id="flow" viewBox="0 0 1696 490" aria-label="Flujo del pedido al cambio integrado"></svg></div>
+    <h2 class="ttl">De la HU al cambio integrado: la IA trabaja, las personas deciden</h2>
+    <div id="phases" aria-label="Fases del SDLC"></div>
+    <div id="flowwrap"><svg id="flow" viewBox="0 0 1696 490" aria-label="Flujo de la historia de usuario al cambio integrado"></svg></div>
     <div id="flowcap"><span class="tg" id="fcTag">Paso 1</span><div><b id="fcT"></b><span id="fcD"></span></div></div>
     <div class="aside">
-      <div class="as rv" data-step="8" style="--d:0s"><span class="ic"><i data-ic="alert"></i></span><div><b>sdd-hotfix</b>Algo que ya funciona se rompió<em>Se activa cuando el usuario reporta un fallo.</em></div></div>
-      <div class="as rv" data-step="8" style="--d:.1s"><span class="ic"><i data-ic="layers"></i></span><div><b>sdd-arquitectura</b>Decisiones de fondo<em>Se activa cuando se cambia el stack, la base de datos o el despliegue.</em></div></div>
-      <div class="as rv" data-step="8" style="--d:.2s"><span class="ic"><i data-ic="compass"></i></span><div><b>sdd-estado y sdd-ramas</b>¿Dónde estoy? y mapa de trabajo<em>Estado, al iniciar cualquier tarea. Ramas, cuando un plan tiene varias fases.</em></div></div>
-      <div class="as h rv" data-step="8" style="--d:.3s"><span class="ic"><i data-ic="lock"></i></span><div><b>Siempre pide el OK del desarrollador</b>Integrar o borrar trabajo</div></div>
+      <div class="as rv" data-step="10" style="--d:0s"><span class="ic"><i data-ic="layers"></i></span><div><b>sdd-arquitectura</b>Desarrollo: decisiones de fondo<em>Se activa cuando se cambia el stack, la base de datos o el despliegue.</em></div></div>
+      <div class="as rv" data-step="10" style="--d:.1s"><span class="ic"><i data-ic="compass"></i></span><div><b>sdd-estado y sdd-ramas</b>Desarrollo: apoyo<em>Estado, al iniciar cualquier tarea. Ramas, una por historia de usuario.</em></div></div>
+      <div class="as rv" data-step="10" style="--d:.2s"><span class="ic"><i data-ic="alert"></i></span><div><b>sdd-hotfix</b>Entrega y Operación<em>Se activa cuando el usuario reporta un fallo en lo que ya corre.</em></div></div>
+      <div class="as h rv" data-step="10" style="--d:.3s"><span class="ic"><i data-ic="lock"></i></span><div><b>Siempre pide el OK del desarrollador</b>Integrar o borrar trabajo</div></div>
     </div>
   </section>
 
-  <!-- ===== 3 · INSUMOS Y ENTREGABLES ===== -->
+  <!-- ===== 3 · DEL PAQUETE AL SPEC ===== -->
+  <section class="slide" data-title="Del paquete al spec">
+    <h2 class="ttl">Diseño convierte el paquete de cada historia en un spec aprobado</h2>
+    <div class="mp" id="mp"></div>
+    <div class="mban">
+      <div class="rv" data-step="9"><b>Una capacidad puede reunir una o varias historias</b>Cada historia es un cambio con su rama, su Gate 1 y su trailer SDD-HU en el historial.</div>
+      <div class="y rv" data-step="9" style="--d:.15s"><b>Lo que pasa a Desarrollo</b>Spec aprobado + criterios CA-NN + plan. El paquete queda referenciado como forma exacta, no copiado.</div>
+    </div>
+  </section>
+
+  <!-- ===== 4 · INSUMOS Y ENTREGABLES POR FASE ===== -->
   <section class="slide" data-title="Insumos y entregables">
-    <h2 class="ttl">Lo que una skill entrega, la siguiente lo usa</h2>
-    <p class="sub">Nada se construye sin plano aprobado. Nada se integra sin inspección.</p>
+    <h2 class="ttl">Lo que una fase entrega, la siguiente lo usa</h2>
+    <p class="sub">Insumos (gris) y entregables (azul) con su extensión. <span class="nw" style="font-size:18px">Nuevo</span> = artefacto propuesto.</p>
     <div class="chain" id="chain"></div>
     <div class="rules">
-      <div class="rl rv" data-step="5" style="--d:0s"><span class="ic"><i data-ic="lock"></i></span><div><b>Todo queda local.</b> Ninguna skill publica ni sube nada.</div></div>
-      <div class="rl rv" data-step="5" style="--d:.12s"><span class="ic"><i data-ic="check"></i></span><div><b>Un script guarda.</b> Valida las reglas antes de cada cambio.</div></div>
-      <div class="rl rv" data-step="5" style="--d:.24s"><span class="ic"><i data-ic="branch"></i></span><div><b>El historial es la memoria.</b> Cada paso queda registrado.</div></div>
+      <div class="rl rv" data-step="6" style="--d:0s"><span class="ic"><i data-ic="lock"></i></span><div><b>Todo queda local.</b> Ninguna skill publica ni sube nada.</div></div>
+      <div class="rl rv" data-step="6" style="--d:.12s"><span class="ic"><i data-ic="check"></i></span><div><b>Un script guarda.</b> Valida las reglas antes de cada cambio.</div></div>
+      <div class="rl rv" data-step="6" style="--d:.24s"><span class="ic"><i data-ic="branch"></i></span><div><b>El historial es la memoria.</b> Cada paso queda registrado.</div></div>
     </div>
   </section>
 
@@ -190,15 +229,18 @@ const ic=n=>`<svg viewBox="0 0 24 24">${IC[n]||''}</svg>`;
 document.querySelectorAll('i[data-ic]').forEach(e=>{e.outerHTML=ic(e.dataset.ic)});
 
 /* ---------- slide 2: flujo ---------- */
+const PHASES=['Planificación','Diseño','Desarrollo','Testing','Entrega y Operación'];
 const FLOW=[
- {k:'Pedido',l:'P',i:'person',tag:'Usuario',t:'Todo empieza con un pedido',d:'El usuario expresa una idea o necesidad con sus propias palabras. El asistente decide qué skill activar.',o:''},
- {k:'Exploración',l:'A',i:'search',tag:'Skill 1',t:'Exploración: entender',d:'Lee specs, código y estado del trabajo. Entrega un resumen y clasifica el Caso. No escribe nada.',o:'Resumen + Caso'},
- {k:'Propuesta',l:'A',i:'sign',tag:'Skill 2',t:'Propuesta: escribir el plano',d:'Crea la rama, escribe el cambio en el spec y los criterios de aceptación.',o:'Spec + criterios'},
- {k:'Gate 1',l:'P',i:'lock',h:1,tag:'Gate 1',t:'El desarrollador aprueba el plano',d:'La IA se detiene. Con su OK, el spec queda guardado como punto fijo.',o:''},
- {k:'Aplicación',l:'A',i:'hammer',tag:'Skill 3',t:'Aplicación: construir',d:'Pruebas primero, código después, en guardados pequeños y dentro del plano.',o:'Pruebas + código'},
- {k:'Verificación',l:'A',i:'check',tag:'Skill 4',t:'Verificación: inspeccionar',d:'Ejecuta las pruebas, compara código y spec en dos direcciones y arma el reporte.',o:'Matriz + reporte'},
- {k:'Gate 2',l:'P',i:'lock',h:1,tag:'Gate 2',t:'El desarrollador aprueba el cierre',d:'La IA no se autoaprueba. El desarrollador revisa el reporte y decide si el cambio se integra.',o:''},
- {k:'Integrar',l:'A',i:'branch',tag:'Con OK',t:'Se integra al producto principal',d:'Un script valida las reglas y hace la integración local, solo con el OK explícito del desarrollador.',o:'Cambio integrado'}
+ {k:'Historia',ph:0,l:'P',i:'person',tag:'Planificación',t:'Todo empieza con una historia de usuario (HU)',d:'Planificación, sin skills, entrega el pedido priorizado. Cada HU es un cambio con su propia rama.',o:''},
+ {k:'Insumos',ph:1,l:'P',i:'layers',tag:'Insumo',t:'Paquete de diseño por HU',d:'Arquitectura, modelo de datos, OpenAPI, UI, seguridad y plan técnico. Es insumo de Diseño, no reemplaza al spec.',o:''},
+ {k:'Exploración',ph:1,l:'A',i:'search',tag:'Skill 1',t:'Exploración: entender',d:'Lee specs, paquete y estado; clasifica el Caso y revisa que el paquete cubra los requisitos de la HU.',o:'Caso + cobertura'},
+ {k:'Propuesta',ph:1,l:'A',i:'sign',tag:'Skill 2',t:'Propuesta: convertir el paquete en spec',d:'Escribe el spec, deriva los criterios CA-NN y adopta el WBS como plan. El paquete se referencia, no se copia.',o:'Spec + CA-NN'},
+ {k:'Gate 1',ph:1,l:'P',i:'lock',h:1,tag:'Gate 1',t:'Aprueban los roles del acta',d:'Arquitecto, líder técnico, UI/UX y seguridad firman. El agente no firma por nadie. Con su OK, el spec es el punto fijo.',o:''},
+ {k:'Aplicación',ph:2,l:'A',i:'hammer',tag:'Skill 3',t:'Aplicación: construir',d:'Pruebas primero y código mínimo, cumpliendo el OpenAPI y el DDL referenciados. Ante un hallazgo, se detiene.',o:'Pruebas + código'},
+ {k:'Verificación',ph:3,l:'A',i:'check',tag:'Skill 4',t:'Verificación: inspeccionar',d:'Valida contrato, esquema, estados de pantalla y roles con los CA-NN; mide la cobertura del proyecto.',o:'Matriz + reporte'},
+ {k:'Gate 2',ph:3,l:'P',i:'lock',h:1,tag:'Gate 2',t:'El desarrollador aprueba el cierre',d:'La IA no se autoaprueba. El desarrollador revisa el reporte y decide si el cambio se integra.',o:''},
+ {k:'Integrar',ph:3,l:'A',i:'branch',tag:'Con OK',t:'Se integra al producto principal',d:'Un script valida las reglas y hace la integración local, solo con el OK explícito del desarrollador.',o:'Cambio integrado'},
+ {k:'Hotfix',ph:4,l:'A',i:'alert',tag:'Skill 5',t:'Hotfix: arreglar lo que ya corre',d:'Última fase: prueba que reproduce el fallo, arreglo mínimo y post-mortem. Si el spec está mal, vuelve a Exploración.',o:'Arreglo mínimo'}
 ];
 const flow={svg:document.getElementById('flow'),segs:[],nodes:[],raf:null,timer:null,idx:0,run:false,token:null};
 (function(){
@@ -206,8 +248,8 @@ const flow={svg:document.getElementById('flow'),segs:[],nodes:[],raf:null,timer:
  const el=(t,a,p)=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);(p||flow.svg).appendChild(e);return e};
  el('rect',{x:0,y:8,width:W,height:230,rx:34,fill:'#FFF0D2'});
  el('rect',{x:0,y:252,width:W,height:236,rx:34,fill:'#F2F2F2'});
- let t=el('text',{x:300,y:46,'font-size':21,'font-weight':700,fill:'#595959'});t.textContent='PERSONA';
- t=el('text',{x:268,y:284,'font-size':20,'font-weight':700,fill:'#595959'});t.textContent='ASISTENTE DE IA';
+ let t=el('text',{x:W-26,y:46,'font-size':21,'font-weight':700,fill:'#595959','text-anchor':'end'});t.textContent='PERSONAS Y DISEÑO';
+ t=el('text',{x:26,y:284,'font-size':20,'font-weight':700,fill:'#595959'});t.textContent='ASISTENTE DE IA';
  FLOW.forEach((f,i)=>{f.x=pad+gap*i;f.y=f.l==='P'?yP:yA});
  const gb=el('g',{}),gl=el('g',{});
  for(let i=0;i<n-1;i++){
@@ -224,18 +266,28 @@ const flow={svg:document.getElementById('flow'),segs:[],nodes:[],raf:null,timer:
   if(f.h)el('rect',{x:-r,y:-r,width:2*r,height:2*r,rx:14,transform:'rotate(45)',fill},g);else el('circle',{r,fill},g);
   const s=el('svg',{x:-23,y:-23,width:46,height:46,viewBox:'0 0 24 24',fill:'none',stroke:ico,'stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round'},g);s.innerHTML=IC[f.i];
   const up=f.l==='P';
-  const tx=el('text',{y:up?-76:84,'text-anchor':'middle','font-size':26,'font-weight':700,fill:'#000'},g);tx.textContent=f.k;
-  if(f.o){const o=el('text',{y:up?-50:112,'text-anchor':'middle','font-size':20,fill:'#3E6A9D','font-weight':700},g);o.textContent=f.o;}
+  const tx=el('text',{y:up?-76:84,'text-anchor':'middle','font-size':25,'font-weight':700,fill:'#000'},g);tx.textContent=f.k;
+  if(f.o){const o=el('text',{y:up?-50:112,'text-anchor':'middle','font-size':19,fill:'#3E6A9D','font-weight':700},g);o.textContent=f.o;}
   flow.nodes.push(g);
  });
  flow.lit=gl;
  flow.token=el('circle',{r:14,fill:'#fff',stroke:'#000','stroke-width':5,cx:FLOW[0].x,cy:FLOW[0].y});
+ // franja de fases: cada fase ocupa el tramo de los nodos que le pertenecen
+ const ph=document.getElementById('phases');
+ PHASES.forEach((name,p)=>{
+  const idx=FLOW.map((f,i)=>f.ph===p?i:-1).filter(i=>i>=0);
+  const first=idx[0],last=idx[idx.length-1];
+  const x0=first===0?0:(FLOW[first-1].x+FLOW[first].x)/2;
+  const x1=last===n-1?W:(FLOW[last].x+FLOW[last+1].x)/2;
+  const d=document.createElement('div');d.style.left=(x0+1)+'px';d.style.width=(x1-x0-2)+'px';d.textContent=name;d.dataset.p=p;ph.appendChild(d);
+ });
 })();
 const $=s=>document.querySelector(s);
 function flowShow(i){
  const f=FLOW[i],cap=$('#flowcap');
  $('#fcT').textContent=f.t;$('#fcD').textContent=f.d;$('#fcTag').textContent=f.tag;
  cap.classList.toggle('h',f.l==='P');
+ document.querySelectorAll('#phases div').forEach(d=>d.classList.toggle('on',+d.dataset.p===f.ph));
  flow.nodes.forEach((g,k)=>{g.setAttribute('opacity',k<=i?1:.4);g.querySelector('.ring').setAttribute('opacity',k===i?1:0)});
  flow.segs.forEach((s,k)=>{s.lp.style.strokeDashoffset=k<i?0:s.L});
 }
@@ -251,31 +303,48 @@ function flowTo(i,animate){
  flow.raf=requestAnimationFrame(step);
 }
 
-/* ---------- slide 3: cadena ---------- */
-const CH=[
- {n:'Exploración',p:'Fase 1',i:'search',inp:['Pedido del usuario','Specs y código actuales','Estado del trabajo'],out:['Resumen del problema','El Caso (1 de 5)','Rama propuesta'],who:'El desarrollador confirma el Caso y el alcance'},
- {n:'Propuesta',p:'Fase 2',i:'sign',inp:['Caso confirmado','Decisiones de alcance del desarrollador'],out:['Spec actualizado','Criterios CA-NN','Plano guardado como punto fijo'],who:'Gate 1: el desarrollador aprueba el plano',g:1},
- {n:'Aplicación',p:'Fase 3',i:'hammer',inp:['Spec aprobado','Criterios CA-NN'],out:['Pruebas escritas primero','Código mínimo','Guardados pequeños'],who:'Solo si descubre algo no previsto, el desarrollador aprueba el ajuste'},
- {n:'Verificación',p:'Fase 4',i:'check',inp:['Código construido','Spec y criterios','Pruebas del proyecto'],out:['Matriz criterio → prueba','Reporte de verificación','Cambio integrado'],who:'Gate 2: el desarrollador aprueba el cierre',g:1}
+/* ---------- slide 3: del paquete al spec ---------- */
+const MAP=[
+ {f:'03_OPENAPI_CONTRATO',e:'.json',k:'',d:'Spec · Contrato y Modos de falla',x:'docs/specs/spec-&lt;capacidad&gt;.md',n:'La forma observable va al spec; el .json se referencia como forma exacta.'},
+ {f:'02_SCHEMA_DDL',e:'.sql',k:'',d:'Spec · Invariantes y Límites',x:'docs/specs/spec-&lt;capacidad&gt;.md',n:'Las reglas (único, clave foránea, baja lógica) con su porqué; el .sql se referencia.'},
+ {f:'04_UI_ESPECIFICACION',e:'.md · .html',k:'',d:'Spec · Flujo y Modos de falla',x:'docs/specs/spec-&lt;capacidad&gt;.md',n:'Un criterio CA-NN por cada estado de pantalla; el prototipo se referencia.'},
+ {f:'05_MATRIZ_SEGURIDAD',e:'.md',k:'',d:'Spec · Alcance e Invariantes',x:'docs/specs/spec-&lt;capacidad&gt;.md',n:'Un criterio CA-NN por fila de roles (permitida y denegada) y por mitigación.'},
+ {f:'06_PLAN_CONSTRUCCION_WBS',e:'.md',k:'',d:'Plan',x:'docs/plan-&lt;tema&gt;-AAAA-MM-DD.md',n:'Cada tarea lleva los CA-NN que cubre; las dependencias arman el mapa de ramas.'},
+ {f:'01_ARQUITECTURA_C4_Y_ADR',e:'.md',k:'arq',d:'Arquitectura',x:'docs/arquitectura.md · docs/adr/NNNN-*.md',n:'Una sola vez por proyecto, no por cada HU.'},
+ {f:'00_ACTA_APROBACION_DOR',e:'.md',k:'gate',d:'Gate 1 con varios roles',x:'acta .md firmada + commit SDD-HU',n:'No se hace el commit de propuesta mientras queden firmas pendientes.'},
+ {f:'02_MODELO_DATOS_ERD',e:'.md · .json',k:'ref',d:'Solo se referencia',x:'docs/design/HU-0NN/ (.md · .json)',n:'ERD y paquete consolidado: el spec los cita, Desarrollo no los necesita.'}
 ];
-const arrow='<svg class="arr" viewBox="0 0 42 20"><line x1="0" y1="10" x2="32" y2="10"/><path d="M28 3l8 7-8 7"/></svg>';
-$('#chain').innerHTML=CH.map((c,k)=>`<div class="cl rv" data-step="${k+1}">${k<3?arrow:''}
+const ar='<svg class="ar" viewBox="0 0 80 20"><line x1="0" y1="10" x2="64" y2="10"/><path d="M58 3l8 7-8 7"/></svg>';
+$('#mp').innerHTML=`<div class="mh rv" data-step="0"><div>Paquete de diseño de la HU (insumo)</div><div></div><div>Dónde queda en SDD</div></div>`+
+ MAP.map((m,i)=>`<div class="mr rv" data-step="${i+1}"><div class="src">${m.f}<span class="ex">${m.e}</span></div>${ar}<div class="dst ${m.k}"><div class="tt"><b>${m.d}</b> <span class="ex">${m.x}</span></div><small>${m.n}</small></div></div>`).join('');
+
+/* ---------- slide 4: cadena por fase ---------- */
+const CH=[
+ {n:'Planificación',p:'Sin skills',i:'person',inp:[['Necesidades de negocio','.docx'],['Contexto y restricciones','.md'],['Normativas y SLOs','.pdf']],out:[['Requerimientos e Historias','.md · .feature'],['Backlog / Roadmap','.xlsx'],['Pedido priorizado para SDD','.md',1]],who:'Personas de negocio y producto'},
+ {n:'Diseño',p:'exploración · propuesta',i:'sign',inp:[['Paquete de diseño por HU','docs/design/'],['Specs e índice','.md'],['Arquitectura y ADR','.md']],out:[['Spec + índice con Historias','.md'],['Criterios CA-NN','.md'],['Plan = WBS + CA-NN','plan-*.md'],['Arquitectura (C4, tokens)','.md'],['Rama + commit SDD-HU','git']],who:'Gate 1: aprueban los roles del acta',g:1},
+ {n:'Desarrollo',p:'aplicación · arquitectura · ramas · estado',i:'hammer',inp:[['Spec aprobado y CA-NN','.md'],['OpenAPI y DDL referenciados','.json · .sql'],['Plan y mapa de ramas','.md']],out:[['Pruebas por criterio','tests/**'],['Código fuente','src/**'],['ADR global','docs/adr/*.md'],['Mapa de ramas por HU','.md']],who:'Ante un hallazgo, el desarrollador aprueba el ajuste'},
+ {n:'Testing',p:'verificación',i:'check',inp:[['Código construido','rama'],['Spec y criterios CA-NN','.md'],['Umbral de cobertura','.md']],out:[['Matriz criterio → prueba','.md'],['Reporte de verificación','commit'],['Spec recortado a lo construido','.md'],['Informe de cobertura','.xml · .html',1],['Cambio integrado','merge']],who:'Gate 2: el desarrollador aprueba el cierre',g:1},
+ {n:'Entrega y Operación',p:'hotfix',i:'alert',inp:[['Descripción del fallo','texto'],['Registros del incidente','.log'],['Spec de la capacidad','.md']],out:[['Prueba de regresión','tests/**'],['Arreglo mínimo','src/**'],['Post-mortem','.md'],['Feedback al backlog','.md',1]],who:'El desarrollador aprueba la integración'}
+];
+const li=x=>`<li>${x[0]}${x[1]?` <span class="ex">${x[1]}</span>`:''}${x[2]?'<span class="nw">Nuevo</span>':''}</li>`;
+const arrow='<svg class="arr" viewBox="0 0 26 20"><line x1="0" y1="10" x2="16" y2="10"/><path d="M13 3l8 7-8 7"/></svg>';
+$('#chain').innerHTML=CH.map((c,k)=>`<div class="cl rv" data-step="${k+1}">${k<CH.length-1?arrow:''}
  <div class="hd"><span class="ic"><i data-ic="${c.i}"></i></span><div><b>${c.n}</b><small>${c.p}</small></div></div>
- <div class="box in"><h4><i></i>Recibe</h4><ul>${c.inp.map(x=>`<li>${x}</li>`).join('')}</ul></div>
- <div class="box out"><h4><i></i>Entrega</h4><ul>${c.out.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <div class="box in"><h4><i></i>Insumos</h4><ul>${c.inp.map(li).join('')}</ul></div>
+ <div class="box out"><h4><i></i>Entregables</h4><ul>${c.out.map(li).join('')}</ul></div>
  <div class="who ${c.g?'g':''}"><span class="ic"><i data-ic="person"></i></span>${c.who}</div></div>`).join('');
 document.querySelectorAll('#chain i[data-ic]').forEach(e=>{e.outerHTML=ic(e.dataset.ic)});
 function chainSet(st){document.querySelectorAll('.cl').forEach((c,k)=>c.classList.toggle('on',st===k+1))}
 
 /* ---------- navegación: cada flecha avanza una animación; al agotarlas, pasa de slide ---------- */
 const slides=[...document.querySelectorAll('.slide')],stage=$('#stage');
-const MAXSTEP=[4,8,5];   // pasos por slide (0 = estado inicial)
+const MAXSTEP=[4,10,9,6];   // pasos por slide (0 = estado inicial)
 let cur=0,step=0;
 function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`scale(${s})`;stage.style.left=((innerWidth-1920*s)/2)+'px';stage.style.top=((innerHeight-1080*s)/2)+'px'}
 function applyStep(animate){
  slides[cur].querySelectorAll('[data-step]').forEach(e=>e.classList.toggle('show',step>=+e.dataset.step));
  if(cur===1)flowTo(Math.min(step,FLOW.length-1),animate);
- if(cur===2)chainSet(step);
+ if(cur===3)chainSet(step);
  $('#stepl').textContent=`Paso ${step+1} de ${MAXSTEP[cur]+1}`;
  try{history.replaceState(null,'','#'+(cur+1))}catch(e){}
 }

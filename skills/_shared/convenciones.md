@@ -24,7 +24,7 @@ Rutas, nombres y reglas que las skills (`sdd-exploracion`, `sdd-propuesta`, `sdd
 - Ruta: `docs/specs/spec-<capacidad>.md`, con `<capacidad>` en kebab-case (ej. `spec-autenticacion.md`, `spec-carrito-compras.md`).
 - **Criterio de tamaño de una capacidad** (regla de estas skills; la v4 no fija uno): si dos comportamientos casi siempre cambian juntos y comparten los mismos invariantes, van en el mismo spec; si pueden evolucionar por separado, van en specs separados. Si el proyecto ya tiene un spec que cubre varios comportamientos relacionados, no partirlo en specs sueltos a mitad de camino sin que sea una decisión explícita — eso rompe la trazabilidad.
 - Formato fijo: ver `plantilla-spec.md` en esta misma carpeta. No te apartes del formato, ni siquiera para "simplificar".
-- Índice: `docs/specs/README.md`, con una tabla `Capacidad → Spec` (v4) más la columna *Spec padre* (extensión de las skills, ver "Specs hijos"). Se actualiza en `/sdd-propuesta` cada vez que nace un spec nuevo (Caso 1, Caso 2), en la Fase 0 (Caso 5), y cada vez que se divide uno.
+- Índice: `docs/specs/README.md`, con una tabla `Capacidad → Spec` (v4) más las columnas *Spec padre* (extensión de las skills, ver "Specs hijos") e *Historias* (extensión: las HU que alimentaron el spec). Se actualiza en `/sdd-propuesta` cada vez que nace un spec nuevo (Caso 1, Caso 2), en la Fase 0 (Caso 5), y cada vez que se divide uno.
 - **Quién escribe el spec:** `/sdd-propuesta` (el delta, antes del código), la Fase 0 de `/sdd-exploracion` (Caso 5), `/sdd-aplicacion` **solo** para un ajuste por descubrimiento con OK explícito, y `/sdd-verificacion` **solo** para recortar lo que no se construyó.
 
 ### Specs hijos (una subcapacidad con spec propio)
@@ -36,6 +36,14 @@ Rutas, nombres y reglas que las skills (`sdd-exploracion`, `sdd-propuesta`, `sdd
 - **Un solo nivel:** un hijo no tiene hijos. Si un hijo necesita dividirse, la parte nueva queda como hermana del mismo padre.
 - Cuándo nace un hijo, con qué criterios y en qué fase se recomienda: `verificacion-division.md` en esta misma carpeta. **El agente recomienda; el usuario aprueba o niega** — nunca se divide un spec por iniciativa propia.
 - Una división aprobada se aplica en `/sdd-propuesta`, que es la fase que escribe specs, en un commit propio que no toca código.
+
+## Paquete de diseño por historia (HU) y relación HU ↔ capacidad
+
+> **Extensión de las skills.** Detalle completo y tabla de mapeo en `diseno-a-spec.md`.
+
+- Cuando la fase de Diseño produce un **paquete de diseño por historia de usuario**, vive en `docs/design/HU-0NN/` (si el proyecto ya usa otra ruta, respetarla). Es **insumo**: `/sdd-exploracion` lo lee y `/sdd-propuesta` lo convierte en spec, criterios `CA-NN` y plan. **No es un spec ni lo reemplaza:** el spec lo referencia como forma exacta (contrato, DDL, UI) y no copia su contenido.
+- **Una capacidad tiene una o varias HU.** Cada HU es un cambio propio (su rama, su Gate 1, su commit de propuesta); varias HU de una misma capacidad entran como subcapacidades del mismo spec. Una HU que abarca dos capacidades se parte en dos cambios.
+- La relación HU ↔ capacidad se escribe en: la columna *Historias* del índice `docs/specs/README.md`, la línea `Historias:` de *Referencias* del spec y el trailer `SDD-HU` de los commits.
 
 ## Dependencias entre specs
 
@@ -71,6 +79,7 @@ Cuando hay plan:
 - **Un archivo de contexto generado por una herramienta, sin contenido de arquitectura, no cuenta como documento de arquitectura.** Ejemplo real: Next.js 16 escribe `AGENTS.md` y `CLAUDE.md` solo, con un aviso sobre su propia versión, y los reescribe en cada `next dev`. En ese caso crear `docs/arquitectura.md` y agregar al archivo de contexto una línea que enlace a él, sin borrar lo que escribió la herramienta.
 - Si el proyecto no tiene ninguno de esos archivos, crear `docs/arquitectura.md` y, si la herramienta usada sí soporta un archivo de contexto propio, hacer que ese archivo solo enlace a `docs/arquitectura.md` en vez de duplicar el contenido.
 - Contenido mínimo: patrón arquitectónico, límites entre servicios/módulos, invariantes transversales (concurrencia, seguridad, portabilidad del entorno), restricciones del entorno, comandos útiles (cómo correr, testear, lintear, buildear y medir), **flujo de trabajo** (nombre del tronco, convención de ramas y commits, estrategia de merge, protecciones del repo — `ramas-y-commits.md`), **despliegue y reversión** (cómo se publica, cómo se vuelve atrás — `entrega.md`) e **ADRs** (`docs/adr/`). Incluir la instrucción de la regla 3.1 ("leer el spec antes de proponer, escribir el delta del spec antes de codificar"), para que se aplique en cada sesión sin depender de que alguien la recuerde.
+- **Cuando hay paquetes de diseño** (`diseno-a-spec.md`), el documento de arquitectura incluye además, una sola vez por proyecto y no por HU: diagramas C4 (contexto y contenedores), tokens y convenciones de UI, clasificación de datos y reglas de seguridad transversales, estructura recomendada del repositorio, **umbral de cobertura del proyecto** (si lo hay) y los **Aprobadores del Gate 1** (roles; si no se declaran, el Gate 1 es de una sola persona).
 - Se crea en `/sdd-propuesta` de un Caso 1 (antes del código), o en la Fase 0 de un Caso 5. Después, solo se actualiza mediante un **cambio dedicado a arquitectura**: la skill `/sdd-arquitectura` (rama `arq/`, ADR numerado en `docs/adr/`) — nunca como efecto lateral de un cambio funcional. En la v1 este cambio no tenía skill; en la v2 sí.
 
 ## Ramas, commits y estado (v2)

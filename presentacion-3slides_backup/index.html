@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skills SDD - Resumen</title>
+<style>
+/* Paleta y tipografía según TCS PPT Template: negro y blanco como base,
+   azul y amarillo como secundarios, Calibri Light / Calibri Bold. */
+:root{
+  --black:#000; --white:#fff;
+  --blue:#4E84C4; --blue-d:#3E6A9D; --blue-l:#DCE6F3;
+  --yellow:#FBB034; --yellow-l:#FFF0D2;
+  --red:#E41165;
+  --g1:#F2F2F2; --g2:#D9D9D9; --g3:#7F7F7F; --g4:#595959;
+  --font:Calibri,Carlito,'Segoe UI',system-ui,sans-serif;
+  --light:'Calibri Light',Calibri,Carlito,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#000;font-family:var(--font);color:var(--black)}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+#stage{position:absolute;width:1920px;height:1080px;left:0;top:0;transform-origin:0 0;background:#fff;overflow:hidden}
+
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .45s,visibility .45s;background:#fff}
+.slide.active{opacity:1;visibility:visible;z-index:2}
+.slide.dark{background:#000;color:#fff}
+
+/* títulos (Calibri Light, como en la plantilla) */
+.ttl{position:absolute;left:56px;top:34px;right:56px;font-family:var(--light);font-weight:300;font-size:60px;line-height:1.08}
+.sub{position:absolute;left:56px;top:112px;right:56px;font-family:var(--light);font-weight:300;font-size:30px;color:var(--g4)}
+
+/* pie de página */
+.foot{position:absolute;left:0;right:0;bottom:0;height:130px;z-index:20;pointer-events:none}
+.foot img{position:absolute;bottom:34px}
+.foot .l{left:56px;height:62px}
+.foot .r{right:56px;height:68px}
+.foot .c{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);font-size:20px;color:var(--g4);display:flex;gap:16px;align-items:center}
+.foot .c b{font-weight:700}.foot .c i{width:2px;height:24px;background:var(--g3)}
+#nav{position:absolute;right:190px;bottom:40px;z-index:25;display:flex;gap:12px}
+#nav button{width:46px;height:46px;border-radius:50%;border:2px solid var(--g3);color:var(--g4);display:grid;place-items:center;transition:all .2s}
+#nav button:hover{border-color:var(--blue);color:var(--blue)}
+#nav svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+#stage.dark #nav button{border-color:#888;color:#ddd}
+#stage.dark #nav button:hover{border-color:var(--yellow);color:var(--yellow)}
+
+.ic{display:inline-grid;place-items:center;flex:none}
+.ic svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.rv.show{opacity:1;transform:none}
+#stepl{align-self:center;font-size:19px;color:var(--g4);margin-right:8px;font-variant-numeric:tabular-nums}
+#stage.dark #stepl{color:#ddd}
+@keyframes dash{to{stroke-dashoffset:-40}}
+
+/* ================= SLIDE 1 ================= */
+.cover-logos img{position:absolute;top:30px}
+.cover-logos .l{left:56px;height:68px}.cover-logos .r{right:56px;height:72px}
+.waves{position:absolute;left:0;bottom:0;width:1920px;height:auto;display:block}
+.c-title{position:absolute;left:56px;top:150px;width:1500px}
+.c-title h1{font-family:var(--light);font-weight:300;font-size:84px;line-height:1.05}
+.c-title p{font-family:var(--light);font-weight:300;font-size:36px;margin-top:26px;color:#e6e6e6;line-height:1.3;max-width:1350px}
+.c-title p b{font-family:var(--font);font-weight:700;color:var(--yellow)}
+.pills{position:absolute;left:56px;right:56px;top:560px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pillc{display:flex;gap:24px;align-items:center;padding:26px 34px;border-radius:999px;border:4px solid var(--blue);background:rgba(0,0,0,.72);min-height:170px}
+.pillc.y{border-color:var(--yellow)}
+.pillc .ic{width:76px;height:76px;color:#fff}
+.pillc b{display:block;font-size:34px;font-weight:700;margin-bottom:6px}
+.pillc span{font-size:25px;line-height:1.25;color:#ddd;font-weight:400;display:block}
+
+/* ================= SLIDE 2 ================= */
+#flowwrap{position:absolute;left:112px;top:170px;width:1696px}
+#flow{width:1696px;height:490px;display:block;overflow:visible}
+#flowcap{position:absolute;left:112px;top:690px;width:1696px;display:flex;gap:28px;align-items:center;padding:20px 34px;border-radius:999px;border:4px solid var(--blue);min-height:112px;background:#fff}
+#flowcap.h{border-color:var(--yellow);background:var(--yellow-l)}
+#flowcap .tg{flex:none;padding:8px 24px;border-radius:999px;background:var(--blue);color:#fff;font-weight:700;font-size:24px;min-width:150px;text-align:center}
+#flowcap.h .tg{background:var(--yellow);color:#000}
+#flowcap b{display:block;font-size:30px}
+#flowcap span{font-size:24px;color:var(--g4);line-height:1.25}
+.aside{position:absolute;left:112px;top:822px;width:1696px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.as{display:flex;gap:14px;align-items:flex-start;padding:12px 18px;border-radius:20px;background:var(--g1);font-size:21px;line-height:1.2;color:var(--g4)}
+.as b{display:block;color:#000;font-size:23px}
+.as em{display:block;font-style:normal;font-weight:700;color:var(--blue-d);font-size:20px;line-height:1.2;margin-top:6px}
+.as .ic{width:44px;height:44px;color:var(--blue)}
+.as.h .ic{color:#000}
+.as.h{background:var(--yellow-l)}
+
+/* ================= SLIDE 3 ================= */
+.chain{position:absolute;left:56px;right:56px;top:200px;display:grid;grid-template-columns:repeat(4,1fr);gap:46px}
+.cl{position:relative;display:flex;flex-direction:column;gap:18px}
+.cl .arr{position:absolute;right:-44px;top:36px;width:42px;height:20px}
+.cl .arr line{stroke:var(--blue);stroke-width:4;stroke-dasharray:8 8;animation:dash 1s linear infinite}
+.cl .arr path{stroke:var(--blue);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hd{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:999px;border:4px solid var(--blue);background:#fff;transition:all .35s;height:80px}
+.hd .ic{width:46px;height:46px;color:#000}
+.hd b{font-size:26px;line-height:1}
+.hd small{display:block;font-size:18px;color:var(--g3);font-weight:400;margin-top:3px}
+.box{border-radius:22px;padding:18px 22px;min-height:200px;transition:all .35s}
+.box h4{font-size:21px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px;color:var(--g4)}
+.box h4 i{display:inline-block;width:12px;height:12px;border-radius:50%}
+.box ul{list-style:none;display:grid;gap:8px}
+.box li{font-size:25px;line-height:1.15;padding-left:18px;position:relative}
+.box li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;background:#000}
+.in{background:var(--g1)}.in h4 i{background:var(--g3)}
+.out{background:var(--blue-l)}.out h4 i{background:var(--blue)}
+.who{border-radius:18px;padding:12px 16px;font-size:21px;line-height:1.2;background:#fff;border:3px dashed var(--g2);color:var(--g4);min-height:92px;font-size:23px;display:flex;align-items:center;gap:10px}
+.who.g{background:var(--yellow-l);border:3px solid var(--yellow);color:#000;font-weight:700}
+.who .ic{width:30px;height:30px;color:#000}
+.cl.on .hd{background:var(--blue);border-color:var(--blue);color:#fff;transform:translateY(-4px)}
+.cl.on .hd .ic{color:#fff}.cl.on .hd small{color:#e3ecf8}
+.cl.on .out{box-shadow:0 0 0 4px var(--blue)}
+.rules{position:absolute;left:56px;right:56px;top:880px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rl{display:flex;align-items:center;gap:16px;padding:14px 22px;border-radius:999px;border:3px solid #000;font-size:23px;line-height:1.15}
+.rl .ic{width:40px;height:40px;color:var(--blue)}
+.rl b{font-size:24px}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ===== 1 · LA IDEA ===== -->
+  <section class="slide dark" data-title="La idea">
+    <img class="waves" src="assets/ondas.png" alt="">
+    <div class="cover-logos"><img class="l" src="assets/tcs-blanco.png" alt="TCS Tata Consultancy Services"><img class="r" src="assets/tata-blanco.png" alt="Tata"></div>
+    <div class="c-title">
+      <h1 class="rv" data-step="0">Skills SDD: un equipo de especialistas de IA que construye solo lo que el desarrollador aprueba</h1>
+      <p class="rv" data-step="1"><b>SDD</b> (desarrollo guiado por especificación): primero se escribe y se aprueba qué se va a construir. Después se construye.</p>
+    </div>
+    <div class="pills">
+      <div class="pillc rv" data-step="2"><span class="ic"><i data-ic="person"></i></span><div><b>Una skill, un especialista</b><span>Hace una sola tarea, siempre igual, y sabe qué recibe y qué entrega.</span></div></div>
+      <div class="pillc rv" data-step="3"><span class="ic"><i data-ic="compass"></i></span><div><b>Se activa sola</b><span>El asistente lee el pedido del usuario y el estado del trabajo, y elige la skill adecuada.</span></div></div>
+      <div class="pillc y rv" data-step="4"><span class="ic"><i data-ic="lock"></i></span><div><b>Se detiene cuando importa</b><span>En los puntos clave espera a una persona. Nada importante pasa sin OK.</span></div></div>
+    </div>
+  </section>
+
+  <!-- ===== 2 · EL FLUJO ===== -->
+  <section class="slide" data-title="El flujo">
+    <h2 class="ttl">Del pedido al cambio integrado: la IA trabaja, las personas deciden</h2>
+    <div id="flowwrap"><svg id="flow" viewBox="0 0 1696 490" aria-label="Flujo del pedido al cambio integrado"></svg></div>
+    <div id="flowcap"><span class="tg" id="fcTag">Paso 1</span><div><b id="fcT"></b><span id="fcD"></span></div></div>
+    <div class="aside">
+      <div class="as rv" data-step="8" style="--d:0s"><span class="ic"><i data-ic="alert"></i></span><div><b>sdd-hotfix</b>Algo que ya funciona se rompió<em>Se activa cuando el usuario reporta un fallo.</em></div></div>
+      <div class="as rv" data-step="8" style="--d:.1s"><span class="ic"><i data-ic="layers"></i></span><div><b>sdd-arquitectura</b>Decisiones de fondo<em>Se activa cuando se cambia el stack, la base de datos o el despliegue.</em></div></div>
+      <div class="as rv" data-step="8" style="--d:.2s"><span class="ic"><i data-ic="compass"></i></span><div><b>sdd-estado y sdd-ramas</b>¿Dónde estoy? y mapa de trabajo<em>Estado, al iniciar cualquier tarea. Ramas, cuando un plan tiene varias fases.</em></div></div>
+      <div class="as h rv" data-step="8" style="--d:.3s"><span class="ic"><i data-ic="lock"></i></span><div><b>Siempre pide el OK del desarrollador</b>Integrar o borrar trabajo</div></div>
+    </div>
+  </section>
+
+  <!-- ===== 3 · INSUMOS Y ENTREGABLES ===== -->
+  <section class="slide" data-title="Insumos y entregables">
+    <h2 class="ttl">Lo que una skill entrega, la siguiente lo usa</h2>
+    <p class="sub">Nada se construye sin plano aprobado. Nada se integra sin inspección.</p>
+    <div class="chain" id="chain"></div>
+    <div class="rules">
+      <div class="rl rv" data-step="5" style="--d:0s"><span class="ic"><i data-ic="lock"></i></span><div><b>Todo queda local.</b> Ninguna skill publica ni sube nada.</div></div>
+      <div class="rl rv" data-step="5" style="--d:.12s"><span class="ic"><i data-ic="check"></i></span><div><b>Un script guarda.</b> Valida las reglas antes de cada cambio.</div></div>
+      <div class="rl rv" data-step="5" style="--d:.24s"><span class="ic"><i data-ic="branch"></i></span><div><b>El historial es la memoria.</b> Cada paso queda registrado.</div></div>
+    </div>
+  </section>
+
+  <div class="foot" id="foot">
+    <img class="l" id="fl" src="assets/tcs-negro.png" alt="TCS Tata Consultancy Services">
+    <div class="c"><b id="pn">1</b><i></i><span>TCS confidential</span></div>
+    <img class="r" id="fr" src="assets/tata-negro.png" alt="Tata">
+  </div>
+  <div id="nav">
+    <span id="stepl"></span>
+    <button id="prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button id="next" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+</div>
+
+<script>
+const IC={
+ search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+ check:'<path d="M4 12l5 5 11-11"/>',
+ box:'<path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+ alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>',
+ layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+ compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+ branch:'<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="9" r="2"/><path d="M6 7v10M18 11c0 4-6 3-12 6"/>',
+ person:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/>',
+ lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>',
+ hammer:'<path d="M14 4l6 6-3 3-6-6zM12 10L4 18l2 2 8-8"/>',
+ sign:'<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/>'
+};
+const ic=n=>`<svg viewBox="0 0 24 24">${IC[n]||''}</svg>`;
+document.querySelectorAll('i[data-ic]').forEach(e=>{e.outerHTML=ic(e.dataset.ic)});
+
+/* ---------- slide 2: flujo ---------- */
+const FLOW=[
+ {k:'Pedido',l:'P',i:'person',tag:'Usuario',t:'Todo empieza con un pedido',d:'El usuario expresa una idea o necesidad con sus propias palabras. El asistente decide qué skill activar.',o:''},
+ {k:'Exploración',l:'A',i:'search',tag:'Skill 1',t:'Exploración: entender',d:'Lee specs, código y estado del trabajo. Entrega un resumen y clasifica el Caso. No escribe nada.',o:'Resumen + Caso'},
+ {k:'Propuesta',l:'A',i:'sign',tag:'Skill 2',t:'Propuesta: escribir el plano',d:'Crea la rama, escribe el cambio en el spec y los criterios de aceptación.',o:'Spec + criterios'},
+ {k:'Gate 1',l:'P',i:'lock',h:1,tag:'Gate 1',t:'El desarrollador aprueba el plano',d:'La IA se detiene. Con su OK, el spec queda guardado como punto fijo.',o:''},
+ {k:'Aplicación',l:'A',i:'hammer',tag:'Skill 3',t:'Aplicación: construir',d:'Pruebas primero, código después, en guardados pequeños y dentro del plano.',o:'Pruebas + código'},
+ {k:'Verificación',l:'A',i:'check',tag:'Skill 4',t:'Verificación: inspeccionar',d:'Ejecuta las pruebas, compara código y spec en dos direcciones y arma el reporte.',o:'Matriz + reporte'},
+ {k:'Gate 2',l:'P',i:'lock',h:1,tag:'Gate 2',t:'El desarrollador aprueba el cierre',d:'La IA no se autoaprueba. El desarrollador revisa el reporte y decide si el cambio se integra.',o:''},
+ {k:'Integrar',l:'A',i:'branch',tag:'Con OK',t:'Se integra al producto principal',d:'Un script valida las reglas y hace la integración local, solo con el OK explícito del desarrollador.',o:'Cambio integrado'}
+];
+const flow={svg:document.getElementById('flow'),segs:[],nodes:[],raf:null,timer:null,idx:0,run:false,token:null};
+(function(){
+ const W=1696,n=FLOW.length,pad=84,gap=(W-pad*2)/(n-1),yP=125,yA=365,ns='http://www.w3.org/2000/svg';
+ const el=(t,a,p)=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);(p||flow.svg).appendChild(e);return e};
+ el('rect',{x:0,y:8,width:W,height:230,rx:34,fill:'#FFF0D2'});
+ el('rect',{x:0,y:252,width:W,height:236,rx:34,fill:'#F2F2F2'});
+ let t=el('text',{x:300,y:46,'font-size':21,'font-weight':700,fill:'#595959'});t.textContent='PERSONA';
+ t=el('text',{x:268,y:284,'font-size':20,'font-weight':700,fill:'#595959'});t.textContent='ASISTENTE DE IA';
+ FLOW.forEach((f,i)=>{f.x=pad+gap*i;f.y=f.l==='P'?yP:yA});
+ const gb=el('g',{}),gl=el('g',{});
+ for(let i=0;i<n-1;i++){
+  const a=FLOW[i],b=FLOW[i+1],xm=(a.x+b.x)/2,d=`M${a.x} ${a.y} C${xm} ${a.y},${xm} ${b.y},${b.x} ${b.y}`;
+  el('path',{d,fill:'none',stroke:'#BFBFBF','stroke-width':6,'stroke-linecap':'round'},gb);
+  const lp=el('path',{d,fill:'none',stroke:'#4E84C4','stroke-width':6,'stroke-linecap':'round'},gl);
+  const L=lp.getTotalLength();lp.style.strokeDasharray=L;lp.style.strokeDashoffset=L;lp.style.transition='stroke-dashoffset .8s ease';
+  flow.segs.push({lp,L});
+ }
+ FLOW.forEach(f=>{
+  const g=el('g',{transform:`translate(${f.x},${f.y})`,opacity:.4,style:'transition:opacity .4s'});
+  const fill=f.l==='P'?'#FBB034':'#4E84C4',ico=f.l==='P'?'#000':'#fff',r=46;
+  el('circle',{r:r+13,fill:'none',stroke:f.l==='P'?'#000':'#4E84C4','stroke-width':4,opacity:0,class:'ring'},g);
+  if(f.h)el('rect',{x:-r,y:-r,width:2*r,height:2*r,rx:14,transform:'rotate(45)',fill},g);else el('circle',{r,fill},g);
+  const s=el('svg',{x:-23,y:-23,width:46,height:46,viewBox:'0 0 24 24',fill:'none',stroke:ico,'stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round'},g);s.innerHTML=IC[f.i];
+  const up=f.l==='P';
+  const tx=el('text',{y:up?-76:84,'text-anchor':'middle','font-size':26,'font-weight':700,fill:'#000'},g);tx.textContent=f.k;
+  if(f.o){const o=el('text',{y:up?-50:112,'text-anchor':'middle','font-size':20,fill:'#3E6A9D','font-weight':700},g);o.textContent=f.o;}
+  flow.nodes.push(g);
+ });
+ flow.lit=gl;
+ flow.token=el('circle',{r:14,fill:'#fff',stroke:'#000','stroke-width':5,cx:FLOW[0].x,cy:FLOW[0].y});
+})();
+const $=s=>document.querySelector(s);
+function flowShow(i){
+ const f=FLOW[i],cap=$('#flowcap');
+ $('#fcT').textContent=f.t;$('#fcD').textContent=f.d;$('#fcTag').textContent=f.tag;
+ cap.classList.toggle('h',f.l==='P');
+ flow.nodes.forEach((g,k)=>{g.setAttribute('opacity',k<=i?1:.4);g.querySelector('.ring').setAttribute('opacity',k===i?1:0)});
+ flow.segs.forEach((s,k)=>{s.lp.style.strokeDashoffset=k<i?0:s.L});
+}
+const REDUCE=matchMedia('(prefers-reduced-motion:reduce)');
+flow.cur=0;
+function flowTo(i,animate){
+ const prev=flow.cur;flow.cur=i;flowShow(i);cancelAnimationFrame(flow.raf);
+ const set=p=>{flow.token.setAttribute('cx',p.x);flow.token.setAttribute('cy',p.y)};
+ if(!animate||Math.abs(i-prev)!==1||REDUCE.matches){set(FLOW[i]);return}
+ const fwd=i>prev,sg=flow.segs[fwd?i-1:i],t0=performance.now(),dur=800;
+ const step=t=>{const k=Math.min(1,(t-t0)/dur),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+  set(sg.lp.getPointAtLength(sg.L*(fwd?e:1-e)));if(k<1)flow.raf=requestAnimationFrame(step)};
+ flow.raf=requestAnimationFrame(step);
+}
+
+/* ---------- slide 3: cadena ---------- */
+const CH=[
+ {n:'Exploración',p:'Fase 1',i:'search',inp:['Pedido del usuario','Specs y código actuales','Estado del trabajo'],out:['Resumen del problema','El Caso (1 de 5)','Rama propuesta'],who:'El desarrollador confirma el Caso y el alcance'},
+ {n:'Propuesta',p:'Fase 2',i:'sign',inp:['Caso confirmado','Decisiones de alcance del desarrollador'],out:['Spec actualizado','Criterios CA-NN','Plano guardado como punto fijo'],who:'Gate 1: el desarrollador aprueba el plano',g:1},
+ {n:'Aplicación',p:'Fase 3',i:'hammer',inp:['Spec aprobado','Criterios CA-NN'],out:['Pruebas escritas primero','Código mínimo','Guardados pequeños'],who:'Solo si descubre algo no previsto, el desarrollador aprueba el ajuste'},
+ {n:'Verificación',p:'Fase 4',i:'check',inp:['Código construido','Spec y criterios','Pruebas del proyecto'],out:['Matriz criterio → prueba','Reporte de verificación','Cambio integrado'],who:'Gate 2: el desarrollador aprueba el cierre',g:1}
+];
+const arrow='<svg class="arr" viewBox="0 0 42 20"><line x1="0" y1="10" x2="32" y2="10"/><path d="M28 3l8 7-8 7"/></svg>';
+$('#chain').innerHTML=CH.map((c,k)=>`<div class="cl rv" data-step="${k+1}">${k<3?arrow:''}
+ <div class="hd"><span class="ic"><i data-ic="${c.i}"></i></span><div><b>${c.n}</b><small>${c.p}</small></div></div>
+ <div class="box in"><h4><i></i>Recibe</h4><ul>${c.inp.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <div class="box out"><h4><i></i>Entrega</h4><ul>${c.out.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <div class="who ${c.g?'g':''}"><span class="ic"><i data-ic="person"></i></span>${c.who}</div></div>`).join('');
+document.querySelectorAll('#chain i[data-ic]').forEach(e=>{e.outerHTML=ic(e.dataset.ic)});
+function chainSet(st){document.querySelectorAll('.cl').forEach((c,k)=>c.classList.toggle('on',st===k+1))}
+
+/* ---------- navegación: cada flecha avanza una animación; al agotarlas, pasa de slide ---------- */
+const slides=[...document.querySelectorAll('.slide')],stage=$('#stage');
+const MAXSTEP=[4,8,5];   // pasos por slide (0 = estado inicial)
+let cur=0,step=0;
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`scale(${s})`;stage.style.left=((innerWidth-1920*s)/2)+'px';stage.style.top=((innerHeight-1080*s)/2)+'px'}
+function applyStep(animate){
+ slides[cur].querySelectorAll('[data-step]').forEach(e=>e.classList.toggle('show',step>=+e.dataset.step));
+ if(cur===1)flowTo(Math.min(step,FLOW.length-1),animate);
+ if(cur===2)chainSet(step);
+ $('#stepl').textContent=`Paso ${step+1} de ${MAXSTEP[cur]+1}`;
+ try{history.replaceState(null,'','#'+(cur+1))}catch(e){}
+}
+function go(n,st){
+ n=Math.max(0,Math.min(slides.length-1,n));
+ slides.forEach((s,i)=>s.classList.toggle('active',i===n));
+ cur=n;step=st||0;
+ slides[n].querySelectorAll('.rv').forEach(e=>e.classList.remove('show'));
+ const dark=slides[n].classList.contains('dark');stage.classList.toggle('dark',dark);
+ $('#foot').style.display=dark?'none':'block';$('#pn').textContent=n+1;
+ document.title=`${slides[n].dataset.title} · Skills SDD`;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>applyStep(false)));
+}
+function next(){if(step<MAXSTEP[cur]){step++;applyStep(true)}else if(cur<slides.length-1)go(cur+1,0)}
+function prev(){if(step>0){step--;applyStep(true)}else if(cur>0)go(cur-1,MAXSTEP[cur-1])}
+$('#prev').onclick=prev;$('#next').onclick=next;
+addEventListener('keydown',e=>{
+ if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next()}
+ else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev()}
+ else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+});
+let tx=null;addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>60)(dx<0?next:prev)();tx=null});
+addEventListener('resize',fit);
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1),10);if(n&&n-1!==cur)go(n-1,0)});
+fit();go((parseInt(location.hash.slice(1),10)||1)-1,0);
+</script>
+</body>
+</html>

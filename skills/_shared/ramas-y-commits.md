@@ -19,7 +19,7 @@ Por qué: las reglas de este documento (rama correcta, formato de commit, traile
 | Ver el tronco resuelto | `sdd-git.sh tronco` |
 | Crear la rama de un cambio | `sdd-git.sh crear-rama <tipo> <capacidad> <slug> [--worktree DIR] [--ejecutar]` |
 | Cambiar de rama (árbol limpio) | `sdd-git.sh cambiar <rama> [--ejecutar]` |
-| Commitear (solo los archivos listados) | `sdd-git.sh commit --tipo T --capacidad C --asunto "…" --fase F --caso N --archivos a b [--cuerpo-archivo F] [--spec S] [--plan P] [--ca "CA-01,CA-02"] [--atribucion "…"] [--ejecutar]` |
+| Commitear (solo los archivos listados) | `sdd-git.sh commit --tipo T --capacidad C --asunto "…" --fase F --caso N --archivos a b [--cuerpo-archivo F] [--spec S] [--plan P] [--ca "CA-01,CA-02"] [--hu "HU-001"] [--atribucion "…"] [--ejecutar]` |
 | Ajuste de spec en aplicación | `sdd-git.sh commit … --fase aplicacion --tipo spec --ajuste --aprobado "…" --ejecutar` |
 | Actualizar la rama con el tronco | `sdd-git.sh actualizar-rama [--ejecutar]` |
 | Mergear al tronco (tras verificación) | `sdd-git.sh merge <rama> --capacidad C --caso N --asunto "…" --cuerpo-archivo F --aprobado "…" --ejecutar` |
@@ -29,7 +29,7 @@ Por qué: las reglas de este documento (rama correcta, formato de commit, traile
 | Worktree para trabajo paralelo | `sdd-git.sh worktree <rama> <directorio> [--ejecutar]` |
 | Cambio menor de la vía rápida | `sdd-git.sh commit --caso rapida --fase aplicacion --tipo docs|chore|refactor|test …` (límites duros: ver `ciclo-de-vida.md`) |
 
-Lo que el script **rechaza** (exit 2, con el motivo): crear ramas con tipo o nombre inválido; commitear en el tronco (salvo `chore` de entrega); un commit de propuesta que toque algo fuera de `docs/`; un commit de aplicación sin commit de propuesta previo (salvo hotfix); un `spec` en aplicación sin `--ajuste` y `--aprobado`; commitear specs o planes con `sdd-lint.sh` en rojo; mergear una rama sin commit de verificación o atrasada respecto al tronco; borrar una rama no mergeada; un tag fuera de SemVer o fuera del tronco. **No tiene subcomandos de remoto**: `push`, `pull`, `fetch`, `remote` y `gh` devuelven RECHAZADO.
+Lo que el script **rechaza** (exit 2, con el motivo): crear ramas con tipo o nombre inválido; commitear en el tronco (salvo `chore` de entrega); un commit de propuesta que toque algo fuera de `docs/`; un commit de aplicación sin commit de propuesta previo (salvo hotfix); un `spec` en aplicación sin `--ajuste` y `--aprobado`; un commit de propuesta con `--hu` cuyo acta DoR (`docs/design/<HU>/00_ACTA_APROBACION_DOR.md`) tenga firmas sin aprobar (`[ ] Aprobado`); commitear specs o planes con `sdd-lint.sh` en rojo; mergear una rama sin commit de verificación o atrasada respecto al tronco; borrar una rama no mergeada; un tag fuera de SemVer o fuera del tronco. **No tiene subcomandos de remoto**: `push`, `pull`, `fetch`, `remote` y `gh` devuelven RECHAZADO.
 
 Los comandos destructivos (`reset --hard`, `clean`, `checkout -- <archivo>`, `stash drop`, `branch -D`, `rebase`, `commit --amend`) **no tienen subcomando**: no los hace el agente; si hacen falta, se los propone al usuario para que los ejecute él.
 
@@ -100,7 +100,7 @@ SDD-CA: CA-01, CA-02
 | `feat` / `fix` / `refactor` / `perf` | Código | `aplicacion` |
 | `chore` | Estado del spec/plan, versión, changelog | `verificacion` / `entrega` |
 
-Trailers: `SDD-Caso` (1–5, `arq`, `hotfix`, `entrega` o `rapida`), `SDD-Fase` (`propuesta`, `aplicacion`, `verificacion`, `entrega`), `SDD-Spec`, `SDD-Plan` (si hay), `SDD-CA` (criterios que cubre el commit), `SDD-Ajuste: aprobado` (solo en un ajuste de spec con OK explícito).
+Trailers: `SDD-Caso` (1–5, `arq`, `hotfix`, `entrega` o `rapida`), `SDD-Fase` (`propuesta`, `aplicacion`, `verificacion`, `entrega`), `SDD-Spec`, `SDD-Plan` (si hay), `SDD-CA` (criterios que cubre el commit), `SDD-HU` (historia o historias de usuario que originan el cambio, p. ej. `HU-004`; ver `diseno-a-spec.md`), `SDD-Ajuste: aprobado` (solo en un ajuste de spec con OK explícito).
 
 Si quien commitea es Claude, **añadir al final las líneas de atribución que indique el entorno**, después de los trailers SDD.
 
